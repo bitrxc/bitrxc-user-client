@@ -1,0 +1,13 @@
+ <!--pages/room/room.wxml-->
+<view class="box" wx:for="{{list}}" wx:key="index">
+ <view class="boxitem">
+   <view class="boxitem_top">
+     <image src="{{item.cover}}" mode="aspectFit" ></image>
+   </view>
+  
+   <view class="boxitem_bottom">
+     <text>{{item.title}}</text>
+   </view>
+ </view>
+</view>
+ 
