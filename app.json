@@ -9,7 +9,8 @@
     "pages/my/message/message",
     "pages/my/evaluation/evaluation",
     "pages/my/personalSet/personalSet",
-    "pages/room/room1/room1"
+    "pages/room/room1/room1",
+    "pages/room/roomDetail"
   ],
   "window": {
     "backgroundTextStyle": "light",

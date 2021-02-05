@@ -5,7 +5,7 @@
       <image src="{{item.image}}" mode="aspectFit" ></image>
     </view>
     <view class="box-item-textcontainer">
-      <text class="box-item-title">{{item.name}}</text>
+      <navigator url="./roomDetail?roomID={{item.id}}" class="box-item-title">{{item.name}}</navigator>
       <text class="box-item-desc">{{item.description}}</text>
     </view>    
  </view>

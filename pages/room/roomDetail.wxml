@@ -1,0 +1,9 @@
+<!--pages/room/roomDetail.wxml-->
+<image src="{{room.image}}"></image>
+<view class="title">{{room.name}}</view>
+<view class="desc">{{room.description}}</view>
+<view class="title">房间预约情况</view>
+<view>
+  <button disabled="{{bookable}}">预约</button>
+</view>
+<text>pages/room/roomDetail.wxml</text>
