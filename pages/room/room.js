@@ -16,17 +16,26 @@ Page({
    */
   onLoad: function (options) {
     wx.request({
-      url: 'https://unidemo.dcloud.net.cn/api/news',//测试用接口
+      url: 'https://test.ruixincommunity.cn/admin/room/get/rooms/0/20',//测试用接口
       header: {
         'content-type': 'application/json'
       },
       success: res => {
         //1:在控制台打印一下返回的res.data数据
         console.log(res.data)
-        //2:在请求接口成功之后，用setData接收数据
+        let list = res.data.data.items;
+        for(let items of list){
+          if(items.image===null){
+            items.image="img/123.jpg"
+          }
+          if(items.description===null){
+            items.description="暂无描述"
+          }
+        }
+        //2:在请求接口成功之后，用setData渲染数据
         this.setData({
           //第一个data为固定用法
-          list: res.data
+          list: list
         })
       }
     })
