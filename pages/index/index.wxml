@@ -1,10 +1,5 @@
 <!--轮播图放推送-->
-<swiper autoplay indicator-dots indicator-color="gray" circular >
-  <swiper-item wx:key='index' wx:for="{{functions}}">
-    <image mode="widthFix" src="{{item.img}}" bindtap="tofunction" 
-    data-url="{{item.url}}"></image>
-  </swiper-item>
-</swiper>
+<bitrxc-swiping-gallery images="{{functions}}"></bitrxc-swiping-gallery>
 
 <!--主页通知-->
 <view wx:for="{{list}}" wx:key="index">

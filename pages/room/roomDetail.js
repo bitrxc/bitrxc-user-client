@@ -21,8 +21,17 @@ Page({
         //1:在控制台打印一下返回的res.data数据
         let items = res.data.data.roomInfo;
         console.log(items)
-        if(items.image===null){
-          items.image="img/123.jpg"
+        if(items.gallery===null||items.gallery===undefined){
+          items.gallery=[
+            {
+              image:"/pages/room/img/123.jpg",
+              url:"",
+            },
+            {
+              image:"/icons/Contact.png",
+              url:"",
+            },
+          ]
         }
         if(items.description===null){
           items.description="暂无描述"

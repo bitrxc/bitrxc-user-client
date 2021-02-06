@@ -16,17 +16,17 @@ const app = getApp();
       //放推送功能待开发，此处写死示意
       h: app.globalData.h,
       functions: [{
-        img: "img/1.jpg", 
-        url: ""
-      },
-      {
-        img: "img/3.jpg",
-        url: ""
-      },
-      {
-        img: "img/2.jpg",
-        url: ""
-      }
+          image: "/pages/index/img/1.jpg", 
+          url: ""
+        },
+        {
+          image: "/pages/index/img/3.jpg",
+          url: ""
+        },
+        {
+          image: "/pages/index/img/2.jpg",
+          url: ""
+        }
       ],
     },
 
