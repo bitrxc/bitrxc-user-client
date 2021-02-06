@@ -1,0 +1,8 @@
+<!--components/swiping-gallery.wxml-->
+<swiper autoplay indicator-dots indicator-color="gray" circular >
+  <swiper-item wx:key='index' wx:for="{{images}}">
+    <navigator url="{{item.url}}">
+      <image mode="widthFix" src="{{item.image}}"></image>
+    </navigator>
+  </swiper-item>
+</swiper>
