@@ -1,4 +1,7 @@
  <!--pages/room/room.wxml-->
+<view class="header">
+  <input class="header-item" type="text" placeholder="搜索房间" bindinput="onFilterChange" bindblur="onReturn"/>
+</view>
 <view class="box">
  <view class="box-item" wx:for="{{list}}" wx:key="index">
     <view class="box-item-image">
@@ -8,6 +11,10 @@
       <navigator url="./roomDetail?roomID={{item.id}}" class="box-item-title">{{item.name}}</navigator>
       <text class="box-item-desc">{{item.description}}</text>
     </view>    
+ </view>
+ <view class="box-item" wx:if="{{isEmptyList}}">  
+    <text class="box-item-desc">暂无结果</text>
+    
  </view>
 </view>
  

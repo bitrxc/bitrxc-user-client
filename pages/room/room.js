@@ -6,8 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-   list:[],
-
+    list:[],
+    isEmptyList:false,
   },
    
 
@@ -15,8 +15,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.refreshList('https://test.ruixincommunity.cn/admin/room/get/rooms/0/20');
+
+  },
+  onFilterChange:function (event) {
+    this.refreshList('https://test.ruixincommunity.cn/admin/room/get/nameLike?name=' + event.detail.value)
+  },
+  onReturn:function (event) {
+    this.refreshList('https://test.ruixincommunity.cn/admin/room/get/rooms/0/20');
+  },
+  refreshList:function(url){
     wx.request({
-      url: 'https://test.ruixincommunity.cn/admin/room/get/rooms/0/20',//测试用接口
+      url: url,//测试用接口
       header: {
         'content-type': 'application/json'
       },
@@ -24,24 +34,30 @@ Page({
         //1:在控制台打印一下返回的res.data数据
         console.log(res.data)
         let list = res.data.data.items;
-        for(let items of list){
-          if(items.image===null){
-            items.image="img/123.jpg"
+        if(list===undefined){
+          this.setData({
+            list: [],
+            isEmptyList:true,
+          })
+        }else{
+          for(let items of list){
+            if(items.image===null){
+              items.image="img/123.jpg"
+            }
+            if(items.description===null){
+              items.description="暂无描述"
+            }
           }
-          if(items.description===null){
-            items.description="暂无描述"
-          }
+          //2:在请求接口成功之后，用setData渲染数据
+          this.setData({
+            //第一个data为固定用法
+            list: list,
+            isEmptyList:false,
+          })
         }
-        //2:在请求接口成功之后，用setData渲染数据
-        this.setData({
-          //第一个data为固定用法
-          list: list
-        })
       }
     })
-
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
