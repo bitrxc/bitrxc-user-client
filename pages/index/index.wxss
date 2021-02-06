@@ -1,11 +1,3 @@
-swiper{
-  width: 100%;
-  height: 120px;
-  
-}
-swiper-item{
-position: top;
-}
 image{
   width: 100%;
 }

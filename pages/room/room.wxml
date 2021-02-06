@@ -5,7 +5,7 @@
 <view class="box">
  <view class="box-item" wx:for="{{list}}" wx:key="index">
     <view class="box-item-image">
-      <image src="{{item.image}}" mode="aspectFit" ></image>
+      <image src="{{item.image}}" mode="aspectFill" ></image>
     </view>
     <view class="box-item-textcontainer">
       <navigator url="./roomDetail?roomID={{item.id}}" class="box-item-title">{{item.name}}</navigator>
