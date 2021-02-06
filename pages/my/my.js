@@ -16,32 +16,32 @@ Page({
     /*功能菜单*/
     h: app.globalData.h,
     functions: [{
-      icon: "icons/Set.png",
+      icon: "/icons/Set.png",
       name: "预约进度",
       url: "../my/process/process"
     },
     {
-      icon: "icons/Set.png",
+      icon: "/icons/Set.png",
       name: "预约记录",
       url: "../my/logs/logs"
     },
     {
-      icon: "icons/Set.png",
+      icon: "/icons/Set.png",
       name: "随便什么",
       /*url: "../ar/ar"*/
     },
     {
-      icon: "icons/Set.png",
+      icon: "/icons/Set.png",
       name: "我的消息",
       url: "../my/message/message"
     },
     {
-      icon: "icons/Set.png",
+      icon: "/icons/Set.png",
       name: "我的评价",
       url: "../my/evaluation/evaluation"
     },
     {
-      icon: "icons/Set.png",
+      icon: "/icons/Set.png",
       name: "个人设置",
       url: "../my/personalSet/personalSet"
     },
