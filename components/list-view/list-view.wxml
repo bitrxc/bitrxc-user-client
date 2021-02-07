@@ -9,7 +9,7 @@
       <text class="-box-item-desc">{{item.description}}</text>
     </view>    
   </view>
-  <view class="-box-item" wx:if="{{isEmptyList}}">  
+  <view class="-box-item" wx:if="{{isEmpty}}">  
     <text class="-box-item-desc">暂无结果</text>
   </view>
 </view>

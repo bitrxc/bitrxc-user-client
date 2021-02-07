@@ -5,7 +5,6 @@ Component({
    */
   properties: {
     "list":Array,
-    "isEmpty":Boolean,
     "targetPage":String,
     "targetID":String,
   },
@@ -22,5 +21,21 @@ Component({
    */
   methods: {
 
+  },
+  observers:{
+    'list':function (newprop) {
+      let res=[];
+      if(newprop&&newprop[Symbol.iterator]&&newprop.length){
+        res = Array.from(newprop);
+        this.setData({
+          isEmpty:false,
+        })
+      }else{
+        this.setData({
+          isEmpty:true,
+        }) 
+      }
+      return res;
+    }
   }
 })
