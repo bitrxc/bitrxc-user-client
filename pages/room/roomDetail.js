@@ -13,10 +13,11 @@ Page({
    */
   onLoad: function (options) {
     wx.request({
-      url: 'https://test.ruixincommunity.cn/admin/room/get/'+options.roomID,
+      url: 'https://test.ruixincommunity.cn/room/'+options.roomID,
       header: {
         'content-type': 'application/json'
       },
+      method:"GET",
       success: res => {
         //1:在控制台打印一下返回的res.data数据
         let items = res.data.data.roomInfo;

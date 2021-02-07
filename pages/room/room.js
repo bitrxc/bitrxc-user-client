@@ -15,14 +15,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.refreshList('https://test.ruixincommunity.cn/admin/room/get/rooms/0/20');
+    this.refreshList('https://test.ruixincommunity.cn/room/0/20');
 
   },
   onFilterChange:function (event) {
-    this.refreshList('https://test.ruixincommunity.cn/admin/room/get/nameLike?name=' + event.detail.value)
+    this.refreshList('https://test.ruixincommunity.cn/room/nameLike?name=' + event.detail.value)
   },
   onReturn:function (event) {
-    this.refreshList('https://test.ruixincommunity.cn/admin/room/get/rooms/0/20');
+    this.refreshList('https://test.ruixincommunity.cn/room/0/20');
   },
   refreshList:function(url){
     wx.request({
@@ -30,6 +30,7 @@ Page({
       header: {
         'content-type': 'application/json'
       },
+      method:"GET",
       success: res => {
         //1:在控制台打印一下返回的res.data数据
         console.log(res.data)
