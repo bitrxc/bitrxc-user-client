@@ -1,0 +1,15 @@
+<!--components/list-view/list-view.wxml-->
+<view class="-box">
+  <view class="-box-item" wx:for="{{list}}" wx:key="index">
+    <view class="-box-item-image">
+      <image class="-box-image" src="{{item.image}}" mode="aspectFill" ></image>
+    </view>
+    <view class="-box-item-textcontainer">
+      <navigator url="{{targetPage}}?{{targetID}}={{item.id}}" class="-box-item-title">{{item.name}}</navigator>
+      <text class="-box-item-desc">{{item.description}}</text>
+    </view>    
+  </view>
+  <view class="-box-item" wx:if="{{isEmptyList}}">  
+    <text class="-box-item-desc">暂无结果</text>
+  </view>
+</view>

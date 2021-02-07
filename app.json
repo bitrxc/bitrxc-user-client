@@ -43,6 +43,7 @@
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "usingComponents":{
-    "bitrxc-swiping-gallery":"/components/swiping-gallery/swiping-gallery"
+    "bitrxc-swiping-gallery":"/components/swiping-gallery/swiping-gallery",
+    "bitrxc-list-view":"/components/list-view/list-view"
   }
 }
