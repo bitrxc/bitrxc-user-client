@@ -15,24 +15,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.refreshList('https://test.ruixincommunity.cn/room/0/20');
+    this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
 
   },
   onFilterChange:function (event) {
-    this.refreshList('https://test.ruixincommunity.cn/room/nameLike?name=' + event.detail.value)
+    this.refreshList('https://test.ruixincommunity.cn/room/nameLike?nameLike=' + event.detail.value,"rooms")
   },
   onReturn:function (event) {
-    this.refreshList('https://test.ruixincommunity.cn/room/0/20');
+    this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
   },
-  refreshList:function(url){
+  refreshList:function(url,prop){
     wx.request({
       url: url,//测试用接口
-      header: getApp().globalData.APIHeader,
+      header: app.globalData.APIHeader,
       method:"GET",
       success: res => {
         //1:在控制台打印一下返回的res.data数据
         console.log(res.data)
-        let list = res.data.data.items;
+        let list = res.data.data[prop];
         if(list===undefined){
           this.setData({
             list: [],

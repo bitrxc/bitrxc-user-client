@@ -1,5 +1,6 @@
  <!--pages/room/room.wxml-->
 <view class="header">
-  <input class="header-item" type="text" placeholder="搜索房间" bindinput="onFilterChange" bindblur="onReturn"/>
+  <input class="header-input" type="text" placeholder="搜索房间" bindinput="onFilterChange"/>
+  <icon class="header-icon" bindtap="onReturn" type="clear" color="grey"></icon>
 </view>
 <bitrxc-list-view list="{{list}}" target-page="./roomDetail" target-i-d="roomID"></bitrxc-list-view>
