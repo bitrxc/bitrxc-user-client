@@ -27,9 +27,7 @@ Page({
   refreshList:function(url){
     wx.request({
       url: url,//测试用接口
-      header: {
-        'content-type': 'application/json'
-      },
+      header: getApp().globalData.APIHeader,
       method:"GET",
       success: res => {
         //1:在控制台打印一下返回的res.data数据
@@ -43,7 +41,7 @@ Page({
         }else{
           for(let items of list){
             if(items.image===null){
-              items.image="img/123.jpg"
+              items.image="/pages/room/img/123.jpg"
             }
             if(items.description===null){
               items.description="暂无描述"
