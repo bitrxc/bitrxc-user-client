@@ -14,14 +14,12 @@ Page({
   onLoad: function (options) {
     wx.request({
       url: 'https://test.ruixincommunity.cn/room/'+options.roomID,
-      header: {
-        'content-type': 'application/json'
-      },
+      header: getApp().globalData.APIHeader,
       method:"GET",
       success: res => {
         //1:在控制台打印一下返回的res.data数据
         let items = res.data.data.roomInfo;
-        console.log(items)
+        console.log(res.data)
         if(items.gallery===null||items.gallery===undefined){
           items.gallery=[
             {
