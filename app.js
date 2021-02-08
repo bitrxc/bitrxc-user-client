@@ -10,6 +10,19 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        wx.request({
+          url:"https://test.ruixincommunity.cn/login",
+          method:"POST",
+          header:this.globalData.APIHeader,
+          data:{
+            "username":"test",
+            "password":"123456"
+          },
+          success:res =>{
+            console.log(res.data);
+            this.globalData.APIHeader.Token = res.data.data.token
+          }
+        })
       }
     })
     // 获取用户信息
@@ -34,6 +47,10 @@ App({
     })
   },
   globalData: {
+    APIHeader: {
+      "content-type":"application/json",
+      "Token":null,
+    },
     userInfo: null
   }
 })
