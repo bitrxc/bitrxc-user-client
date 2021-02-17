@@ -5,6 +5,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    array: [
+      {roomid: 5,id:'Amy',date:'2021.02.01', time:'12:00-13:00',result:'使用成功',unique: 'unique_5'},
+      {roomid: 4,id:'Bmy',date:'2021.02.02', time:'13:00-14:00',result:'超时签退',unique: 'unique_4'},
+      {roomid: 3,id:'Cmy',date:'2021.02.03', time:'14:00-15:00',result:'取消预约',unique: 'unique_3'},
+      {roomid: 2,id:'Dmy',date:'2021.02.04', time:'15:00-16:00',result:'使用成功',unique: 'unique_2'},
+      {roomid: 1,id:'Emy',date:'2021.02.05', time:'16:00-17:00',result:'使用成功',unique: 'unique_1'},
+      {roomid: 0,id:'Fmy',date:'2021.02.06', time:'12:00-13:00',result:'取消预约',unique: 'unique_6'},
+    ],
 
   },
 

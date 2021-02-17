@@ -1,2 +1,19 @@
 <!--pages/my/process/process.wxml-->
-<text>pages/my/process/process.wxml</text>
+<text class="title">预约进度</text>
+<view class="container" wx:for="{{array}}" wx:key="unique">
+  <view class="roomID">
+    <text class="text">房间名称：{{item.roomid}}</text>
+  </view>
+  <view class="id">
+    <text class="text">预约人：{{item.id}}</text>
+  </view>
+  <view class="date">
+    <text class="text">预约日期：{{item.date}}</text>
+  </view>
+  <view class="time">
+    <text class="text">预约时段：{{item.time}}</text>
+  </view>
+  <view class="process">
+    <text class="text">预约进度：{{item.process}}</text>
+  </view>
+</view>
