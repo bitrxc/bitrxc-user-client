@@ -1,4 +1,8 @@
 /* pages/my/logs/logs.wxss */
+page {
+  background-image: url(https://ww4.sinaimg.cn/bmiddle/005SWChdly1g5q9gi6alkj30u01rc14q.jpg);
+  background-size: cover;
+}
 .title{
   display:flex;
 align-items:center;

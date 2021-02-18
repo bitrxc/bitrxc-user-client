@@ -1,5 +1,5 @@
 /* components/swiping-gallery.wxss */
 .-gallery{
   width: 100%;
-  height: 120px;
+  height: 220px;
 }
