@@ -1,3 +1,4 @@
+import { request } from "../../request/index.js";
 // pages/room/roomDetail.js
 Page({
 
@@ -11,35 +12,34 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    wx.request({
+  onLoad:async function (options) {
+    let res = await request({
       url: 'https://test.ruixincommunity.cn/room/'+options.roomID,
       header: getApp().globalData.APIHeader,
       method:"GET",
-      success: res => {
-        //1:在控制台打印一下返回的res.data数据
-        let items = res.data.data.roomInfo;
-        console.log(res.data)
-        if(items.gallery===null||items.gallery===undefined){
-          items.gallery=[
-            {
-              image:"/pages/room/img/123.jpg",
-              url:"",
-            },
-            {
-              image:"/icons/Contact.png",
-              url:"",
-            },
-          ]
-        }
-        if(items.description===null){
-          items.description="暂无描述"
-        }
-        this.setData({
-          room:items
-        })
-      }
     })
+    //1:在控制台打印一下返回的res.data数据
+    let items = res.data.data.roomInfo;
+    console.log(res.data)
+    if(items.gallery===null||items.gallery===undefined){
+      items.gallery=[
+        {
+          image:"/pages/room/img/123.jpg",
+          url:"",
+        },
+        {
+          image:"/icons/Contact.png",
+          url:"",
+        },
+      ]
+    }
+    if(items.description===null){
+      items.description="暂无描述"
+    }
+    this.setData({
+      room:items
+    })
+  
   },
 
   /**

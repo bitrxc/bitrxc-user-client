@@ -1,3 +1,4 @@
+import { request } from "../../request/index.js";
 //  pages/room/room.js
 const app = getApp();
 Page({
@@ -24,38 +25,36 @@ Page({
   onReturn:function (event) {
     this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
   },
-  refreshList:function(url,prop){
-    wx.request({
+  refreshList:async function(url,prop){
+    let res = await request({
       url: url,//测试用接口
       header: app.globalData.APIHeader,
       method:"GET",
-      success: res => {
-        //1:在控制台打印一下返回的res.data数据
-        console.log(res.data)
-        let list = res.data.data[prop];
-        if(list===undefined){
-          this.setData({
-            list: [],
-            isEmptyList:true,
-          })
-        }else{
-          for(let items of list){
-            if(items.image===null){
-              items.image="/pages/room/img/123.jpg"
-            }
-            if(items.description===null){
-              items.description="暂无描述"
-            }
-          }
-          //2:在请求接口成功之后，用setData渲染数据
-          this.setData({
-            //第一个data为固定用法
-            list: list,
-            isEmptyList:false,
-          })
+    })
+    //1:在控制台打印一下返回的res.data数据
+    console.log(res.data)
+    let list = res.data.data[prop];
+    if(list===undefined){
+      this.setData({
+        list: [],
+        isEmptyList:true,
+      })
+    }else{
+      for(let items of list){
+        if(items.image===null){
+          items.image="/pages/room/img/123.jpg"
+        }
+        if(items.description===null){
+          items.description="暂无描述"
         }
       }
-    })
+      //2:在请求接口成功之后，用setData渲染数据
+      this.setData({
+        //第一个data为固定用法
+        list: list,
+        isEmptyList:false,
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

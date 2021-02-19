@@ -1,4 +1,5 @@
 // app.js
+import {request} from  "/request/index.js";
 App({
   onLaunch() {
     // 展示本地存储能力
@@ -8,9 +9,9 @@ App({
 
     // 登录
     wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        wx.request({
+      success:async weixincode => {
+        // 发送 weixincode.code 到后台换取 openId, sessionKey, unionId
+        let session = await request({
           url:"https://test.ruixincommunity.cn/login",
           method:"POST",
           header:this.globalData.APIHeader,
@@ -18,11 +19,9 @@ App({
             "username":"test",
             "password":"123456"
           },
-          success:res =>{
-            console.log(res.data);
-            this.globalData.APIHeader.Token = res.data.data.token
-          }
         })
+        console.log(session.data);
+        this.globalData.APIHeader.Token = session.data.data.token
       }
     })
     // 获取用户信息
