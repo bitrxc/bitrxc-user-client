@@ -10,18 +10,14 @@ App({
     // 登录
     wx.login({
       success:async weixincode => {
-        // 发送 weixincode.code 到后台换取 openId, sessionKey, unionId
+        // 发送 weixincode.code 到后台换取 openId, sessionKey, unionId'
+        console.log("https://test.ruixincommunity.cn/user/login?code="+weixincode.code)
         let session = await request({
-          url:"https://test.ruixincommunity.cn/login",
-          method:"POST",
-          header:this.globalData.APIHeader,
-          data:{
-            "username":"test",
-            "password":"123456"
-          },
+          url:"https://test.ruixincommunity.cn/user/login?code="+weixincode.code,
+          method:"GET",
         })
         console.log(session.data);
-        this.globalData.APIHeader.Token = session.data.data.token
+        this.globalData.APIHeader.token = session.data.data.token
       }
     })
     // 获取用户信息
@@ -48,7 +44,7 @@ App({
   globalData: {
     APIHeader: {
       "content-type":"application/json",
-      "Token":null,
+      "token":null,
     },
     userInfo: null
   }
