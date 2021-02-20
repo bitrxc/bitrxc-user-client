@@ -1,6 +1,12 @@
 // components/list-view/list-view.js
 Component({
   /**
+   * 组件选项
+   */
+  options:{
+    styleIsolation:"apply-shared",
+  },
+  /**
    * 组件的属性列表
    */
   properties: {

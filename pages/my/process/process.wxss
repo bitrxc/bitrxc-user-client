@@ -5,10 +5,8 @@ page {
 }
 .title{
   display:flex;
-align-items:center;
-justify-content:center;
-font-size: 5vmax;
-font-weight: bold;
+  align-items:center;
+  justify-content:center;
 }
 .container{
   border: 1rpx rgb(129, 129, 129) dashed;

@@ -41,9 +41,6 @@
 }
 
 .-box-item-title{
-  font-family: bold;
-  font-size: 22px;
-  font-weight: bold;
   width: 100%;
   margin: 0 2rpx;
   font-weight: 400;
@@ -52,7 +49,7 @@
 }
 
 .-box-item-desc {
-  font-family: fangsong;
+  font-family: serif;
   width: 100%;
   margin: 0 2rpx;
   text-align: center;

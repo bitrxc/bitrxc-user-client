@@ -1,20 +1,20 @@
 <!--pages/room/roomDetail.wxml-->
 <bitrxc-swiping-gallery images="{{room.gallery}}"></bitrxc-swiping-gallery>
+<view class="title title1">房间详情</view>
 <view class="container">
   <view class="roomID">
-    <text class="title">房间名称</text>
-    <text class="content">{{room.name}}</text>
+    <view class="title2">房间名称</view>
+    <view class="content">{{room.name}}</view>
   </view>
   <view class="desc">
-    <text class="title">房间详情</text>
-    <text class="content">{{room.description}}</text>
+    <view class="title2">房间详情</view>
+    <view class="content">{{room.description}}</view>
   </view>
   <view class="situ">
-    <text class="title">房间状态</text>
-    <text class="content">{{}}</text>
+    <view class="title2">房间状态</view>
+    <view class="content">{{}}</view>
   </view>
 </view>
 <view>
-  <button disabled="{{bookable}}">预约</button>
+  <button disabled="{{bookable}}">预约此房间</button>
 </view>
-<text>pages/room/roomDetail.wxml</text>

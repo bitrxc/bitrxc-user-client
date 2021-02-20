@@ -1,5 +1,5 @@
 <!--pages/my/process/process.wxml-->
-<text class="title">预约进度</text>
+<text class="title title1">预约进度</text>
 <view class="container" wx:for="{{array}}" wx:key="unique">
   <view class="roomID">
     <text class="text">房间名称：{{item.roomid}}</text>
