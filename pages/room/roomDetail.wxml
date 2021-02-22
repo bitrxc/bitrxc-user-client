@@ -1,7 +1,7 @@
 <!--pages/room/roomDetail.wxml-->
 <bitrxc-swiping-gallery images="{{room.gallery}}"></bitrxc-swiping-gallery>
-<view class="title title1">房间详情</view>
-<view class="container">
+<view class="title1 toplevel-container">房间详情</view>
+<view class="container toplevel-container">
   <view class="roomID">
     <view class="title2">房间名称</view>
     <view class="content">{{room.name}}</view>

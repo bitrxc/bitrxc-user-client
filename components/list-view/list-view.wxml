@@ -1,6 +1,6 @@
 <!--components/list-view/list-view.wxml-->
 
-<view class="-box">
+<view class="-box toplevel-container">
   <view class="-box-item" wx:for="{{list}}" wx:key="index">
     <view class="-box-item-image">
       <image class="-box-image" src="{{item.image}}" mode="aspectFill" ></image>
