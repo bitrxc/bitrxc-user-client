@@ -89,5 +89,10 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  tofunction: function (e) {
+    wx.navigateTo({
+      url: '././room1/room1',
+    })
   }
 })

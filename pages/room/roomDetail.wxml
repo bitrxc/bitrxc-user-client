@@ -16,5 +16,7 @@
   </view>
 </view>
 <view>
-  <button disabled="{{bookable}}">预约此房间</button>
+  <button disabled="{{bookable}}" bindtap="tofunction">
+   预约此房间</button>
 </view>
+
