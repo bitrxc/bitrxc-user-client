@@ -1,2 +1,31 @@
 <!--pages/my/personalSet/personalSet.wxml-->
-<text>pages/my/personalSet/personalSet.wxml</text>
+<view class="title1 toplevel-container">用户信息</view>
+<view class="container toplevel-container">
+  <view class="username">
+    <view class="title2">用户名</view>
+    <block wx:if="{{user.name}}">
+      <view class="content">{{user.name}}</view>
+    </block><block wx:else>
+      <view class="placeholder">暂无用户名</view>
+    </block>
+    <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
+      使用微信用户名
+    </button>
+  </view>
+  <view class="desc">
+    <view class="title2">用户所属组织</view>
+    <block wx:if="{{user.organization}}">
+      <view class="content">{{user.organization}}</view>
+    </block><block wx:else>
+      <view class="placeholder">暂未完善用户信息</view>
+    </block>
+  </view>
+  <view class="tel">
+    <view class="title2">电话号码</view>
+    <block wx:if="{{user.phone}}">
+      <view class="content">{{user.phone}}</view>
+    </block><block wx:else>
+      <view class="placeholder">暂未完善用户信息</view>
+    </block>
+  </view>
+</view>

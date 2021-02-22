@@ -17,7 +17,8 @@ App({
           method:"GET",
         })
         console.log(session.data);
-        this.globalData.APIHeader.token = session.data.data.token
+        this.globalData.APIHeader.token = session.data.data.token;
+        this.globalData.openid = session.data.data.openid;
       }
     })
     // 获取用户信息
