@@ -24,7 +24,7 @@
       </scroll-view>
    
       <!--时段表-->
-      <view>
+      <view class="timeTable">
         <view class="top">
           <view class='left'>时段</view>
           <view wx:for="{{day}}" wx:key="index" class="top-text">
@@ -51,10 +51,27 @@
               </view>
             </view>
           </view>
+          <!--时段说明-->
+          <view class="des">
+            <view class="des.left">
+              <text class="des-text">时段1：08：00-10：00</text>
+              <text class="des-text">时段2：10：00-12：00</text>
+              <text class="des-text">时段3：12：00-14：00</text>
+              <text class="des-text">时段4：14：00-16：00</text>
+            </view>
+            <view class="des.right">
+              <text class="des-text">时段5：16：00-18：00</text>
+              <text class="des-text">时段6：18：00-20：00</text>
+              <text class="des-text">时段7：20：00-22：00</text>
+              <text class="des-text">实际时间以公告为准</text>
+            </view>
+  </view>
         </scroll-view>
+        
       </view>
     </swiper-item>
   </swiper>  
+  
 </view>
 <!--可预约时段弹框-->
 <view class="drawer_screen" data-statu="close" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove' bindtap='hideModal'></view>
@@ -71,7 +88,7 @@
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时间：</label>
-        <label class='noidle-item-content'>第8周  周{{day[cardView.xqj-1]}}</label>
+        <label class='noidle-item-content'>第{{weekList{{cardView.djz}}}}周  周{{day[cardView.xqj-1]}}</label>
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时段：</label>

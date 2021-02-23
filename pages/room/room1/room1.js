@@ -3,13 +3,13 @@ Page({
   data: {
     roomName: "党建活动室",
     show: false,
-    weekList: ['6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+    weekList: ['1','2','3','4','5','6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
     day: ['一','二','三','四','五','六','日'],
-    wlist: [
-      { "xqj": 4, "yysd": 2, "yycd": 1, "zt": "已预约",  "color": 1 }, //用户已预约时段用1表示
-      { "xqj": 1, "yysd": 2, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
-      { "xqj": 2, "yysd": 1, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
-      { "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },//不可预约时段用-1表示
+    wlist: [ //djz表示第几周，xqj表示星期几，yysd表示预约时段，yycd表示预约长度（固定为1），zt表示房间状态
+      {"djz":8, "xqj": 4, "yysd": 2, "yycd": 1, "zt": "已预约",  "color": 1 },   //用户已预约时段用1表示
+      {"djz":8,  "xqj": 1, "yysd": 2, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
+      {"djz":8,  "xqj": 2, "yysd": 1, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
+      {"djz":8, "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },   //不可预约时段用-1表示
     ],
   },
 
@@ -48,6 +48,7 @@ Page({
       color: e.currentTarget.dataset.wlist.color,
       yysd: e.currentTarget.dataset.wlist.yysd,
       xqj: e.currentTarget.dataset.wlist.xqj,
+      djz: e.currentTarget.dataset.wlist.djz,
     }
     if(e.currentTarget.dataset.wlist.color === 0){
       this.setData({
