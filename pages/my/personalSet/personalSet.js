@@ -1,5 +1,6 @@
 import { request } from "../../../request/index.js";
 // pages/my/personalSet/personalSet.js
+// TODO: 通过微信平台获取电话号码
 const app = getApp();
 Component({
 
@@ -7,7 +8,7 @@ Component({
    * 页面的初始数据
    */
   data: {
-
+    editable:true,
   },
 
   methods:{
@@ -31,14 +32,34 @@ Component({
       let rawInfo = e.detail.userInfo;
       console.log(rawInfo)
       app.globalData.userInfo = rawInfo;
-
-      let newInfo = {
-        username : app.globalData.openid,
+      await this.setUserProfile({
         name : rawInfo.nickName,
+      });
+    },
+
+    replacePhone:async function (e) {
+      let rawPhone = e.detail.value;
+      await this.setUserProfile({
+        phone : Number(rawPhone),
+      });
+    },
+
+    replaceOrg:async function (e) {
+      let rawOrg = e.detail.value;
+      await this.setUserProfile({
+        organization : rawOrg,
+      });
+    },
+
+    async setUserProfile(userInfo){
+      //TODO: 电话号码校验
+      let newInfo = {
+        ...this.data.user,
+        ...userInfo,
       }
       console.log(newInfo)
       this.setData({
-        userInfo: newInfo ,
+        user: newInfo ,
       })
       let res = await request({
         url:"https://test.ruixincommunity.cn/user",

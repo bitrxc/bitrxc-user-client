@@ -14,18 +14,14 @@
   </view>
   <view class="desc">
     <view class="title2">用户所属组织</view>
-    <block wx:if="{{user.organization}}">
-      <view class="content">{{user.organization}}</view>
-    </block><block wx:else>
-      <view class="placeholder">暂未完善用户信息</view>
-    </block>
+    <input type="text" disabled="{{!editable}}" bindblur="replaceOrg" value="{{user.organization}}"
+      placeholder="暂未完善用户信息" placeholder-class="placeholder">
+    </input>
   </view>
   <view class="tel">
     <view class="title2">电话号码</view>
-    <block wx:if="{{user.phone}}">
-      <view class="content">{{user.phone}}</view>
-    </block><block wx:else>
-      <view class="placeholder">暂未完善用户信息</view>
-    </block>
+    <input type="number" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}"
+      placeholder="暂未完善用户信息" placeholder-class="placeholder">
+    </input>
   </view>
 </view>
