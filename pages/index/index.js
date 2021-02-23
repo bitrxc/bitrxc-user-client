@@ -1,3 +1,4 @@
+import {request} from  "../../request/index.js";
 
   // pages/index/index.js
 const app = getApp();
@@ -16,40 +17,43 @@ const app = getApp();
       //放推送功能待开发，此处写死示意
       h: app.globalData.h,
       functions: [{
-        img: "img/1.jpg", 
-        url: ""
-      },
-      {
-        img: "img/3.jpg",
-        url: ""
-      },
-      {
-        img: "img/2.jpg",
-        url: ""
-      }
+          image: "/pages/index/img/1.jpg", 
+          url: ""
+        },
+        {
+          image: "/pages/index/img/3.jpg",
+          url: ""
+        },
+        {
+          image: "/pages/index/img/2.jpg",
+          url: ""
+        }
       ],
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
-      wx.request({
+    onLoad:async function (options) {
+      let res = await request({
         url: 'https://unidemo.dcloud.net.cn/api/news',//测试
         header: {
           'content-type': 'application/json'
         },
-        success: res => {
-          //1:在控制台打印一下返回的res.data数据
-          console.log(res.data)
-          //2:在请求接口成功之后，用setData接收数据
-          this.setData({
-            //第一个data为固定用法
-            list: res.data
-          })
-        }
       })
 
+      //1:在控制台打印一下返回的res.data数据
+      console.log(res.data)
+      for(let item of res.data){
+        item.image = item.cover;
+        item.name = item.title;
+        item.description = item.summary;
+      }
+      //2:在请求接口成功之后，用setData接收数据
+      this.setData({
+        //第一个data为固定用法
+        list: res.data
+      })
   },
 
   /**

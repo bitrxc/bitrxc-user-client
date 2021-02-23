@@ -1,20 +1,5 @@
 <!--轮播图放推送-->
-<swiper autoplay indicator-dots indicator-color="gray" circular >
-  <swiper-item wx:key='index' wx:for="{{functions}}">
-    <image mode="widthFix" src="{{item.img}}" bindtap="tofunction" 
-    data-url="{{item.url}}"></image>
-  </swiper-item>
-</swiper>
+<bitrxc-swiping-gallery images="{{functions}}"></bitrxc-swiping-gallery>
 
 <!--主页通知-->
-<view wx:for="{{list}}" wx:key="index">
-  <view class="item">
-   <image src="{{item.author_avatar}}" mode="center" url="{{item.url}}">图片</image>
-    <view class="number-wrapper">
-      <text class="name">{{item.author_name}}</text>
-      <view class="count-wrapper">
-        <text class="count" bindtap="tofunction">{{item.title}}</text>
-      </view>
-    </view>
-  </view>
-</view>
+<bitrxc-list-view list="{{list}}"></bitrxc-list-view>

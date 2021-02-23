@@ -1,3 +1,4 @@
+import { request } from "../../request/index.js";
 //  pages/room/room.js
 const app = getApp();
 Page({
@@ -6,8 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-   list:[],
-
+    list:[],
+    isEmptyList:false,
   },
    
 
@@ -15,24 +16,46 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.request({
-      url: 'https://unidemo.dcloud.net.cn/api/news',//测试用接口
-      header: {
-        'content-type': 'application/json'
-      },
-      success: res => {
-        //1:在控制台打印一下返回的res.data数据
-        console.log(res.data)
-        //2:在请求接口成功之后，用setData接收数据
-        this.setData({
-          //第一个data为固定用法
-          list: res.data
-        })
-      }
-    })
+    this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
 
   },
-
+  onFilterChange:function (event) {
+    this.refreshList('https://test.ruixincommunity.cn/room/nameLike?nameLike=' + event.detail.value,"rooms")
+  },
+  onReturn:function (event) {
+    this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
+  },
+  refreshList:async function(url,prop){
+    let res = await request({
+      url: url,//测试用接口
+      header: app.globalData.APIHeader,
+      method:"GET",
+    })
+    //1:在控制台打印一下返回的res.data数据
+    console.log(res.data)
+    let list = res.data.data[prop];
+    if(list===undefined){
+      this.setData({
+        list: [],
+        isEmptyList:true,
+      })
+    }else{
+      for(let items of list){
+        if(items.image===null){
+          items.image="/pages/room/img/123.jpg"
+        }
+        if(items.description===null){
+          items.description="暂无描述"
+        }
+      }
+      //2:在请求接口成功之后，用setData渲染数据
+      this.setData({
+        //第一个data为固定用法
+        list: list,
+        isEmptyList:false,
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

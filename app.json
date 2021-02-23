@@ -9,7 +9,8 @@
     "pages/my/message/message",
     "pages/my/evaluation/evaluation",
     "pages/my/personalSet/personalSet",
-    "pages/room/room1/room1"
+    "pages/room/room1/room1",
+    "pages/room/roomDetail"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -22,23 +23,27 @@
       {
         "pagePath": "pages/index/index",
         "text": "睿信社区",
-        "iconPath": "icons/Contact.png",
-        "selectedIconPath": "icons/Contact.png"
+        "iconPath": "/icons/Contact.png",
+        "selectedIconPath": "/icons/Contact.png"
       },
       {
         "pagePath": "pages/room/room",
         "text": "活动室预约",
-        "iconPath": "icons/ApplyRoom.png",
-        "selectedIconPath": "icons/ApplyRoom.png"
+        "iconPath": "/icons/ApplyRoom.png",
+        "selectedIconPath": "/icons/ApplyRoom.png"
       },
       {
         "pagePath": "pages/my/my",
         "text": "我的",
-        "iconPath": "icons/SignIn.png",
-        "selectedIconPath": "icons/SignIn.png"
+        "iconPath": "/icons/SignIn.png",
+        "selectedIconPath": "/icons/SignIn.png"
       }
     ]
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "usingComponents":{
+    "bitrxc-swiping-gallery":"/components/swiping-gallery/swiping-gallery",
+    "bitrxc-list-view":"/components/list-view/list-view"
+  }
 }

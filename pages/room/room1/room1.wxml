@@ -1,7 +1,88 @@
-<!--pages/room/room1/room1.wxml-->
-<text>pages/room/room1/room1.wxml</text>
-<view class="selection_cards" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
-    <view class="selection_cards_item" wx:for="{{list}}" wx:key="index"
-        style="left:{{item.style.left}}px; z-index:{{item.style.zIndex}};transform:{{item.style.transform}};opacity:{{item.style.opacity}};transition:{{!isTouch?'0.1s':0}};background-image: url({{item.backimage}});">
+<view class='content'>
+  <!--房间名-->
+  <view class='title_right'> 
+    <view class="tab-item ">
+      <view class="onRight">{{roomName}}</view>
     </view>
+  </view>
+
+  <swiper class="swiper" style='width:100%;height:100%;'>
+    <swiper-item catchtouchmove="stopTouchMove">
+      <!--周次选择-->
+      <view class='title' bindtap='clickHide'>
+        <view class='title_left'>
+          <view class='btn btn_'></view> 
+          <view class='week' catchtap='clickShow'>
+            第8周
+            <image></image>
+          </view>
+          <view class='btn'></view> 
+        </view>
+      </view>
+      <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
+        <view class='show_week' wx:for="{{weekList}}" wx:key="index">{{item}}</view>
+      </scroll-view>
+   
+      <!--时段表-->
+      <view>
+        <view class="top">
+          <view class='left'>时段</view>
+          <view wx:for="{{day}}" wx:key="index" class="top-text">
+            {{item}}
+          </view>
+        </view>
+        <scroll-view scroll-y="true" class="scroll" style='height:{{windowHeight-110}}px;' bindtap='clickHide'>
+          <view style="width:100%;display:flex;">
+            <view style="background-color:#EFEFF4;color:#333;">
+              <view wx:for="{{[1,2,3,4,5,6,7]}}" wx:key="index" class="left" style='height:50px'>
+                {{item}}
+              </view>
+            </view>
+            <view wx:for="{{[1,2,3,4,5,6,7]}}" wx:key="index">
+              <view style="width:100%;margin-top:{{(index+1)*50-0.8}}px;  position: absolute;border-bottom:1rpx solid lightgray;">
+              </view>
+            </view>
+
+            <!--预约记录-->
+            <view wx:for="{{wlist}}" wx:key="index">
+              <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}' style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*50+2}}px; height:{{item.yycd*50-5}}px;background-color:{{item.color == '0'?'#ffffff':(item.color == '1'?'#04BE02':'#ccc')}}"> 
+                <view class="smalltext">{{item.zt}} </view>
+                <!-- xqj代表星期几，yysd是预约时段，yycd预约长度，zt状态-->
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </swiper-item>
+  </swiper>  
 </view>
+<!--可预约时段弹框-->
+<view class="drawer_screen" data-statu="close" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove' bindtap='hideModal'></view>
+<view class="drawer_box" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove'>
+
+  <view class="do_drawer_content" style="color:#000;background-color:'#3CB9FB'">
+    <view class='drawer_top'>
+      <text class='drawer_top text'>{{cardView.zt}}</text>
+    </view>
+    <view>
+      <view class='noidle-item'>
+        <label class='noidle-item-prefix'>名称：{{roomName}}</label>
+        <label class='noidle-item-content'>{{cardView.jsbh}}</label>
+      </view>
+      <view class='noidle-item'>
+        <label class='noidle-item-prefix'>时间：</label>
+        <label class='noidle-item-content'>第8周  周{{day[cardView.xqj-1]}}</label>
+      </view>
+      <view class='noidle-item'>
+        <label class='noidle-item-prefix'>时段：</label>
+        <label class='noidle-item-content'>第{{cardView.yysd}}时段 (08:30~09:45)</label>
+      </view>
+    </view>
+    <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
+      <!--确定按钮将预约数据传到后端，尚未写onOK函数-->
+      <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;" bindtap="onOK">确定</button>
+      <button class="btn-2" size="mini" type="default" style="font-size:35rpx;" bindtap="hideModal">取消</button>
+    </view>
+  </view>
+</view>
+

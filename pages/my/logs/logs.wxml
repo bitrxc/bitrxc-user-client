@@ -1,2 +1,19 @@
 <!--pages/my/logs/logs.wxml-->
-<text>pages/my/logs/logs.wxml</text>
+<text class="title title1">预约记录</text>
+<view class="container" wx:for="{{array}}" wx:key="unique">
+  <view class="roomID">
+    <text class="text">房间名称：{{item.roomid}}</text>
+  </view>
+  <view class="id">
+    <text class="text">预约人：{{item.id}}</text>
+  </view>
+  <view class="date">
+    <text class="text">预约日期：{{item.date}}</text>
+  </view>
+  <view class="time">
+    <text class="text">预约时段：{{item.time}}</text>
+  </view>
+  <view class="process">
+    <text class="text">使用情况：{{item.result}}</text>
+  </view>
+</view>

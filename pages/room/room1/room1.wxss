@@ -1,21 +1,236 @@
-/* pages/room/room1/room1.wxss */
-.selection_cards{
+page{
   width: 100%;
-  height: 400rpx;
-  position: relative;
-  margin-top: 200px;
-  z-index: 99;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+.content{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+/* 按周显示*/
+.title{
+  width: 100%;
+  height: 60px;
+  position: relative
+}
+.title_left{
+  width: 280rpx;
+  height:30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 30rpx;
+}
+.title_left > view{
+  display: inline-block;
 }
 
-.selection_cards_item{
-  width: 194rpx;/*188*/
-  height:350rpx;/*340*/
-  background-size: 100%;
-  /* overflow: hidden; */
-  border-radius: 16rpx;
+.week{
+  font-size: 32rpx;
+  line-height: 18rpx;
+}
+.week > image{
+  width: 0;
+  height: 0;
+}
+.btn{
+  width: 40rpx;
+  height: 40rpx;
+  color: #FFF;
+  background-color: #3CB9FB;
+  border-radius: 50%;
+}
+.show{
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  top: 60px; 
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  background-color: #FFF;
+  border-top: 1rpx solid #EFEFF4;
+  overflow-x: auto;
+  white-space:nowrap;
+  overflow:hidden;
+}
+.show_week{
+  line-height: 60px;
+  display: inline-block;
+  padding-left: 70rpx;
+}
+.title_right{
+  color: #44BCFB;
+  font-size: 32rpx;
+  text-align: center;
+  position: absolute;
+  right: 30rpx;
+  top: 30rpx;
+  border: 1rpx solid #44BCFB;
+  border-radius: 10rpx;
+  z-index: 102;
+}
+.tab-item{
+  width: 300rpx;
+  height: 30px;
+  display: inline-block;
+  box-sizing: content-box;
+}
+.tab-item > view{
+  line-height: 30px;
+}
+.onRight{
+  width: 100%;
+  height: 100%;
+  color: #FFF;
+  background-color: #44BCFB;
+  border-top-right-radius: 8rpx;
+  border-bottom-right-radius: 8rpx;
+}
+.top{
+  display: flex;
+  height: 50px;
+  flex-direction: row;
+  background-color: #EFEFF4;
+  color: #333;
+}
+.top-text{
+  width: 100rpx;
+  height: 100rpx;
+  font-size: 30rpx;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+.left{
+  width: 70rpx;
+  font-size: 9pt;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+.flex-item {
+  width: 90rpx;
+  height: 100px;
+}
+.kcb-item {
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  border-radius: 5px;
+}
+.smalltext {
+  position: absolute;
+  top: 40rpx;
+  left: 8rpx;
+  font-size: 26rpx;
+  color: #fff;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  -webkit-box-orient: vertical; 
+}
+.room{
+  position: absolute;
+  bottom: 10rpx;
+  font-size: 8pt;
+  color: #fff;
+  padding-left: 2px;
+}
+.logo{
+  color: #FFF;
+  font-size: 8pt;
+  text-align: center;
+  line-height: 30rpx;
   position: absolute;
   top: 0;
-  color: white;
-  font-size: 100rpx;
-  box-sizing: border-box;
+  right: 0;
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
 }
+.drawer_screen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+}
+.drawer_box {
+  width: 600rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 1001;
+  background: white;
+  margin: -140px 100rpx 100rpx 80rpx;
+  border-radius: 3px;
+}
+.do_drawer_content {
+  font-size: 30rpx;
+  word-break: break-all;
+  text-align: justify;
+  padding-bottom: 40rpx;
+}
+.drawer_top{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.drawer_top text{
+  font-size: 40rpx;
+  flex: 1;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  justify-content: center;
+
+}
+.noidle-item {
+  display: flex;
+  flex-direction: row;
+}
+.noidle-item-prefix {
+  font-size: 30rpx;
+  margin: 10rpx 0 0 20rpx;
+  white-space: nowrap;
+}
+.noidle-item-left {
+  font-size: 30rpx;
+  margin: 10rpx 0 0 20rpx;
+  white-space: nowrap;
+}
+.noidle-item-content {
+  font-size: 30rpx;
+  margin: 10rpx 10rpx 0 0;
+}
+.drawer_logo{
+  color: #FFF;
+  font-size: 10pt;
+  text-align: center;
+  line-height: 50rpx;
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 25rpx;
+}
+
+
+
+
+

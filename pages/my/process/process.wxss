@@ -1,1 +1,24 @@
 /* pages/my/process/process.wxss */
+page {
+  background-image: url(https://wx3.sinaimg.cn/mw690/006cV2kkgy1gcz9iabu19j30yi22oabf.jpg);
+  background-size: cover;
+}
+.title{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.container{
+  border: 1rpx rgb(129, 129, 129) dashed;
+  width: 100%;
+  height: 180rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+}
+.text{
+  margin:20rpx;
+  font-style: normal;
+}
