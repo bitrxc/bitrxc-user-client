@@ -1,6 +1,7 @@
 import { request } from "../../../request/index.js";
 // pages/my/personalSet/personalSet.js
 // TODO: 通过微信平台获取电话号码
+// TODO: 向用户请求权限，并维护全局用户信息
 const app = getApp();
 Component({
 
@@ -17,21 +18,11 @@ Component({
      * 生命周期函数--监听页面加载
      */
     onLoad: async function (options) {
-      let res = await request({
-        url:"https://test.ruixincommunity.cn/user/"+app.globalData.openid,
-        header:app.globalData.APIHeader,
-        method:"GET",
-      })
-      console.log(res);
-      let userInfo = res.data.data.userInfo
-      this.setData({
-        user:userInfo,
-      })
+
     },
     replaceUserInfo:async function (e) {
       let rawInfo = e.detail.userInfo;
       console.log(rawInfo)
-      app.globalData.userInfo = rawInfo;
       await this.setUserProfile({
         name : rawInfo.nickName,
       });
@@ -79,15 +70,19 @@ Component({
     /**
      * 生命周期函数--监听页面显示
      */
-    onShow: function () {
-
+    onShow: async function () {
+      await app.getUserInfo();
+      this.setData({
+        user:app.globalData.userInfo,
+      })
     },
 
     /**
      * 生命周期函数--监听页面隐藏
+     * 离开页面后刷新全局用户状态
      */
-    onHide: function () {
-
+    onHide: async function () {
+      await app.getUserInfo();
     },
 
     /**

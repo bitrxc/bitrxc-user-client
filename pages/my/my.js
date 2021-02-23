@@ -1,5 +1,6 @@
 // pages/my/my.js
 const app = getApp();
+//my页面只负责渲染页面，不负责拉取用户数据，由个人信息页面负责拉取和更新数据。
 Page({
 
   /**
@@ -10,8 +11,7 @@ Page({
     flag: true,
     index: -1,
     userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    complete: false,
     
     /*功能菜单*/
     h: app.globalData.h,
@@ -55,40 +55,21 @@ Page({
     })
   },*/
    /* 生命周期函数--监听页面加载*/
-  onLoad() {
+  async onLoad() {
     if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
     } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
+      //阻塞onload函数，等待用户信息返回
+      await app.globalData.userInfoP
     }
-  },
-  getUserInfo(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
+    let userInfoVisible = {...app.globalData.userInfo};
+    userInfoVisible.avatarUrl 
+      = userInfoVisible.avatarUrl
+        ? userInfoVisible.avatarUrl 
+        : "/pages/room/img/123.jpg";
+    //阻塞解除后，新的用户信息已经存在于全局数据中。
     this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      userInfo: userInfoVisible,
+      complete: app.globalData.userInfoComplete,
     })
   },
 

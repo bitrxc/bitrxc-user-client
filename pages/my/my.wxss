@@ -29,12 +29,20 @@ page {
   border-radius: 50%;
 }
 
+.userinfo-text{
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 0 30px;
+}
+
 .userinfo-nickname {
   color: rgb(90, 85, 85);
   font-size: 15px;
-  position: relative;
-  left: 30px
+}
 
+.userinfo-desc {
+  color: rgb(90, 85, 85);
+  font-size: 15px;
 }
 
 .box {

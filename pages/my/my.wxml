@@ -1,14 +1,16 @@
 <!--pages/my/my.wxml-->
 
 <view class="container" >
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+  <navigator class="userinfo"  url="/pages/my/personalSet/personalSet">
+    <image  class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+    <view class="userinfo-text">
+      <text class="userinfo-nickname">{{userInfo.name}}</text>
+      <text class="userinfo-desc" wx:if="{{!complete}}">
+        用户信息尚不完善，一些功能无法正常使用
+      </text>
     </view>
-  </view>
+  </navigator>
+</view>
   
 
 <view class="box">
