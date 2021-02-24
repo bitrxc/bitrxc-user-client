@@ -13,8 +13,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad:async function (options) {
+    this.roomID = options.roomID
     let res = await request({
-      url: 'https://test.ruixincommunity.cn/room/'+options.roomID,
+      url: 'https://test.ruixincommunity.cn/room/'+this.roomID,
       header: getApp().globalData.APIHeader,
       method:"GET",
     })
@@ -92,7 +93,7 @@ Page({
   },
   tofunction: function (e) {
     wx.navigateTo({
-      url: '././room1/room1',
+      url: './room1/room1?roomID='+this.roomID,
     })
   }
 })
