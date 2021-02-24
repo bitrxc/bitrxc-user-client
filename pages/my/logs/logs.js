@@ -1,4 +1,13 @@
+import { request } from "../../../request/index.js";
 // pages/my/logs/logs.js
+const app = getApp();
+const mapping = {
+  new : "新请求",
+  onhold : "处理中",
+  receive : "已通过",
+  reject : "已拒绝",
+  cancel : "已取消",
+}
 Page({
 
   /**
@@ -6,21 +15,45 @@ Page({
    */
   data: {
     array: [
-      {roomid: 5,id:'Amy',date:'2021.02.01', time:'12:00-13:00',result:'使用成功',unique: 'unique_5'},
-      {roomid: 4,id:'Bmy',date:'2021.02.02', time:'13:00-14:00',result:'超时签退',unique: 'unique_4'},
-      {roomid: 3,id:'Cmy',date:'2021.02.03', time:'14:00-15:00',result:'取消预约',unique: 'unique_3'},
-      {roomid: 2,id:'Dmy',date:'2021.02.04', time:'15:00-16:00',result:'使用成功',unique: 'unique_2'},
-      {roomid: 1,id:'Emy',date:'2021.02.05', time:'16:00-17:00',result:'使用成功',unique: 'unique_1'},
-      {roomid: 0,id:'Fmy',date:'2021.02.06', time:'12:00-13:00',result:'取消预约',unique: 'unique_6'},
     ],
+    selfonly:true,
 
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onLoad: async function (options) {
+    //加载预约列表
+    let res = await request({
+      url: "https://test.ruixincommunity.cn/appointment/username/"+app.globalData.openid,
+      header: getApp().globalData.APIHeader,
+      method:"GET",
+    })
+    let apList = res.data.data.appointments;
+    let roomMap = new Map();
+    
+    console.log(res.data)
+    for(let i of apList){
+      roomMap.set(i.roomId,"");
+    }
+    for(let [i,] of roomMap){
+      let roomNameRes = await request({
+        url: "https://test.ruixincommunity.cn/room/"+i,
+        header: getApp().globalData.APIHeader,
+        method:"GET",
+      })
+      console.log(roomNameRes.data.data)
+      roomMap.set(i,roomNameRes.data.data.roomInfo.name);
+    }
+    for(let i of apList){
+      i.roomName = roomMap.get(i.roomId);
+      i.result = mapping[i.status];
+      i.date = Date(i.dealDate) 
+    }
+    this.setData({
+      array:apList
+    })
   },
 
   /**

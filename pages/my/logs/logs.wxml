@@ -1,11 +1,11 @@
 <!--pages/my/logs/logs.wxml-->
 <text class="title title1">预约记录</text>
-<view class="container" wx:for="{{array}}" wx:key="unique">
+<view class="container" wx:for="{{array}}" wx:key="id">
   <view class="roomID">
-    <text class="text">房间名称：{{item.roomid}}</text>
+    <text class="text">房间名称：{{item.roomName}}</text>
   </view>
-  <view class="id">
-    <text class="text">预约人：{{item.id}}</text>
+  <view class="id" wx:if="{{!selfonly}}">
+    <text class="text">预约人：{{item.userName}}</text>
   </view>
   <view class="date">
     <text class="text">预约日期：{{item.date}}</text>
