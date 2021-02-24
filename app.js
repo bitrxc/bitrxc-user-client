@@ -59,6 +59,6 @@ App({
       "token":null,
     },
     userInfo: null,
-    server: "https://test.ruixincommunity.cn"
+    server: "https://server.ruixincommunity.cn"
   }
 })
