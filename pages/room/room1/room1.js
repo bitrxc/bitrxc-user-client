@@ -83,7 +83,7 @@ Page({
       for(let {id,begin,end} of this.data.schedule){
         let res= {
           "djz":8, 
-          "xqj": i, 
+          "xqj": i+1, 
           "yysd": id, 
           "yycd": 1, 
         };

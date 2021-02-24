@@ -1,5 +1,5 @@
 import { request } from "../../../request/index.js";
-// pages/my/logs/logs.js
+// pages/my/logs/logs.js 
 const app = getApp();
 const mapping = {
   new : "新请求",
@@ -17,13 +17,13 @@ Page({
     array: [
     ],
     selfonly:true,
-
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+
     //加载预约列表
     let res = await request({
       url: "https://test.ruixincommunity.cn/appointment/username/"+app.globalData.openid,
@@ -54,6 +54,17 @@ Page({
     this.setData({
       array:apList
     })
+
+      wx.getSystemInfo({
+        success: (res) => {
+          this.setData({
+            windowHeight: res.windowHeight,
+          })
+        },
+      })
+      console.log(this.data.windowHeight)
+
+    
   },
 
   /**
@@ -105,3 +116,5 @@ Page({
 
   }
 })
+
+
