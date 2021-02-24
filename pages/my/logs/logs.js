@@ -24,6 +24,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    /** @type {WechatMiniprogram.RequestSuccessCallbackResult} */
+    let scheduleRes = await request({
+      url: app.globalData.server + '/schedule/all',
+      header: app.globalData.APIHeader,
+      method:"GET",
+    })
+    /** @type {Array} */
+    let schedule = scheduleRes.data.data.timeList;
     //加载预约列表
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
@@ -31,6 +39,8 @@ Page({
       method:"GET",
     })
     let apList = res.data.data.appointments;
+    
+    /** @type {Map<number,string>} */
     let roomMap = new Map();
     
     console.log(res.data)
@@ -49,7 +59,8 @@ Page({
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.result = mapping[i.status];
-      i.date = Date(i.dealDate) 
+      let dateO =  new Date(i.dealDate)
+      i.date = dateO.toDateString();
     }
     this.setData({
       array:apList
