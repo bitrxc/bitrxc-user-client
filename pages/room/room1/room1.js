@@ -10,6 +10,7 @@ Page({
     show: false,
     weekList: ['1','2','3','4','5','6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
     day: ['一','二','三','四','五','六','日'],
+    schedule : [],
     wlist: [ //djz表示第几周，xqj表示星期几，yysd表示预约时段，yycd表示预约长度（固定为1），zt表示房间状态
       {"djz":8, "xqj": 4, "yysd": 2, "yycd": 1, "zt": "已预约",  "color": 1 },   //用户已预约时段用1表示
       {"djz":8,  "xqj": 1, "yysd": 2, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
@@ -18,6 +19,7 @@ Page({
     ],
   },
   //初始化页面标题
+  //初始化预约时间列表
   onLoad: async function (options) {
     let res = await wx.getSystemInfo()
     let roomRes = await request({
@@ -25,12 +27,19 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
+    let scheduleRes = await request({
+      url: 'https://test.ruixincommunity.cn/schedule/all',
+      header: app.globalData.APIHeader,
+      method:"GET",
+    })
+    console.log()
+
     let room = roomRes.data.data.roomInfo;
-    console.log(roomRes.data)
     this.setData({
       windowHeight: res.windowHeight,
       roomName: room.name,
       roomID: room.id,
+      schedule :scheduleRes.data.data.timeList,
     })
   },
 

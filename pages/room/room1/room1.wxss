@@ -215,28 +215,15 @@ page{
   border-radius: 25rpx;
 }
 .des{
-  display: flex;
-  flex-direction: row;
-}
-.des.left{
-  width: 50%;
+  column-width: 50%;
+  column-count: 2;
+  column-gap: 40rpx;
   margin-top: 35rpx;
   margin-left: 20rpx;
   margin-bottom: 35rpx;
   margin-right: 20rpx;
-  display: flex;
-  flex-direction: column;
 }
-.des.right{
-  width: 50%;
-  margin-top: 35rpx;
-  margin-left: 20rpx;
-  margin-bottom: 35rpx;
-  margin-right: 20rpx;
-  display: flex;
-  align-content: center;
-  flex-direction: column;
-}
+
 .des > text{
   color: rgb(122, 122, 122);
   font-size:25rpx;

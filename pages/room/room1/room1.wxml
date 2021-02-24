@@ -34,11 +34,11 @@
         <scroll-view scroll-y="true" class="scroll" style='height:{{windowHeight-110}}px;' bindtap='clickHide'>
           <view style="width:100%;display:flex;">
             <view style="background-color:#EFEFF4;color:#333;">
-              <view wx:for="{{[1,2,3,4,5,6,7]}}" wx:key="index" class="left" style='height:50px'>
-                {{item}}
+              <view wx:for="{{schedule}}" wx:key="index" class="left" style='height:50px'>
+                {{item.id}}
               </view>
             </view>
-            <view wx:for="{{[1,2,3,4,5,6,7]}}" wx:key="index">
+            <view wx:for="{{schedule}}" wx:key="index">
               <view style="width:100%;margin-top:{{(index+1)*50-0.8}}px;  position: absolute;border-bottom:1rpx solid lightgray;">
               </view>
             </view>
@@ -53,19 +53,9 @@
           </view>
           <!--时段说明-->
           <view class="des">
-            <view class="des.left">
-              <text class="des-text">时段1：08：00-10：00</text>
-              <text class="des-text">时段2：10：00-12：00</text>
-              <text class="des-text">时段3：12：00-14：00</text>
-              <text class="des-text">时段4：14：00-16：00</text>
-            </view>
-            <view class="des.right">
-              <text class="des-text">时段5：16：00-18：00</text>
-              <text class="des-text">时段6：18：00-20：00</text>
-              <text class="des-text">时段7：20：00-22：00</text>
+              <text class="des-text" wx:for="{{schedule}}">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
               <text class="des-text">实际时间以公告为准</text>
-            </view>
-  </view>
+          </view>
         </scroll-view>
         
       </view>
