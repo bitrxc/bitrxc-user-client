@@ -23,14 +23,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    /** @type {WechatMiniprogram.RequestSuccessCallbackResult} */
+    let scheduleRes = await request({
+      url: app.globalData.server + '/schedule/all',
+      header: app.globalData.APIHeader,
+      method:"GET",
+    })
+    /** @type {Array} */
+    let schedule = scheduleRes.data.data.timeList;
 
     //加载预约列表
     let res = await request({
-      url: "https://test.ruixincommunity.cn/appointment/username/"+app.globalData.openid,
-      header: getApp().globalData.APIHeader,
+      url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
+      header: app.globalData.APIHeader,
       method:"GET",
     })
     let apList = res.data.data.appointments;
+    
+    /** @type {Map<number,string>} */
     let roomMap = new Map();
     
     console.log(res.data)
@@ -39,8 +49,8 @@ Page({
     }
     for(let [i,] of roomMap){
       let roomNameRes = await request({
-        url: "https://test.ruixincommunity.cn/room/"+i,
-        header: getApp().globalData.APIHeader,
+        url: app.globalData.server + "/room/"+i,
+        header: app.globalData.APIHeader,
         method:"GET",
       })
       console.log(roomNameRes.data.data)
@@ -49,7 +59,8 @@ Page({
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.result = mapping[i.status];
-      i.date = Date(i.dealDate) 
+      let dateO =  new Date(i.dealDate)
+      i.date = dateO.toDateString();
     }
     this.setData({
       array:apList

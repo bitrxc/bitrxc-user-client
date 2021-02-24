@@ -18,8 +18,8 @@
   </view>
 </view>-->
 
-<view class='content' >
-  <swiper class="swiper" style='width:100%;height:100%;'  wx:for='{{array}}' wx:key="id" >
+<view class='content'  wx:for='{{array}}' wx:key="id" >
+  <swiper class="swiper" style='width:100%;height:100%;'  >
     <swiper-item >
       <view>
         <swiper class='dayClass' style='height:{{windowHeight}}px;'>
@@ -43,8 +43,7 @@
                         <view>用途说明：{{item.ytsm}}</view>-->
                         <view>预约状态：{{item.result}}</view> 
                       </view>
-                    </view>
-                    
+                    </view>                   
                     <!--yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
                   </view>
                 </view>

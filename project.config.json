@@ -29,7 +29,10 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "bundle": true,
+
+    
+    "bundle": false,
+
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,

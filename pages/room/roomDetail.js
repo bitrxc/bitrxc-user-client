@@ -1,4 +1,5 @@
 import { request } from "../../request/index.js";
+const app = getApp();
 // pages/room/roomDetail.js
 Page({
 
@@ -15,7 +16,7 @@ Page({
   onLoad:async function (options) {
     this.roomID = options.roomID
     let res = await request({
-      url: 'https://test.ruixincommunity.cn/room/'+this.roomID,
+      url: app.globalData.server + '/room/'+this.roomID,
       header: getApp().globalData.APIHeader,
       method:"GET",
     })
