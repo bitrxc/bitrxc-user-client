@@ -1,5 +1,5 @@
 import { request } from "../../../request/index.js";
-// pages/my/logs/logs.js
+// pages/my/logs/logs.js 
 const app = getApp();
 const mapping = {
   new : "新请求",
@@ -17,7 +17,6 @@ Page({
     array: [
     ],
     selfonly:true,
-
   },
 
   /**
@@ -32,6 +31,7 @@ Page({
     })
     /** @type {Array} */
     let schedule = scheduleRes.data.data.timeList;
+
     //加载预约列表
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
@@ -65,6 +65,17 @@ Page({
     this.setData({
       array:apList
     })
+
+      wx.getSystemInfo({
+        success: (res) => {
+          this.setData({
+            windowHeight: res.windowHeight,
+          })
+        },
+      })
+      console.log(this.data.windowHeight)
+
+    
   },
 
   /**
@@ -116,3 +127,5 @@ Page({
 
   }
 })
+
+

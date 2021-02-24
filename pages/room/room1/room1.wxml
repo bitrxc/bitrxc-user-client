@@ -56,9 +56,6 @@
             <text class="des-text" wx:for="{{schedule}}">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
             <text class="des-text">实际时间以公告为准</text>
           </view>
-          <view class="note">
-            <textarea placeholder="请在此输入预约的详细信息" ></textarea>
-          </view>
         </scroll-view>
       </view>
     </swiper-item>
@@ -86,6 +83,9 @@
         <label class='noidle-item-prefix'>时段：</label>
         <label class='noidle-item-content'>第{{cardView.yysd}}时段 (08:30~09:45)</label>
       </view>
+      <view class="note">
+            <textarea placeholder="请在此输入预约的详细信息" ></textarea>
+          </view>
     </view>
     <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
       <!--确定按钮将预约数据传到后端，尚未写onOK函数-->

@@ -1,4 +1,4 @@
-<!--pages/my/logs/logs.wxml-->
+<!--pages/my/logs/logs.wxml
 <text class="title title1">预约记录</text>
 <view class="container" wx:for="{{array}}" wx:key="id">
   <view class="roomID">
@@ -16,4 +16,43 @@
   <view class="process">
     <text class="text">使用情况：{{item.result}}</text>
   </view>
+</view>-->
+
+<view class='content' >
+  <swiper class="swiper" style='width:100%;height:100%;'  wx:for='{{array}}' wx:key="id" >
+    <swiper-item >
+      <view>
+        <swiper class='dayClass' style='height:{{windowHeight}}px;'>
+          <swiper-item>
+            <view style='background-color:#EFEFF4;height:{{windowHeight}}px;'>
+              <scroll-view style='height:100%;' scroll-y="true">
+                <view class='day_content' >
+                  <!--竖向分割线-->
+                  <view class="day_line">
+                    <view class='day_type'></view>
+                  </view>
+                  <!--时间-->
+                  <view class="day_wrap">
+                    <view>{{item.date}} {{item.time}}</view>
+                    <!--小卡片-->
+                    <view class='day_card'>
+                      <view class='day_className'>{{item.roomName}}</view>
+                      <view class='day_course'>
+                        <view   wx:if="{{!selfonly}}">预约人：{{item.userName}}</view>
+                        <!--<view>使用人数：{{item.rs}}</view>
+                        <view>用途说明：{{item.ytsm}}</view>-->
+                        <view>预约状态：{{item.result}}</view> 
+                      </view>
+                    </view>
+                    
+                    <!--yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
+                  </view>
+                </view>
+              </scroll-view>
+            </view>
+          </swiper-item>
+        </swiper>
+      </view>
+    </swiper-item>
+  </swiper>
 </view>
