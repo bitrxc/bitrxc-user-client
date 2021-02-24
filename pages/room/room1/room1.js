@@ -1,6 +1,24 @@
 import { request } from "../../../request/index.js";
 const profile = {
   weekbegin : Date.parse("2021-02-28"),
+  statusMap : {
+    past : {
+      zt : "来晚了",
+      color : -1,
+    },
+    occupied : {
+      zt : "可预约",
+      color : 1,
+    },
+    unreachable : {
+      zt : "未开放",
+      color : 0,
+    },
+    avaliable : {
+      zt : "已预约",
+      color : -1,
+    },
+  }
 }
 const app = getApp()
 // js
@@ -21,6 +39,7 @@ Page({
   //初始化页面标题
   //初始化预约时间列表
   onLoad: async function (options) {
+    this.data.roomId = options.roomID;
     let res = await wx.getSystemInfo()
     let roomRes = await request({
       url: 'https://test.ruixincommunity.cn/room/'+options.roomID,
@@ -41,8 +60,54 @@ Page({
       roomID: room.id,
       schedule :scheduleRes.data.data.timeList,
     })
+    await this.refreshTable();
   },
 
+  onShow:async function(){
+    await this.refreshTable();
+  },
+  //TODO: 预约数据结构支持隔日预约
+  refreshTable :async function () {
+    let listRes = await request({
+      url: 'https://test.ruixincommunity.cn/room/free/time?roomId='+this.data.roomId,
+      header: app.globalData.APIHeader,
+      method:"GET",
+    })
+    console.log(listRes.data.data.freeTime)
+    /** */
+    let rawList = new Set(listRes.data.data.freeTime);
+    let date = new Date();
+    let dateN = date.getTime();
+    let resWlist  = [];
+    for(let i = 0;i<7;i++){
+      for(let {id,begin,end} of this.data.schedule){
+        let res= {
+          "djz":8, 
+          "xqj": i, 
+          "yysd": id, 
+          "yycd": 1, 
+        };
+        if(i<date.getDay()){
+          res = Object.assign(res,profile.statusMap.past)
+        }else if(i>date.getDay()){
+          res = Object.assign(res,profile.statusMap.unreachable)
+        }else{
+          if(Date.parse(end) <= dateN){
+            res = Object.assign(res,profile.statusMap.past)
+          }else if(rawList.has(id)){
+            res = Object.assign(res,profile.statusMap.avaliable)
+          }else{
+            res = Object.assign(res,profile.statusMap.occupied)
+          }
+        }
+        resWlist.push(res);
+      }
+    }
+    console.log(resWlist);
+    this.setData({
+      wlist:resWlist,
+    })
+  },
   clickShow: function (e) { //显示周下拉菜单
     var that = this;
     that.setData({
@@ -64,7 +129,7 @@ Page({
   showCardView: function (e) { //点击可预约区域，弹框显示预约信息
     console.log(e)
     let cardView = { ...e.currentTarget.dataset.wlist }
-    if(e.currentTarget.dataset.wlist.color === 0){
+    if(e.currentTarget.dataset.wlist.color === 1){
       this.setData({
         cardView: cardView
       })
@@ -89,6 +154,7 @@ Page({
         launchTime : apInfo.yysd,
       }
     })
+    await this.refreshTable();
     this.util("close");
     
   },

@@ -53,11 +53,13 @@
           </view>
           <!--时段说明-->
           <view class="des">
-              <text class="des-text" wx:for="{{schedule}}">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
-              <text class="des-text">实际时间以公告为准</text>
+            <text class="des-text" wx:for="{{schedule}}">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
+            <text class="des-text">实际时间以公告为准</text>
+          </view>
+          <view class="note">
+            <textarea placeholder="请在此输入预约的详细信息" ></textarea>
           </view>
         </scroll-view>
-        
       </view>
     </swiper-item>
   </swiper>  
