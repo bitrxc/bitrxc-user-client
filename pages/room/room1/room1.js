@@ -42,12 +42,12 @@ Page({
     this.data.roomId = options.roomID;
     let res = await wx.getSystemInfo()
     let roomRes = await request({
-      url: 'https://test.ruixincommunity.cn/room/'+options.roomID,
+      url: app.globalData.server + '/room/'+options.roomID,
       header: app.globalData.APIHeader,
       method:"GET",
     })
     let scheduleRes = await request({
-      url: 'https://test.ruixincommunity.cn/schedule/all',
+      url: app.globalData.server + '/schedule/all',
       header: app.globalData.APIHeader,
       method:"GET",
     })
@@ -69,7 +69,7 @@ Page({
   //TODO: 预约数据结构支持隔日预约
   refreshTable :async function () {
     let listRes = await request({
-      url: 'https://test.ruixincommunity.cn/room/free/time?roomId='+this.data.roomId,
+      url: app.globalData.server + '/room/free/time?roomId='+this.data.roomId,
       header: app.globalData.APIHeader,
       method:"GET",
     })
@@ -145,7 +145,7 @@ Page({
 
     let apInfo = this.data.cardView
     await request({
-      url : "https://test.ruixincommunity.cn/appointment/appoint",
+      url : app.globalData.server + "/appointment/appoint",
       header : app.globalData.APIHeader ,
       method : "POST",
       data : {

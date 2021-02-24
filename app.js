@@ -13,7 +13,7 @@ App({
     // wx.request仍然需要手动封装
     // 发送 weixincode.code 到后台换取 openId, sessionKey, unionId'
     let session = await request({
-      url:"https://test.ruixincommunity.cn/user/login?code="+weixincode.code,
+      url:this.globalData.server + "/user/login?code="+weixincode.code,
       method:"GET",
     })
     console.log(session.data);
@@ -29,7 +29,7 @@ App({
     // await 可以使得控制流停止，等待网络请求完成
 
     let appUserInfo = await request({
-      url:"https://test.ruixincommunity.cn/user/"+this.globalData.openid,
+      url:this.globalData.server + "/user/"+this.globalData.openid,
       header:this.globalData.APIHeader,
       method:"GET",
     })
@@ -58,6 +58,7 @@ App({
       "content-type":"application/json",
       "token":null,
     },
-    userInfo: null
+    userInfo: null,
+    server: "https://test.ruixincommunity.cn"
   }
 })

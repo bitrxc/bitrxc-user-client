@@ -16,14 +16,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
+    this.refreshList(app.globalData.server + '/room/0/20',"items");
 
   },
   onFilterChange:function (event) {
-    this.refreshList('https://test.ruixincommunity.cn/room/nameLike?nameLike=' + event.detail.value,"rooms")
+    this.refreshList(app.globalData.server + '/room/nameLike?nameLike=' + event.detail.value,"rooms")
   },
   onReturn:function (event) {
-    this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
+    this.refreshList(app.globalData.server + '/room/0/20',"items");
   },
   refreshList:async function(url,prop){
     let res = await request({
@@ -88,7 +88,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.refreshList('https://test.ruixincommunity.cn/room/0/20',"items");
+    this.refreshList(app.globalData.server + '/room/0/20',"items");
   },
 
   /**

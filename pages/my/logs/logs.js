@@ -26,8 +26,8 @@ Page({
   onLoad: async function (options) {
     //加载预约列表
     let res = await request({
-      url: "https://test.ruixincommunity.cn/appointment/username/"+app.globalData.openid,
-      header: getApp().globalData.APIHeader,
+      url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
+      header: app.globalData.APIHeader,
       method:"GET",
     })
     let apList = res.data.data.appointments;
@@ -39,8 +39,8 @@ Page({
     }
     for(let [i,] of roomMap){
       let roomNameRes = await request({
-        url: "https://test.ruixincommunity.cn/room/"+i,
-        header: getApp().globalData.APIHeader,
+        url: app.globalData.server + "/room/"+i,
+        header: app.globalData.APIHeader,
         method:"GET",
       })
       console.log(roomNameRes.data.data)

@@ -53,7 +53,7 @@ Component({
         user: newInfo ,
       })
       let res = await request({
-        url:"https://test.ruixincommunity.cn/user",
+        url:app.globalData.server + "/user",
         header:app.globalData.APIHeader,
         method:"POST",
         data: newInfo,
