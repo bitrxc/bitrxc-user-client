@@ -24,6 +24,7 @@ const app = getApp()
 // js
 Page({
   data: {
+    inputValue:"",
     roomName: "",
     show: false,
     weekList: ['1','2','3','4','5','6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
@@ -35,6 +36,123 @@ Page({
       {"djz":8,  "xqj": 2, "yysd": 1, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
       {"djz":8, "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },   //不可预约时段用-1表示
     ],
+  },
+
+  formSubmit: function (e) { //提交表单中用户填写的内容
+    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    if (e.detail.value.name.length == 0) {
+
+      wx.showToast({
+
+        title: '姓名不能为空!',
+        icon:"none",
+
+
+        duration: 1500
+
+      })
+
+      setTimeout(function () {
+
+        wx.hideToast()
+
+      }, 2000)
+
+    } else if (e.detail.value.number.length == 0) {
+
+      wx.showToast({
+
+        title: '人数不能为空!',
+        icon:"none",
+
+
+        duration: 1500
+
+      })
+
+      setTimeout(function () {
+
+        wx.hideToast()
+
+      }, 2000)
+
+    } else if (e.detail.value.usefor.length == 0) {
+
+      wx.showToast({
+
+        title: '用途不能为空!',
+        icon:"none",
+
+        duration: 1500
+
+      })
+
+      setTimeout(function () {
+
+        wx.hideToast()
+
+      }, 2000)
+
+    } else {
+
+
+     /* wx.request({
+
+        url: '',
+
+        header: {
+
+          "Content-Type": "application/x-www-form-urlencoded"
+
+        },
+
+        method: "POST",
+
+        data: { name: e.detail.value.name, 
+                number: e.detail.value.number, 
+                usefor: e.detail.value.usefor
+               },
+
+        success: function (res) {
+          console.log(res.data);
+          if (res.data.status == 0) {
+
+            wx.showToast({
+
+              title: '提交失败！',
+
+              icon: 'loading',
+
+              duration: 1500
+
+            })
+
+          } else {
+
+            wx.showToast({
+
+              title: '提交成功！',//这里打印出登录成功
+
+              icon: 'success',
+
+              duration: 1000，
+
+               wx.navigateTo({ //跳转到预约进度页面
+      url: '../../my/process/process',
+     })
+
+            }),
+
+
+          }
+
+        }
+
+      })*/
+
+    }
+
+  
   },
   //初始化页面标题
   //初始化预约时间列表
@@ -156,7 +274,8 @@ Page({
     })
     await this.refreshTable();
     this.util("close");
-    
+
+   
   },
   util: function (currentStatu) {
     var animation = wx.createAnimation({
