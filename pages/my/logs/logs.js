@@ -39,14 +39,17 @@ Page({
       method:"GET",
     })
     let apList = res.data.data.appointments;
+    console.log(Object.assign({},res.data))
     
-    /** @type {Map<number,string>} */
+    //为什么有两段相似代码？API URL入口点、被映射的属性名和API数据的存储位置都需要定制，复杂度过高。
+    /** 提取房间Id，转换成房间名称
+     * @type {Map<number,string>} */
     let roomMap = new Map();
-    
-    console.log(res.data)
     for(let i of apList){
       roomMap.set(i.roomId,"");
     }
+  
+    //加载涉及到的房间名称
     for(let [i,] of roomMap){
       let roomNameRes = await request({
         url: app.globalData.server + "/room/"+i,
@@ -56,8 +59,28 @@ Page({
       console.log(roomNameRes.data.data)
       roomMap.set(i,roomNameRes.data.data.roomInfo.name);
     }
+    /** 提取用户Id，转换成用户名称
+     * @type {Map<string,string>} */
+    let userMap = new Map();
+    for(let i of apList){
+      userMap.set(i.launcher,"");
+    }
+  
+    //加载涉及到的用户名称
+    for(let [i,] of userMap){
+      let roomNameRes = await request({
+        url: app.globalData.server + "/user/" +i,
+        header: app.globalData.APIHeader,
+        method:"GET",
+      })
+      console.log(roomNameRes.data.data)
+      userMap.set(i,roomNameRes.data.data.userInfo.name);
+    }
+    
+    //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
+      i.userName = userMap.get(i.launcher);
       i.result = mapping[i.status];
       let dateO =  new Date(i.dealDate)
       i.date = dateO.toDateString();
