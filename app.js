@@ -22,6 +22,8 @@ App({
     // 获取微信用户信息
     this.globalData.userInfoP = this.getUserInfo();
     
+    this.systemInfo = await wx.getSystemInfo();
+    console.log(this.systemInfo.windowHeight)
   },
   async getUserInfo(){
     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -59,6 +61,8 @@ App({
       "token":null,
     },
     userInfo: null,
-    server: "https://server.ruixincommunity.cn"
-  }
+    server: "https://test.ruixincommunity.cn"
+  },
+  /**@type {WechatMiniprogram.GetSystemInfoSuccessCallbackResult} */
+  systemInfo:null,
 })

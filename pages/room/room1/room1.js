@@ -158,7 +158,6 @@ Page({
   //初始化预约时间列表
   onLoad: async function (options) {
     this.data.roomId = options.roomID;
-    let res = await wx.getSystemInfo()
     let roomRes = await request({
       url: app.globalData.server + '/room/'+options.roomID,
       header: app.globalData.APIHeader,
@@ -173,7 +172,7 @@ Page({
 
     let room = roomRes.data.data.roomInfo;
     this.setData({
-      windowHeight: res.windowHeight,
+      windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
       roomID: room.id,
       schedule :scheduleRes.data.data.timeList,

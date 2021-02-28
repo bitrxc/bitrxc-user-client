@@ -13,14 +13,9 @@ Page({
   },
 
   onLoad: function (options) {
-    wx.getSystemInfo({
-      success: (res) => {
-        this.setData({
-          windowHeight: res.windowHeight,
-        })
-      },
+    this.setData({
+      windowHeight: app.systemInfo.windowHeight,
     })
-    console.log(this.data.windowHeight)
   },
 
 

@@ -63,17 +63,9 @@ Page({
       i.date = dateO.toDateString();
     }
     this.setData({
+      windowHeight: app.systemInfo.windowHeight,
       array:apList
     })
-
-      wx.getSystemInfo({
-        success: (res) => {
-          this.setData({
-            windowHeight: res.windowHeight,
-          })
-        },
-      })
-      console.log(this.data.windowHeight)
 
     
   },
