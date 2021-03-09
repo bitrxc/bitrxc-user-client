@@ -3,3 +3,41 @@
   align-items: flex-start;
   text-align: left;
 }
+.swiper{
+  border-radius: 10rpx;
+
+}
+.roomname{
+  font-size:30px;
+  margin: 15px 15px 15px 15px ;
+  color: rgb(112, 111, 111);
+  
+}
+.title{
+  font-size: 20px;
+  margin: 10px 10px 10px 15px;
+}
+.small-title{
+  font-size: 15px;
+    margin: 10px 15px;
+    color: rgb(150,150,150);
+}
+.small-content{
+  color: rgb(50,50,50);
+}
+.line-top{
+  border-top: outset rgb(240, 240, 240);
+  }
+.line-bottom{
+border-bottom: inset rgb(240, 240, 240);
+}
+.img-content{
+  display: flex;
+  justify-items: center;
+  align-content: center;
+  margin:10px 10px 10px 0;
+  width:fit-content;
+}
+.btn{
+  margin: 35px;
+}

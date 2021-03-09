@@ -2,7 +2,7 @@
 <swiper class="-gallery" autoplay indicator-dots indicator-color="gray" circular >
   <swiper-item wx:key='index' wx:for="{{images}}">
     <navigator url="{{item.url}}">
-      <image mode="aspectFit" src="{{item.image}}"></image>
+      <image mode="aspectFill" src="{{item.image}}" style="width:100%;"></image>
     </navigator>
   </swiper-item>
 </swiper>
