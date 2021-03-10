@@ -7,11 +7,10 @@
 }
 
 .-box-item {
-  height: 186rpx;
+  height: 110px;
   position: relative;
   display: flex;
-  margin: 10rpx 0 ;
-  border-bottom: 1px solid rgb(197, 199, 199);
+  margin: 20rpx;
   background-color: white;
  
   flex-direction: row;
@@ -36,7 +35,11 @@
   flex-direction: column;
   flex: 1 0 60%;
 }
+.box-title{
+  margin: 0,10px,2px,2px;
+  height: 30px;
 
+}
 .-box-item-title{
   width: 100%;
   margin: 0 2rpx;
@@ -48,8 +51,9 @@
 .-box-item-desc {
   font-family: serif;
   width: 100%;
-  margin: 0 2rpx;
-  text-align: center;
+  margin: 40rpx 2rpx;
+  margin-left:15rpx;
+  text-align: start;
   flex: 1 0 50%;
   /* grid-area: desc; */
 }
