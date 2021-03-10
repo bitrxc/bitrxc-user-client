@@ -1,12 +1,16 @@
 import { request } from "../../../request/index.js";
+/**
+ * @namespace
+ */
 const profile = {
-  weekbegin : Date.parse("2021-02-28"),
+  /** 第一周的星期一 */
+  weekbegin : Date.parse("2021-03-01"),
   statusMap : {
     past : {
       zt : "来晚了",
       color : -1,
     },
-    occupied : {
+    avaliable : {
       zt : "可预约",
       color : 1,
     },
@@ -14,9 +18,13 @@ const profile = {
       zt : "未开放",
       color : 0,
     },
-    avaliable : {
+    occupied : {
       zt : "已预约",
       color : -1,
+    },
+    mine : {
+      zt : "已预约",
+      color : -2,
     },
   }
 }
@@ -27,7 +35,8 @@ Page({
     inputValue:"",
     roomName: "",
     show: false,
-    weekList: ['1','2','3','4','5','6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+    weekList: [1,2,3,4,5,6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    week: 8,
     day: ['一','二','三','四','五','六','日'],
     schedule : [],
     wlist: [ //djz表示第几周，xqj表示星期几，yysd表示预约时段，yycd表示预约长度（固定为1），zt表示房间状态
@@ -174,56 +183,111 @@ Page({
     this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
-      roomID: room.id,
       schedule :scheduleRes.data.data.timeList,
     })
-    await this.refreshTable();
+    await this.refreshTable(new Date());
   },
 
   onShow:async function(){
-    await this.refreshTable();
+    await this.refreshTable(new Date());
   },
-  //TODO: 预约数据结构支持隔日预约
-  refreshTable :async function () {
+  
+  /** 
+   * @param {Date} date 需要查询的周次
+   * */
+  refreshTable : async function(date){
+    date.setDate(date.getDate() - (date.getDay() + 6)%7);
+    let operations = [];
+    for(let i = 0;i<7;i++){
+      let newDate = new Date(date.getTime());
+      newDate.setDate(newDate.getDate() + i);
+      console.log(newDate);
+      operations.push(this.fetchColumn(newDate))
+    }
+    let results = await Promise.all(operations);
+    console.log(results);
+    let resWlist = results.reduce(
+      (prev,cur) => prev.concat(cur) ,
+    [])
+    this.setData({
+      wlist:resWlist,
+    })
+  },
+
+  /** 
+   * @todo Todo:预约数据结构支持隔日预约
+   * @param {Date} date 需要查询的日期
+   * */
+  fetchColumn :async function (date) {
+
+    //url构造器，微信小程序不支持Web URL规范，此处还要用
+    let urlBuilder = app.globalData.server +
+      '/room/free/time' + '?' +
+      'roomId' + '=' + this.data.roomId + '&' +
+      'username' + '='  + app.globalData.userInfo.username + '&' +
+      'date' + '='  + date.toISODateString();
     let listRes = await request({
-      url: app.globalData.server + '/room/free/time?roomId='+this.data.roomId,
+      url: urlBuilder,
       header: app.globalData.APIHeader,
       method:"GET",
     })
     console.log(listRes.data.data.freeTime)
-    /** */
-    let rawList = new Set(listRes.data.data.freeTime);
-    let date = new Date();
-    let dateN = date.getTime();
-    let resWlist  = [];
-    for(let i = 0;i<7;i++){
-      for(let {id,begin,end} of this.data.schedule){
-        let res= {
-          "djz":8, 
-          "xqj": i+1, 
-          "yysd": id, 
-          "yycd": 1, 
-        };
-        if(i<date.getDay()){
-          res = Object.assign(res,profile.statusMap.past)
-        }else if(i>date.getDay()){
-          res = Object.assign(res,profile.statusMap.unreachable)
-        }else{
-          if(Date.parse(end) <= dateN){
-            res = Object.assign(res,profile.statusMap.past)
-          }else if(rawList.has(id)){
-            res = Object.assign(res,profile.statusMap.avaliable)
-          }else{
-            res = Object.assign(res,profile.statusMap.occupied)
-          }
+
+    /**
+     * 
+     * @param {Array<any>} resList 
+     * @param {Array<any>} externList 
+     * @param {*} tag 
+     */
+    function marker(resList,externList,tag){
+      for(let i of resList){
+        if (
+          externList.some((v)=>  v.id === i.id )
+        ) {
+          i.tag = tag;
         }
-        resWlist.push(res);
       }
+    };
+      
+    let schedule = Array.from(this.data.schedule)
+    /** */
+    marker(schedule ,
+      listRes.data.data.freeTime,
+      profile.statusMap.avaliable
+    );
+    marker(schedule ,
+      listRes.data.data.passTime,
+      profile.statusMap.past
+    );
+    marker(schedule ,
+      listRes.data.data.myTime,
+      profile.statusMap.mine
+    );
+    marker(schedule ,
+      listRes.data.data.busyTime,
+      profile.statusMap.occupied
+    );
+    console.log(schedule);
+
+    let weekNow =  Math.ceil(
+      (date.getTime() - profile.weekbegin) / 
+      (7  * 24 * 60 * 60 * 1000 ) 
+    )
+    let dayNow = (date.getDay()+6)%7 +1;
+    //将待刷新的列的旧成员移除
+    let resWlist  = [];//this.data.wlist.filter((v)=> v.xqj != dayNow);
+    for(let item of schedule){
+      let res= {
+        "djz": weekNow , 
+        "xqj": dayNow , 
+        "yysd": item.id , 
+        "yycd": 1 ,
+        "exec_date":date.toISOString() ,
+      };
+      res = Object.assign(res,item.tag);
+      resWlist.push(res);
     }
-    console.log(resWlist);
-    this.setData({
-      wlist:resWlist,
-    })
+    return resWlist;
   },
   clickShow: function (e) { //显示周下拉菜单
     var that = this;
@@ -260,18 +324,30 @@ Page({
 
   onOK:async function () {  //确定按钮
 
-    let apInfo = this.data.cardView
+    let apInfo = this.data.cardView;
+    let execDate = apInfo.exec_date;
+    // new Date(profile.weekbegin + 
+    //   ((apInfo.djz - 1) * 7 + apInfo.xqj - 1)* 24 * 60 * 60 * 1000 
+    // )
+    console.log(execDate);
     await request({
       url : app.globalData.server + "/appointment/appoint",
       header : app.globalData.APIHeader ,
       method : "POST",
       data : {
-        roomId : this.data.roomID,
+        roomId : this.data.roomId,
         launcher : app.globalData.userInfo.username,
         launchTime : apInfo.yysd,
+        exec_date : execDate,
+        launch_date : Date(),
       }
     })
-    await this.refreshTable();
+    let list = await this.fetchColumn(new Date(execDate));
+    let dayNow = (date.getDay()+1)%7;
+    list.concat(this.data.wlist.filter((v)=> v.xqj != dayNow));
+    this.setData({
+      wlist:list,
+    })
     this.util("close");
 
    
@@ -306,4 +382,20 @@ Page({
         });
     }
   },
-})
+});
+( () => {
+
+  function pad(number) {
+    if ( number < 10 ) {
+      return '0' + number;
+    }
+    return number;
+  }
+
+  Date.prototype.toISODateString = function() {
+    return this.getUTCFullYear() +
+      '-' + pad( this.getUTCMonth() + 1 ) +
+      '-' + pad( this.getUTCDate() ) ;
+  };
+
+} )();

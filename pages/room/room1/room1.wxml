@@ -55,7 +55,7 @@
           </view>
           <!--时段说明-->
           <view class="des">
-            <text class="des-text" wx:for="{{schedule}}">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
+            <text class="des-text" wx:for="{{schedule}}" wx:key="id">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
             <text class="des-text">实际时间以公告为准</text>
           </view>
         </scroll-view>
