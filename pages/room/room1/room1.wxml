@@ -106,8 +106,8 @@
         </view>
 
         <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
-          <!--确定按钮将预约数据传到后端，尚未写onOK函数-->
-          <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;" bindtap="onOK"
+          <!--确定按钮触发表单提交事件，表单将预约数据传到后端，移除onOK函数-->
+          <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;"
             formType="submit">确定</button>
           <button class="btn-2" size="mini" type="default" style="font-size:35rpx;" bindtap="hideModal">取消</button>
         </view>
