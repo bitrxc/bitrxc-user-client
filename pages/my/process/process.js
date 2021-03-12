@@ -23,15 +23,50 @@ Page({
   },
 
   onLoad:async function (options) {
-    //TODO: 前端实现带缓存的API系统后，将下列代码全部改为缓存读
-    /** @type {WechatMiniprogram.RequestSuccessCallbackResult} */
-    let scheduleRes = await request({
-      url: app.globalData.server + '/schedule/all',
-      header: app.globalData.APIHeader,
-      method:"GET",
+  },
+
+  onShow:async function (){
+    await this.refresh()
+  },
+
+  /**
+  * @param {WechatMiniprogram.BaseEvent} event 
+  */
+  cancel:async function (event) {
+    let dataset = event.currentTarget.dataset;
+    console.log(dataset);
+    let res = await request({
+      url : app.globalData.server + "/appointment/cancel/" + dataset.id,
+      header : app.globalData.APIHeader ,
+      method : "PUT",
     })
-    /** @type {Array} */
-    let schedule = scheduleRes.data.data.timeList;
+    if(res.data.code > 299 || res.data.code < 200){
+      wx.showToast({
+        title: '撤销预约失败',
+        icon: 'error',
+        duration: 1500,
+      })
+    }else{
+      wx.showToast({
+        title: '撤销预约成功',
+        icon: 'success',
+        duration: 1500,
+      })
+      await this.refresh()
+    }
+  },
+
+  refresh:async function(){
+    
+    //TODO: 前端实现带缓存的API系统后，将下列代码全部改为缓存读
+    // /** @type {WechatMiniprogram.RequestSuccessCallbackResult} */
+    // let scheduleRes = await request({
+    //   url: app.globalData.server + '/schedule/all',
+    //   header: app.globalData.APIHeader,
+    //   method:"GET",
+    // })
+    // /** @type {Array} */
+    // let schedule = scheduleRes.data.data.timeList;
 
     //加载预约列表
     let res = await request({
@@ -47,7 +82,7 @@ Page({
       (a,b)=> {
         let aDate = Date.parse(a.execDate) ;
         let bDate = Date.parse(b.execDate) ;
-        if(aDate > bDate){
+        if(aDate < bDate){
           return 1;
         }else if(aDate == bDate){
           return 0;
@@ -112,10 +147,5 @@ Page({
       windowHeight: app.systemInfo.windowHeight,
       dayList:apList
     })
-  },
-  cancelBtn:function (event) {
-    
   }
-
-
 })

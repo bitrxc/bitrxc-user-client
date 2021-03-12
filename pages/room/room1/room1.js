@@ -128,6 +128,7 @@ Page({
         let list = await this.fetchColumn(execDate);
         let dayNow = (execDate.getDay()+6) % 7+1;
         list = list.concat(
+          //将待刷新的列的旧成员移除
           this.data.wlist.filter((v)=> v.xqj != dayNow)
         );
         this.setData({
@@ -259,7 +260,6 @@ Page({
       (7  * 24 * 60 * 60 * 1000 ) 
     )
     let dayNow = (date.getDay()+6)%7 +1;
-    //将待刷新的列的旧成员移除
     let resWlist  = [];//this.data.wlist.filter((v)=> v.xqj != dayNow);
     for(let item of schedule){
       let res= {
