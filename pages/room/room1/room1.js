@@ -282,7 +282,7 @@ Page({
         "xqj": dayNow , 
         "yysd": item.id , 
         "yycd": 1 ,
-        "exec_date":date.toISOString() ,
+        "execDate":date.getTime() ,
       };
       res = Object.assign(res,item.tag);
       resWlist.push(res);
@@ -321,14 +321,11 @@ Page({
   hideModal() { //点击弹框外空白处收起弹框(取消按钮相同)
     this.util("close");
   },
-
+  //
   onOK:async function () {  //确定按钮
 
     let apInfo = this.data.cardView;
-    let execDate = apInfo.exec_date;
-    // new Date(profile.weekbegin + 
-    //   ((apInfo.djz - 1) * 7 + apInfo.xqj - 1)* 24 * 60 * 60 * 1000 
-    // )
+    let execDate = new Date(apInfo.execDate);
     console.log(execDate);
     await request({
       url : app.globalData.server + "/appointment/appoint",
@@ -338,19 +335,20 @@ Page({
         roomId : this.data.roomId,
         launcher : app.globalData.userInfo.username,
         launchTime : apInfo.yysd,
-        exec_date : execDate,
-        launch_date : Date(),
+        execDate : execDate.toISOString(),
+        launchDate : Date.now(),
       }
     })
-    let list = await this.fetchColumn(new Date(execDate));
-    let dayNow = (date.getDay()+1)%7;
-    list.concat(this.data.wlist.filter((v)=> v.xqj != dayNow));
+    //刷新预约时段所在列
+    let list = await this.fetchColumn(execDate);
+    let dayNow = (execDate.getDay()+6) % 7+1;
+    list = list.concat(
+      this.data.wlist.filter((v)=> v.xqj != dayNow)
+    );
     this.setData({
       wlist:list,
     })
     this.util("close");
-
-   
   },
   util: function (currentStatu) {
     var animation = wx.createAnimation({
