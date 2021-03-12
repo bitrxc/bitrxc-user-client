@@ -38,8 +38,21 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
+    /** @type {Array<any>} */
     let apList = res.data.data.appointments;
-    console.log(Object.assign({},res.data))
+    apList.sort(
+      (a,b)=> {
+        let aDate = Date.parse(a.launchDate) ;
+        let bDate = Date.parse(b.launchDate) ;
+        if(aDate > bDate){
+          return 1;
+        }else if(aDate == bDate){
+          return 0;
+        }else{
+          return -1;
+        }
+      }
+    );
     
     //为什么有两段相似代码？API URL入口点、被映射的属性名和API数据的存储位置都需要定制，复杂度过高。
     /** 提取房间Id，转换成房间名称
@@ -82,8 +95,15 @@ Page({
       i.roomName = roomMap.get(i.roomId);
       i.userName = userMap.get(i.launcher);
       i.result = mapping[i.status];
-      let dateO =  new Date(i.dealDate)
-      i.date = dateO.toDateString();
+      let dateO =  new Date(i.launchDate)
+      i.dateTime = dateO.toLocaleString("zh-cn");
+      /** @type {String} */
+      let noteO = i.userNote
+      if(!noteO){
+        noteO = "暂无说明"
+      }
+      noteO = noteO.substring(0,20);
+      i.ytsm = noteO;
     }
     this.setData({
       windowHeight: app.systemInfo.windowHeight,

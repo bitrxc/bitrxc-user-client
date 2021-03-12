@@ -33,7 +33,7 @@
                   </view>
                   <!--时间-->
                   <view class="day_wrap">
-                    <view>{{item.date}} {{item.time}}</view>
+                    <view>{{item.dateTime}}</view>
                     <!--小卡片-->
                     <view class='day_card'>
                       <view class='day_className'>{{item.roomName}}</view>
