@@ -1,5 +1,7 @@
-import { request } from "../../../request/index.js";
-// pages/my/logs/logs.js 
+// @ts-check pages/my/logs/logs.js
+
+import { request } from "../../../libs/request.js";
+import { APIResult } from "../../../libs/data.d.js";
 const app = getApp();
 const mapping = {
   new : "新请求",
@@ -23,7 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    /** @type {WechatMiniprogram.RequestSuccessCallbackResult} */
+    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timelist:Array}>>} */
     let scheduleRes = await request({
       url: app.globalData.server + '/schedule/all',
       header: app.globalData.APIHeader,
@@ -32,13 +34,13 @@ Page({
     /** @type {Array} */
     let schedule = scheduleRes.data.data.timeList;
 
-    //加载预约列表
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    /** @type {Array<any>} */
+    /** 加载到的预约列表
+     *  @type {Array<any>} */
     let apList = res.data.data.appointments;
     apList.sort(
       (a,b)=> {
@@ -55,39 +57,47 @@ Page({
     );
     
     //为什么有两段相似代码？API URL入口点、被映射的属性名和API数据的存储位置都需要定制，复杂度过高。
-    /** 提取房间Id，转换成房间名称
+    /** 提取房间Id
      * @type {Map<number,string>} */
     let roomMap = new Map();
     for(let i of apList){
       roomMap.set(i.roomId,"");
     }
-  
     //加载涉及到的房间名称
+    //BUG: 房间和用户有可能不存在，此时应该忽略不存在的房间
     for(let [i,] of roomMap){
-      let roomNameRes = await request({
-        url: app.globalData.server + "/room/"+i,
-        header: app.globalData.APIHeader,
-        method:"GET",
-      })
-      console.log(roomNameRes.data.data)
-      roomMap.set(i,roomNameRes.data.data.roomInfo.name);
+      try{
+        let roomNameRes = await request({
+          url: app.globalData.server + "/room/"+i,
+          header: app.globalData.APIHeader,
+          method:"GET",
+        })
+        console.log(roomNameRes.data.data)
+        roomMap.set(i,roomNameRes.data.data.roomInfo.name);
+      }catch(e){
+        roomMap.set(i,"房间未找到");
+      }
     }
-    /** 提取用户Id，转换成用户名称
+
+    /** 提取用户Id
      * @type {Map<string,string>} */
     let userMap = new Map();
     for(let i of apList){
       userMap.set(i.launcher,"");
     }
-  
     //加载涉及到的用户名称
     for(let [i,] of userMap){
-      let roomNameRes = await request({
-        url: app.globalData.server + "/user/" +i,
-        header: app.globalData.APIHeader,
-        method:"GET",
-      })
-      console.log(roomNameRes.data.data)
-      userMap.set(i,roomNameRes.data.data.userInfo.name);
+      try{
+        let roomNameRes = await request({
+          url: app.globalData.server + "/user/" +i,
+          header: app.globalData.APIHeader,
+          method:"GET",
+        })
+        console.log(roomNameRes.data.data)
+        userMap.set(i,roomNameRes.data.data.userInfo.name);
+      }catch(e){
+        userMap.set(i,"用户未找到");
+      }
     }
     
     //适配前端属性名
@@ -109,8 +119,6 @@ Page({
       windowHeight: app.systemInfo.windowHeight,
       array:apList
     })
-
-    
   },
 
   /**
