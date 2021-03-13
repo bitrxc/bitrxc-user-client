@@ -1,4 +1,4 @@
-// components/swiping-gallery.js
+// @ts-check components/swiping-gallery.js
 Component({
   /**
    * 组件的属性列表

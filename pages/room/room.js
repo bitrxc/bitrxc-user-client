@@ -1,5 +1,5 @@
-import { request } from "../../request/index.js";
-//  pages/room/room.js
+// @ts-check pages/room/room.js
+import { request } from "../../libs/request.js";
 const app = getApp();
 Page({
 
@@ -19,12 +19,19 @@ Page({
     this.refreshList(app.globalData.server + '/room/0/20',"items");
 
   },
+  /** @param {WechatMiniprogram.Input} event*/
   onFilterChange:function (event) {
     this.refreshList(app.globalData.server + '/room/nameLike?nameLike=' + event.detail.value,"rooms")
   },
+  /** @param {WechatMiniprogram.InputBlur} event*/
   onReturn:function (event) {
     this.refreshList(app.globalData.server + '/room/0/20',"items");
   },
+  /**
+   * 
+   * @param {string} url 
+   * @param {string} prop 
+   */
   refreshList:async function(url,prop){
     let res = await request({
       url: url,//测试用接口

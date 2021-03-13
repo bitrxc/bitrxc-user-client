@@ -1,4 +1,4 @@
-// pages/my/my.js
+// @ts-check pages/my/my.js
 const app = getApp();
 //my页面只负责渲染页面，不负责拉取用户数据，由个人信息页面负责拉取和更新数据。
 Page({

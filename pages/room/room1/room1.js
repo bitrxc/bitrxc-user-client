@@ -1,10 +1,16 @@
-import { request } from "../../../request/index.js";
+// @ts-check pages/room/room1/room1.js
+import { request } from "../../../libs/request.js";
+import { Schedule } from "../../../libs/data.d.js";
+
+
 /**
- * @namespace
+ * @typedef {{zt:string,color:number}} tagType
  */
+
 const profile = {
   /** 第一周的星期一 */
   weekbegin : Date.parse("2021-03-01"),
+  /** @enum {tagType} */
   statusMap : {
     past : {
       zt : "来晚了",
@@ -28,22 +34,37 @@ const profile = {
     },
   }
 }
+/**
+ * @typedef {object} dealSegmentItemType
+ * @property {number} djz 表示第几周
+ * @property {number} xqj 表示星期几
+ * @property {number} yysd 表示预约时段
+ * @property {number} yycd 表示预约长度（固定为1）
+ * @property {string} [zt] 表示房间状态
+ * @property {number} [color] 用户已预约时段用-1表示，可预约时段用0表示，不可预约时段用-1表示
+ * @property {number} [execDate] 预约的到期日期，为数值型
+ */
 const app = getApp()
-// js
+
 Page({
   data: {
+    /** @type {dealSegmentItemType} */
+    cardView: null,
+    roomId:NaN,
     inputValue:"",
     roomName: "",
     show: false,
     weekList: [1,2,3,4,5,6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     week: 8,
     day: ['一','二','三','四','五','六','日'],
+    /** @type {Array<Schedule>}*/
     schedule : [],
-    wlist: [ //djz表示第几周，xqj表示星期几，yysd表示预约时段，yycd表示预约长度（固定为1），zt表示房间状态
-      {"djz":8, "xqj": 4, "yysd": 2, "yycd": 1, "zt": "已预约",  "color": 1 },   //用户已预约时段用1表示
-      {"djz":8,  "xqj": 1, "yysd": 2, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
-      {"djz":8,  "xqj": 2, "yysd": 1, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
-      {"djz":8, "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },   //不可预约时段用-1表示
+    /** @type {Array<dealSegmentItemType>} */
+    wlist: [
+      {"djz":8, "xqj": 4, "yysd": 2, "yycd": 1, "zt": "已预约",  "color": 1 }, 
+      {"djz":8,  "xqj": 1, "yysd": 2, "yycd": 1, "zt": "可预约",  "color": 0 },
+      {"djz":8,  "xqj": 2, "yysd": 1, "yycd": 1, "zt": "可预约",  "color": 0 }, 
+      {"djz":8, "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },
     ],
   },
 
@@ -51,7 +72,7 @@ Page({
    * 检查用户填写的内容
    * 提交表单中用户填写的内容
    * 更新视图
-   * @param {WechatMiniprogram.FormSubmit} e 
+   * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
     console.log('form发生了submit事件，携带数据为：', e.detail.value);
@@ -84,7 +105,7 @@ Page({
 
     } else */if (e.detail.value.usefor.length == 0) {
 
-      wx.showToast({
+      await wx.showToast({
         title: '用途不能为空!',
         icon:"none",
         duration: 1500
@@ -117,7 +138,7 @@ Page({
       console.log(res.data);
       if (res.data.code != 200) {
 
-        wx.showToast({
+        await wx.showToast({
           title: '提交失败！',
           icon: 'loading',
           duration: 1500,
@@ -144,15 +165,15 @@ Page({
         // await wx.navigateTo({ 
         //   url: '../../my/process/process',
         // })
-        //不播放动画，关闭
-        // this.util("close");
+        //播放动画，关闭
+         this.hideModal();
       }
     }
   },
   //初始化页面标题
   //初始化预约时间列表
   onLoad: async function (options) {
-    this.data.roomId = options.roomID;
+    this.data.roomId = Number(options.roomID);
     let roomRes = await request({
       url: app.globalData.server + '/room/'+options.roomID,
       header: app.globalData.APIHeader,
@@ -183,6 +204,7 @@ Page({
    * */
   refreshTable : async function(date){
     date.setDate(date.getDate() - (date.getDay() + 6)%7);
+    /** @type {Array<Promise>} */
     let operations = [];
     for(let i = 0;i<7;i++){
       let newDate = new Date(date.getTime());
@@ -201,9 +223,9 @@ Page({
   },
 
   /** 
-   * @todo Todo:预约数据结构支持隔日预约
    * @param {Date} date 需要查询的日期
-   * */
+   * @returns {Promise<Array<dealSegmentItemType>>}
+   */
   fetchColumn :async function (date) {
 
     //url构造器，微信小程序不支持Web URL规范，此处还要用
@@ -221,9 +243,9 @@ Page({
 
     /**
      * 
-     * @param {Array<any>} resList 
-     * @param {Array<any>} externList 
-     * @param {*} tag 
+     * @param {Array<{id:any,tag?:tagType}>} resList 
+     * @param {Array<{id:any}>} externList 
+     * @param {tagType} tag 
      */
     function marker(resList,externList,tag){
       for(let i of resList){
@@ -235,8 +257,8 @@ Page({
       }
     };
       
+    /** @type {Array<Schedule & {tag?:tagType}>}*/
     let schedule = Array.from(this.data.schedule)
-    /** */
     marker(schedule ,
       listRes.data.data.freeTime,
       profile.statusMap.avaliable
@@ -260,7 +282,7 @@ Page({
       (7  * 24 * 60 * 60 * 1000 ) 
     )
     let dayNow = (date.getDay()+6)%7 +1;
-    let resWlist  = [];//this.data.wlist.filter((v)=> v.xqj != dayNow);
+    let resWlist  = [];
     for(let item of schedule){
       let res= {
         "djz": weekNow , 
@@ -292,6 +314,7 @@ Page({
     return false;
   },
 
+  /** @param {WechatMiniprogram.BaseEvent} e*/
   showCardView: function (e) { //点击可预约区域，弹框显示预约信息
     console.log(e)
     let cardView = { ...e.currentTarget.dataset.wlist }
@@ -322,6 +345,10 @@ Page({
     return number;
   }
 
+  /**
+   * @function Date#toISODateString
+   * @returns {string}
+   */
   Date.prototype.toISODateString = function() {
     return this.getUTCFullYear() +
       '-' + pad( this.getUTCMonth() + 1 ) +
@@ -329,4 +356,3 @@ Page({
   };
 
 } )();
-//function delay(sec)

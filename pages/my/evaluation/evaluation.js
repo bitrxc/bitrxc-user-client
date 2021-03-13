@@ -1,4 +1,4 @@
-// pages/my/evaluation/evaluation.js
+// @ts-check pages/my/evaluation/evaluation.js
 Page({
 
   /**
