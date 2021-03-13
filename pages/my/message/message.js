@@ -1,4 +1,4 @@
-// pages/my/message/message.js
+// @ts-check pages/my/message/message.js
 Page({
 
   /**

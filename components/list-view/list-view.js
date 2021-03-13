@@ -1,4 +1,4 @@
-// components/list-view/list-view.js
+// @ts-check components/list-view/list-view.js
 Component({
   /**
    * 组件选项

@@ -1,6 +1,7 @@
-import {request} from  "../../request/index.js";
+// @ts-check pages/index/index.js
 
-  // pages/index/index.js
+import {request} from  "../../libs/request.js";
+
 const app = getApp();
   Page({
 

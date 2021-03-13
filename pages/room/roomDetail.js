@@ -1,6 +1,6 @@
-import { request } from "../../request/index.js";
+// @ts-check pages/room/roomDetail.js
+import { request } from "../../libs/request.js";
 const app = getApp();
-// pages/room/roomDetail.js
 Page({
 
   /**
@@ -9,16 +9,16 @@ Page({
   data: {
     area:12,
     pnum:15,
-
+    roomId:NaN,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad:async function (options) {
-    this.roomID = options.roomID
+  async onLoad (options) {
+    this.data.roomId = Number(options.roomID)
     let res = await request({
-      url: app.globalData.server + '/room/'+this.roomID,
+      url: app.globalData.server + '/room/'+this.data.roomId,
       header: getApp().globalData.APIHeader,
       method:"GET",
     })
@@ -96,7 +96,7 @@ Page({
   },
   tofunction: function (e) {
     wx.navigateTo({
-      url: './room1/room1?roomID='+this.roomID,
+      url: './room1/room1?roomId='+this.data.roomId,
     })
   }
 })

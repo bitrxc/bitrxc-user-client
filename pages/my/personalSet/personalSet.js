@@ -1,7 +1,8 @@
-import { request } from "../../../request/index.js";
-// pages/my/personalSet/personalSet.js
+// @ts-check pages/my/personalSet/personalSet.js
 // TODO: 通过微信平台获取电话号码
 // TODO: 向用户请求权限，并维护全局用户信息
+
+import { request } from "../../../libs/request.js";
 const app = getApp();
 Component({
 
@@ -20,6 +21,11 @@ Component({
     onLoad: async function (options) {
 
     },
+
+    /**
+     * 
+     * @param {WechatMiniprogram.ButtonGetUserInfo} e 
+     */
     replaceUserInfo:async function (e) {
       let rawInfo = e.detail.userInfo;
       console.log(rawInfo)
@@ -28,6 +34,10 @@ Component({
       });
     },
 
+    /**
+     * 
+     * @param {WechatMiniprogram.Input} e 
+     */
     replacePhone:async function (e) {
       let rawPhone = e.detail.value;
       await this.setUserProfile({
@@ -35,6 +45,10 @@ Component({
       });
     },
 
+    /**
+     * 
+     * @param {WechatMiniprogram.Input} e 
+     */
     replaceOrg:async function (e) {
       let rawOrg = e.detail.value;
       await this.setUserProfile({
