@@ -299,43 +299,18 @@ Page({
       this.setData({
         cardView: cardView
       })
-      this.util("open");
+      this.setData({
+        showModalStatus: true
+      });
     }
   },
 
   hideModal() { //点击弹框外空白处收起弹框(取消按钮相同)
-    this.util("close");
-  },
-
-  util: function (currentStatu) {
-    var animation = wx.createAnimation({
-      duration: 100, //动画时长 
-      timingFunction: "linear", //线性 
-      delay: 0 //0则不延迟 
-    });
-    this.animation = animation;
-    animation.opacity(0).rotateX(-100).step();
-    this.setData({
-      animationData: animation.export()
-    })
     setTimeout(function () {
-      animation.opacity(1).rotateX(0).step();
       this.setData({
-        animationData: animation
-      })
-
-      if (currentStatu == "close") {
-        this.setData({
-          showModalStatus: false
-        });
-      }
+        showModalStatus: false
+      });
     }.bind(this), 200)
-
-      if (currentStatu == "open") {
-        this.setData({
-          showModalStatus: true
-        });
-    }
   },
 });
 ( () => {
@@ -354,3 +329,4 @@ Page({
   };
 
 } )();
+//function delay(sec)
