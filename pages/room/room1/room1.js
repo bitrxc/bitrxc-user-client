@@ -314,17 +314,26 @@ Page({
     return false;
   },
 
-  /** @param {WechatMiniprogram.BaseEvent} e*/
-  showCardView: function (e) { //点击可预约区域，弹框显示预约信息
+  /** 
+   * 点击可预约区域，检查用户资质，向符合预约资质的用户弹框显示预约信息
+   * @param {WechatMiniprogram.TouchEvent<any,any,{wlist:dealSegmentItemType}>} e
+   */
+  showCardView: function (e) {
     console.log(e)
     let cardView = { ...e.currentTarget.dataset.wlist }
     if(e.currentTarget.dataset.wlist.color === 1){
-      this.setData({
-        cardView: cardView
-      })
-      this.setData({
-        showModalStatus: true
-      });
+      if(app.globalData.userInfoComplete){
+        this.setData({
+          cardView: cardView
+        })
+        this.setData({
+          showModalStatus: true
+        });
+      }else{
+        wx.showToast({
+          title: '用户信息尚不完善，无法预约！',
+        })
+      }
     }
   },
 
