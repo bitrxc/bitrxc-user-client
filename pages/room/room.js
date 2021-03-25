@@ -16,7 +16,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.refreshList(app.globalData.server + '/room/0/20',"items");
+    this.refreshList(app.globalData.server + '/room',"rooms");
 
   },
   /** @param {WechatMiniprogram.Input} event*/
@@ -25,7 +25,7 @@ Page({
   },
   /** @param {WechatMiniprogram.InputBlur} event*/
   onReturn:function (event) {
-    this.refreshList(app.globalData.server + '/room/0/20',"items");
+    this.refreshList(app.globalData.server + '/room',"rooms");
   },
   /**
    * 
