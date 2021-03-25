@@ -39,6 +39,17 @@ Component({
     },
 
     /**
+     * 获取明文编码的用户信息，应该不受 {@link wx.getUserInfo} 接口变化的影响
+     * @param {WechatMiniprogram.Input} e 
+     */
+    replaceUserName:async function (e) {
+      let rawName = e.detail.value;
+      await this.setUserProfile({
+        name : rawName,
+      });
+    },
+
+    /**
      * 
      * @param {WechatMiniprogram.Input} e 
      */

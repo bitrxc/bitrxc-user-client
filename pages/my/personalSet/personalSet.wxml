@@ -3,11 +3,9 @@
 <view class="container toplevel-container">
   <view class="username">
     <view class="title2">用户名</view>
-    <block wx:if="{{user.name}}">
-      <view class="content">{{user.name}}</view>
-    </block><block wx:else>
-      <view class="placeholder">暂无用户名</view>
-    </block>
+    <input type="text" disabled="{{!editable}}" bindblur="replaceUserName" value="{{user.name}}"
+      placeholder="暂未完善用户信息" placeholder-class="placeholder">
+    </input>
     <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
       使用微信用户名
     </button>
@@ -20,7 +18,7 @@
   </view>
   <view class="tel">
     <view class="title2">电话号码</view>
-    <input type="number" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}"
+    <input type="text" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}"
       placeholder="暂未完善用户信息" placeholder-class="placeholder">
     </input>
   </view>

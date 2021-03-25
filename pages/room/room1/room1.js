@@ -324,10 +324,9 @@ Page({
     if(e.currentTarget.dataset.wlist.color === 1){
       if(app.globalData.userInfoComplete){
         this.setData({
-          cardView: cardView
-        })
-        this.setData({
-          showModalStatus: true
+          cardView: cardView,
+          //展示对话框
+          showModalStatus: true,
         });
       }else{
         wx.showToast({
