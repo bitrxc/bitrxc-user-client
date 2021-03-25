@@ -3,6 +3,8 @@
 // TODO: 向用户请求权限，并维护全局用户信息
 
 import { request } from "../../../libs/request.js";
+import { User } from "../../../libs/data.d.js";
+
 const app = getApp();
 Component({
 
@@ -11,6 +13,8 @@ Component({
    */
   data: {
     editable:true,
+    /** @type {User} */
+    user:null,
   },
 
   methods:{
@@ -23,7 +27,7 @@ Component({
     },
 
     /**
-     * 
+     * 获取明文编码的用户信息，应该不受 {@link wx.getUserInfo} 接口变化的影响
      * @param {WechatMiniprogram.ButtonGetUserInfo} e 
      */
     replaceUserInfo:async function (e) {
@@ -41,7 +45,7 @@ Component({
     replacePhone:async function (e) {
       let rawPhone = e.detail.value;
       await this.setUserProfile({
-        phone : Number(rawPhone),
+        phone : String(rawPhone),
       });
     },
 
@@ -56,6 +60,7 @@ Component({
       });
     },
 
+    /** @param {Partial< User | WechatMiniprogram.UserInfo>} userInfo*/
     async setUserProfile(userInfo){
       //TODO: 电话号码校验
       let newInfo = {

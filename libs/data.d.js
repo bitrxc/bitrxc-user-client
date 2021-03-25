@@ -9,6 +9,14 @@
  * @property {number} end
  */
 export const Schedule = class{};
+/** 
+ * @typedef
+ * @property {string} name 
+ * @property {string} phone
+ * @property {string} organization
+ * @property {number} id
+ */
+export const User = class{};
 /**
  * @typedef 
  * @template payload
