@@ -27,21 +27,6 @@ Page({
     },
     {
       icon: "/icons/Set.png",
-      name: "随便什么",
-      /*url: "../ar/ar"*/
-    },
-    {
-      icon: "/icons/Set.png",
-      name: "我的消息",
-      url: "../my/message/message"
-    },
-    {
-      icon: "/icons/Set.png",
-      name: "我的评价",
-      url: "../my/evaluation/evaluation"
-    },
-    {
-      icon: "/icons/Set.png",
       name: "个人设置",
       url: "../my/personalSet/personalSet"
     },
@@ -49,11 +34,6 @@ Page({
   },
   // 事件处理函数
   
-   /*bindViewTap() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },*/
    /* 生命周期函数--监听页面加载*/
   async onLoad() {
     if (app.globalData.userInfo) {
