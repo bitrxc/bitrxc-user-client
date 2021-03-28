@@ -9,18 +9,18 @@
   <swiper class="swiper" style='width:100%;height:100%;'>
     <swiper-item catchtouchmove="stopTouchMove">
       <!--周次选择-->
-      <view class='title' bindtap='clickHide'>
+      <view class='title' bindtap='clickShow'>
         <view class='title_left'>
           <view class='btn btn_'></view>
           <view class='week' catchtap='clickShow'>
-            第8周
+            第{{week}}周
             <image></image>
           </view>
           <view class='btn'></view>
         </view>
       </view>
       <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
-        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek">{{item}}</view>
+        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}</view>
       </scroll-view>
 
       <!--时段表-->
@@ -83,7 +83,7 @@
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时段：</label>
-        <label class='noidle-item-content'>第{{cardView.yysd}}时段 (08:30~09:45)</label>
+        <label class='noidle-item-content'>第{{cardView.yysd}}时段（{{schedule[cardView.yysd -1].begin}}-{{schedule[cardView.yysd -1].end}}）</label>
       </view>
 
       <!--将用户输入信息 传到后台-->

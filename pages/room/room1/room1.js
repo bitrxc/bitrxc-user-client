@@ -177,9 +177,9 @@ Page({
   //初始化预约时间列表
   onLoad: async function (options) {
     await app.globalData.userInfoP;
-    this.data.roomId = Number(options.roomID);
+    this.data.roomId = Number(options.roomId);
     let roomRes = await request({
-      url: app.globalData.server + '/room/'+options.roomID,
+      url: app.globalData.server + '/room/'+options.roomId,
       header: app.globalData.APIHeader,
       method:"GET",
     })
@@ -300,17 +300,19 @@ Page({
     }
     return resWlist;
   },
-  clickShow: function (e) { //显示周下拉菜单
-    var that = this;
-    that.setData({
-      show: !that.data.show,
+  clickShow: function (e) { //显示或隐藏周下拉菜单
+    this.setData({
+      show: !this.data.show,
     })
   },
 
-  clickHide: function (e) { //隐藏周下拉菜单
-    var that = this
-    that.setData({
-      show: false
+  /** 
+   * 选择周数
+   * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
+   */
+  selectWeek: function (e) { //隐藏周下拉菜单
+    this.setData({
+      week: e.target.dataset.week
     })
   },
 
