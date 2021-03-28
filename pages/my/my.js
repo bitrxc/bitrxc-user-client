@@ -36,11 +36,8 @@ Page({
   
    /* 生命周期函数--监听页面加载*/
   async onLoad() {
-    if (app.globalData.userInfo) {
-    } else {
-      //阻塞onload函数，等待用户信息返回
-      await app.globalData.userInfoP
-    }
+    //阻塞onload函数，等待用户信息返回
+    await app.globalData.userInfoP
     let userInfoVisible = {...app.globalData.userInfo};
     userInfoVisible.avatarUrl 
       = userInfoVisible.avatarUrl

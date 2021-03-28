@@ -1,5 +1,6 @@
 // @ts-check pages/room/roomDetail.js
 import { request } from "../../libs/request.js";
+import { Room } from "../../libs/data.d.js";
 const app = getApp();
 Page({
 
@@ -16,17 +17,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   async onLoad (options) {
-    this.data.roomId = Number(options.roomID)
+    await app.globalData.userInfoP;
+    this.data.roomId = Number(options.roomID);
     let res = await request({
       url: app.globalData.server + '/room/'+this.data.roomId,
       header: getApp().globalData.APIHeader,
       method:"GET",
     })
-    //1:在控制台打印一下返回的res.data数据
-    let items = res.data.data.roomInfo;
+    /** @type {Room} */
+    let room = res.data.data.roomInfo;
     console.log(res.data)
-    if(items.gallery===null||items.gallery===undefined){
-      items.gallery=[
+    if(room.gallery===null||room.gallery===undefined){
+      room.gallery=[
         {
           image:"/pages/room/img/123.jpg",
           url:"",
@@ -36,12 +38,15 @@ Page({
           url:"",
         },
       ]
+    }else if(typeof room.gallery === "number"){
+      //TODO:后端没有封装相册
     }
-    if(items.description===null){
-      items.description="暂无描述"
+
+    if(room.description===null){
+      room.description="暂无描述"
     }
     this.setData({
-      room:items
+      room:room
     })
   
   },
