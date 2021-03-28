@@ -2,7 +2,6 @@
 const app = getApp();
 //my页面只负责渲染页面，不负责拉取用户数据，由个人信息页面负责拉取和更新数据。
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -12,7 +11,6 @@ Page({
     index: -1,
     userInfo: {},
     complete: false,
-    
     /*功能菜单*/
     h: app.globalData.h,
     functions: [{
@@ -33,7 +31,6 @@ Page({
     ]
   },
   // 事件处理函数
-  
    /* 生命周期函数--监听页面加载*/
   async onLoad() {
     //阻塞onload函数，等待用户信息返回
@@ -50,54 +47,40 @@ Page({
     })
   },
 
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
   },
-
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
   },
-
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
   },
-
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
   },
   tofunction: function (e) {
      wx.navigateTo({

@@ -17,7 +17,6 @@
     <text class="text">使用情况：{{item.result}}</text>
   </view>
 </view>-->
-
 <view class='content'  wx:for='{{array}}' wx:key="id" >
   <swiper class="swiper" style='width:100%;height:100%;'  >
     <swiper-item >

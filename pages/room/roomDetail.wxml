@@ -10,7 +10,6 @@
     </view>
     <view class="box">
     <view class="small-title">基础设施
-      
       <view class="img-content">
         <image src="../../icons/desk.png" style="height:25px;width:25px;"></image>
         <text class="small-content">桌子</text>
@@ -36,10 +35,8 @@
         <icon class="icon-small" type="success_no_circle" size="23"></icon>
       </view>
     </view>
-
     </view>
     <view class="line-bottom"></view>
-
   <view class="title">房间介绍</view>
   <view class="small-title">描述
       <text class="small-content">{{room.description}}</text>
