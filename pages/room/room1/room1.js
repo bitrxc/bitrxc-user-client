@@ -8,7 +8,10 @@ import { Schedule } from "../../../libs/data.d.js";
  */
 
 const profile = {
-  /** 第一周的星期一 */
+  /** 
+   * 第一周的星期一 
+   * TODO: 从服务段读取此字段
+   */
   weekbegin : Date.parse("2021-03-01"),
   /** @enum {tagType} */
   statusMap : {
@@ -166,13 +169,14 @@ Page({
         //   url: '../../my/process/process',
         // })
         //播放动画，关闭
-         this.hideModal();
+        this.hideModal();
       }
     }
   },
   //初始化页面标题
   //初始化预约时间列表
   onLoad: async function (options) {
+    await app.globalData.userInfoP;
     this.data.roomId = Number(options.roomID);
     let roomRes = await request({
       url: app.globalData.server + '/room/'+options.roomID,

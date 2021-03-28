@@ -1,12 +1,19 @@
 // @ts-check app.js
 import {request} from  "./libs/request.js";
+import { User } from "./libs/data.d.js";
 App({
   async onLaunch() {
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+    this.globalData.userInfoP = this.initialize();
+  },
 
+  /**
+   * 工具方法，异步执行业务数据加载操作。加入此函数是方便全局获取初始化状态，存入userInfoP。
+   */
+  async initialize(){
     // 登录
     let weixincode = await wx.login()
     // 小程序基础库版本2.10.2开始支持异步Promise调用
@@ -19,10 +26,10 @@ App({
     console.log(session.data);
     this.globalData.APIHeader.token = session.data.data.token;
     this.globalData.openid = session.data.data.openid;
-    // 获取微信用户信息
-    this.globalData.userInfoP = this.getUserInfo();
-    
     this.systemInfo = await wx.getSystemInfo();
+    // 获取微信用户信息
+    await this.getUserInfo();
+    
     console.log(this.systemInfo.windowHeight)
   },
   async getUserInfo(){
@@ -35,15 +42,16 @@ App({
       header:this.globalData.APIHeader,
       method:"GET",
     })
+    /** @type {User & WechatMiniprogram.UserInfo} */
     let userInfo = appUserInfo.data.data.userInfo
     // 可以将 res 发送给后台解码出 unionId
     
     let settingsRes = await wx.getSetting()
     if (settingsRes.authSetting['scope.userInfo']) {
-      // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+      /** @type {WechatMiniprogram.GetUserInfoSuccessCallbackResult} 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 */ 
       let userInfoRes = await wx.getUserInfo({})
       // 可以将 res 发送给后台解码出 unionId
-      console.log(userInfoRes.userInfo)
+      // console.log(userInfoRes.userInfo)
       userInfo.avatarUrl = userInfoRes.userInfo.avatarUrl
     }
     console.log(userInfo);
@@ -62,7 +70,9 @@ App({
       "token":null,
     },
     userInfo: null,
-    /** @type {Promise} */
+    /** 
+     * @type {Promise<void>} 小程序是否加载完成
+     */
     userInfoP:null,
     userInfoComplete:false,
     server: "https://test.ruixincommunity.cn"

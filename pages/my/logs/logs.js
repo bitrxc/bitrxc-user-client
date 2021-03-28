@@ -1,7 +1,7 @@
 // @ts-check pages/my/logs/logs.js
 
 import { request } from "../../../libs/request.js";
-import { APIResult } from "../../../libs/data.d.js";
+import { APIResult, Schedule } from "../../../libs/data.d.js";
 const app = getApp();
 const mapping = {
   new : "新请求",
@@ -31,7 +31,7 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    /** @type {Array} */
+    /** @type {Array<Schedule>} */
     let schedule = scheduleRes.data.data.timeList;
 
     let res = await request({
