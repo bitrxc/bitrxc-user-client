@@ -23,9 +23,11 @@ Page({
   },
 
   onLoad:async function (options) {
+    await app.globalData.userInfoP;
   },
 
   onShow:async function (){
+    await app.globalData.userInfoP;
     await this.refresh()
   },
 

@@ -10,6 +10,14 @@
  */
 export const Schedule = class{};
 /** 
+* @typedef
+* @property {number} id 
+* @property {number|Array|null} gallery
+* @property {any} description
+* @property {string} name
+*/
+export const Room = class{};
+/** 
  * @typedef
  * @property {string} name 
  * @property {string} phone
