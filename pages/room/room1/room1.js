@@ -2,11 +2,9 @@
 import { request } from "../../../libs/request.js";
 import { Schedule } from "../../../libs/data.d.js";
 
-
 /**
  * @typedef {{zt:string,color:number}} tagType
  */
-
 const profile = {
   /** 
    * 第一周的星期一 
@@ -48,7 +46,6 @@ const profile = {
  * @property {number} [execDate] 预约的到期日期，为数值型
  */
 const app = getApp()
-
 Page({
   data: {
     /** @type {dealSegmentItemType} */
@@ -70,7 +67,6 @@ Page({
       {"djz":8, "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },
     ],
   },
-
   /**
    * 检查用户填写的内容
    * 提交表单中用户填写的内容
@@ -78,52 +74,19 @@ Page({
    * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value);
-    /*暂时不检查人数和姓名
-    if (e.detail.value.name.length == 0) {
-
-      wx.showToast({
-        title: '姓名不能为空!',
-        icon:"none",
-        duration: 1500
-      })
-
-      setTimeout(
-        () => { wx.hideToast() }, 
-        2000
-      )
-
-    } else if (e.detail.value.number.length == 0) {
-
-      wx.showToast({
-        title: '人数不能为空!',
-        icon:"none",
-        duration: 1500
-      })
-
-      setTimeout(
-        () => { wx.hideToast() }, 
-        2000
-      )
-
-    } else */if (e.detail.value.usefor.length == 0) {
-
+    if (e.detail.value.usefor.length == 0) {
       await wx.showToast({
         title: '用途不能为空!',
         icon:"none",
         duration: 1500
       })
-
       setTimeout(
         () => { wx.hideToast() }, 
         2000
       )
-
     } else {
-
       let apInfo = this.data.cardView;
       let execDate = new Date(apInfo.execDate);
-      console.log(execDate);
       let res = await request({
         url : app.globalData.server + "/appointment/appoint",
         header : app.globalData.APIHeader ,
@@ -137,16 +100,12 @@ Page({
           userNote : e.detail.value.usefor,
         }
       })
-      
-      console.log(res.data);
       if (res.data.code != 200) {
-
         await wx.showToast({
           title: '提交失败！',
           icon: 'loading',
           duration: 1500,
         })
-
       } else {
         //刷新预约时段所在列
         let list = await this.fetchColumn(execDate);
@@ -158,7 +117,6 @@ Page({
         this.setData({
           wlist:list,
         })
-
         await wx.showToast({
           title: '提交成功！',//这里打印出登录成功
           icon: 'success',
@@ -177,9 +135,9 @@ Page({
   //初始化预约时间列表
   onLoad: async function (options) {
     await app.globalData.userInfoP;
-    this.data.roomId = Number(options.roomID);
+    this.data.roomId = Number(options.roomId);
     let roomRes = await request({
-      url: app.globalData.server + '/room/'+options.roomID,
+      url: app.globalData.server + '/room/'+options.roomId,
       header: app.globalData.APIHeader,
       method:"GET",
     })
@@ -188,8 +146,6 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    console.log()
-
     let room = roomRes.data.data.roomInfo;
     this.setData({
       windowHeight: app.systemInfo.windowHeight,
@@ -198,11 +154,9 @@ Page({
     })
     await this.refreshTable(new Date());
   },
-
   onShow:async function(){
     await this.refreshTable(new Date());
   },
-  
   /** 
    * @param {Date} date 需要查询的周次
    * */
@@ -213,11 +167,9 @@ Page({
     for(let i = 0;i<7;i++){
       let newDate = new Date(date.getTime());
       newDate.setDate(newDate.getDate() + i);
-      console.log(newDate);
       operations.push(this.fetchColumn(newDate))
     }
     let results = await Promise.all(operations);
-    console.log(results);
     let resWlist = results.reduce(
       (prev,cur) => prev.concat(cur) ,
     [])
@@ -225,13 +177,11 @@ Page({
       wlist:resWlist,
     })
   },
-
   /** 
    * @param {Date} date 需要查询的日期
    * @returns {Promise<Array<dealSegmentItemType>>}
    */
   fetchColumn :async function (date) {
-
     //url构造器，微信小程序不支持Web URL规范，此处还要用
     let urlBuilder = app.globalData.server +
       '/room/free/time' + '?' +
@@ -243,8 +193,6 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    console.log(listRes.data.data.freeTime)
-
     /**
      * 
      * @param {Array<{id:any,tag?:tagType}>} resList 
@@ -260,7 +208,6 @@ Page({
         }
       }
     };
-      
     /** @type {Array<Schedule & {tag?:tagType}>}*/
     let schedule = Array.from(this.data.schedule)
     marker(schedule ,
@@ -279,8 +226,6 @@ Page({
       listRes.data.data.busyTime,
       profile.statusMap.occupied
     );
-    console.log(schedule);
-
     let weekNow =  Math.ceil(
       (date.getTime() - profile.weekbegin) / 
       (7  * 24 * 60 * 60 * 1000 ) 
@@ -306,29 +251,26 @@ Page({
       show: !that.data.show,
     })
   },
-
   clickHide: function (e) { //隐藏周下拉菜单
     var that = this
     that.setData({
       show: false
     })
   },
-
   stopTouchMove: function () {
     return false;
   },
-
   /** 
    * 点击可预约区域，检查用户资质，向符合预约资质的用户弹框显示预约信息
    * @param {WechatMiniprogram.TouchEvent<any,any,{wlist:dealSegmentItemType}>} e
    */
   showCardView: function (e) {
-    console.log(e)
-    let cardView = { ...e.currentTarget.dataset.wlist }
+    let cardView = e.currentTarget.dataset.wlist;
     if(e.currentTarget.dataset.wlist.color === 1){
       if(app.globalData.userInfoComplete){
         this.setData({
           cardView: cardView,
+          userName: app.globalData.userInfo.name,
           //展示对话框
           showModalStatus: true,
         });
@@ -339,7 +281,6 @@ Page({
       }
     }
   },
-
   hideModal() { //点击弹框外空白处收起弹框(取消按钮相同)
     setTimeout(function () {
       this.setData({
@@ -349,14 +290,12 @@ Page({
   },
 });
 ( () => {
-
   function pad(number) {
     if ( number < 10 ) {
       return '0' + number;
     }
     return number;
   }
-
   /**
    * @function Date#toISODateString
    * @returns {string}
@@ -366,5 +305,4 @@ Page({
       '-' + pad( this.getUTCMonth() + 1 ) +
       '-' + pad( this.getUTCDate() ) ;
   };
-
 } )();

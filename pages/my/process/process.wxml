@@ -26,7 +26,6 @@
                       <!--取消按钮，cancelBtn函数未写-->
                       <button class="btn" bindtap="cancel" style="font-size:35rpx;margin-top:10px;margin-bottom:10px;" data-id="{{item.id}}">取消预约</button>
                     </view>
-                    
                     <!--yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
                   </view>
                 </view>
@@ -38,4 +37,3 @@
     </swiper-item>
   </swiper>
 </view>
-

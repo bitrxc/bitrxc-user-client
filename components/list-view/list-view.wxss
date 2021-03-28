@@ -5,14 +5,12 @@
   justify-content: center;
   flex-wrap: nowrap;
 }
-
 .-box-item {
   height: 110px;
   position: relative;
   display: flex;
   margin: 20rpx;
   background-color: white;
- 
   flex-direction: row;
   /* grid-template-areas:
   "image title title"
@@ -20,7 +18,6 @@
   "image desc  desc "
   ; */
 }
-
 .-box-item-image {
   width: auto;
   height: auto;
@@ -29,7 +26,6 @@
   flex: 0 0 32%;
   /* grid-area: image; */
 }
-
 .-box-item-textcontainer{
   display: flex;
   flex-direction: column;
@@ -38,7 +34,6 @@
 .box-title{
   margin: 0,10px,2px,2px;
   height: 30px;
-
 }
 .-box-item-title{
   width: 100%;
@@ -47,7 +42,6 @@
   flex: 0 0 25%;
   /* grid-area: title; */
 }
-
 .-box-item-desc {
   font-family: serif;
   width: 100%;
@@ -57,7 +51,6 @@
   flex: 1 0 50%;
   /* grid-area: desc; */
 }
-
 .-box-image{
   width: 100%;
   height: 100%;

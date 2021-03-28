@@ -1,5 +1,4 @@
 <!--轮播图放推送-->
 <bitrxc-swiping-gallery images="{{functions}}"></bitrxc-swiping-gallery>
-
 <!--主页通知-->
 <bitrxc-list-view list="{{list}}"></bitrxc-list-view>

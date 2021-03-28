@@ -1,5 +1,4 @@
 // @ts-check pages/my/logs/logs.js
-
 import { request } from "../../../libs/request.js";
 import { APIResult, Schedule } from "../../../libs/data.d.js";
 const app = getApp();
@@ -11,7 +10,6 @@ const mapping = {
   cancel : "已取消",
 }
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -20,7 +18,6 @@ Page({
     ],
     selfonly:true,
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -33,7 +30,6 @@ Page({
     })
     /** @type {Array<Schedule>} */
     let schedule = scheduleRes.data.data.timeList;
-
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
       header: app.globalData.APIHeader,
@@ -55,7 +51,6 @@ Page({
         }
       }
     );
-    
     //为什么有两段相似代码？API URL入口点、被映射的属性名和API数据的存储位置都需要定制，复杂度过高。
     /** 提取房间Id
      * @type {Map<number,string>} */
@@ -72,13 +67,11 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        console.log(roomNameRes.data.data)
         roomMap.set(i,roomNameRes.data.data.roomInfo.name);
       }catch(e){
         roomMap.set(i,"房间未找到");
       }
     }
-
     /** 提取用户Id
      * @type {Map<string,string>} */
     let userMap = new Map();
@@ -93,13 +86,11 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        console.log(roomNameRes.data.data)
         userMap.set(i,roomNameRes.data.data.userInfo.name);
       }catch(e){
         userMap.set(i,"用户未找到");
       }
     }
-    
     //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
@@ -120,55 +111,40 @@ Page({
       array:apList
     })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
   },
-
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
   },
-
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
   },
-
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
   }
 })
-
 

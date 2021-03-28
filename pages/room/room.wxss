@@ -1,11 +1,9 @@
 /* pages/room/room.wxss */
-
 .header {
   width: 100%;
   margin: 4% auto;
   display:flex;
 }
-
 .header-input {
   flex: 1 0 10em;
   margin: 10rpx 35rpx;
@@ -14,7 +12,6 @@
   height: 100%;
   width: auto;
 }
-
 .header-icon {
   flex: 0 0 23px;
   margin: 10rpx 35rpx;
