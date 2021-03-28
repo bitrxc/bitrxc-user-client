@@ -266,10 +266,9 @@ Page({
    * 选择周数
    * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
    */
-  selectWeek: function (e) {
-    let week = e.target.dataset.week;
+  selectWeek: function (e) { //隐藏周下拉菜单
     this.setData({
-      week: week,
+      week: e.target.dataset.week
     })
     let dateNow = new Date(profile.weekbegin);
     dateNow.setDate(dateNow.getDate() + 7 * week - 7);
