@@ -183,18 +183,24 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
+    let room = roomRes.data.data.roomInfo;
+
     let scheduleRes = await request({
       url: app.globalData.server + '/schedule/all',
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    console.log()
 
-    let room = roomRes.data.data.roomInfo;
+    let dateNow = new Date()
+    let weekNow =  Math.ceil(
+      (dateNow.getTime() - profile.weekbegin) / 
+      (7  * 24 * 60 * 60 * 1000 ) 
+    )
     this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
       schedule :scheduleRes.data.data.timeList,
+      week : weekNow,
     })
     await this.refreshTable(new Date());
   },
@@ -205,7 +211,7 @@ Page({
   
   /** 
    * @param {Date} date 需要查询的周次
-   * */
+   */
   refreshTable : async function(date){
     date.setDate(date.getDate() - (date.getDay() + 6)%7);
     /** @type {Array<Promise>} */
