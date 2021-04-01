@@ -1,4 +1,7 @@
 // @ts-check pages/room/room1/room1.js
+/* 
+ * TODO: 服务端处理时区问题
+ */
 import { request } from "../../../libs/request.js";
 import { Schedule } from "../../../libs/data.d.js";
 
@@ -132,7 +135,7 @@ Page({
           roomId : this.data.roomId,
           launcher : app.globalData.userInfo.username,
           launchTime : apInfo.yysd,
-          execDate : execDate.toISOString(),
+          execDate : execDate.toISODateString(),
           launchDate : Date.now(),
           userNote : e.detail.value.usefor,
         }
@@ -316,10 +319,14 @@ Page({
    * 选择周数
    * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
    */
-  selectWeek: function (e) { //隐藏周下拉菜单
+  selectWeek: function (e) {
+    let week = e.target.dataset.week;
     this.setData({
-      week: e.target.dataset.week
+      week: week
     })
+    let dateNow = new Date(profile.weekbegin);
+    dateNow.setDate(dateNow.getDate() + 7 * week - 7);
+    this.refreshTable(dateNow);
   },
 
   stopTouchMove: function () {
