@@ -1,4 +1,7 @@
 // @ts-check pages/room/room1/room1.js
+/* 
+ * TODO: 服务端处理时区问题
+ */
 import { request } from "../../../libs/request.js";
 import { Schedule } from "../../../libs/data.d.js";
 
@@ -95,7 +98,7 @@ Page({
           roomId : this.data.roomId,
           launcher : app.globalData.userInfo.username,
           launchTime : apInfo.yysd,
-          execDate : execDate.toISOString(),
+          execDate : execDate.toISODateString(),
           launchDate : Date.now(),
           userNote : e.detail.value.usefor,
         }
@@ -141,16 +144,24 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
+    let room = roomRes.data.data.roomInfo;
+
     let scheduleRes = await request({
       url: app.globalData.server + '/schedule/all',
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    let room = roomRes.data.data.roomInfo;
+
+    let dateNow = new Date()
+    let weekNow =  Math.ceil(
+      (dateNow.getTime() - profile.weekbegin) / 
+      (7  * 24 * 60 * 60 * 1000 ) 
+    )
     this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
       schedule :scheduleRes.data.data.timeList,
+      week : weekNow,
     })
     await this.refreshTable(new Date());
   },
@@ -159,7 +170,7 @@ Page({
   },
   /** 
    * @param {Date} date 需要查询的周次
-   * */
+   */
   refreshTable : async function(date){
     date.setDate(date.getDate() - (date.getDay() + 6)%7);
     /** @type {Array<Promise>} */
@@ -245,17 +256,24 @@ Page({
     }
     return resWlist;
   },
-  clickShow: function (e) { //显示周下拉菜单
-    var that = this;
-    that.setData({
-      show: !that.data.show,
+  clickShow: function (e) { //显示或隐藏周下拉菜单
+    this.setData({
+      show: !this.data.show,
     })
   },
-  clickHide: function (e) { //隐藏周下拉菜单
-    var that = this
-    that.setData({
-      show: false
+
+  /** 
+   * 选择周数
+   * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
+   */
+  selectWeek: function (e) {
+    let week = e.target.dataset.week;
+    this.setData({
+      week: week,
     })
+    let dateNow = new Date(profile.weekbegin);
+    dateNow.setDate(dateNow.getDate() + 7 * week - 7);
+    this.refreshTable(dateNow);
   },
   stopTouchMove: function () {
     return false;
