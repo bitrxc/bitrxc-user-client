@@ -1,10 +1,10 @@
-<view class='content'>
-  <swiper class="swiper" style='width:100%;height:100%;'>
+<view class='content' style='height:{{windowHeight+50}}px;'>
+  <swiper class="swiper" style='height:{{windowHeight+50}}px;'>
     <swiper-item >
-      <view>
-        <swiper class='dayClass' style='height:{{windowHeight}}px;'>
+      <view style='height:{{windowHeight+50}}px;'>
+        <swiper class='dayClass' style='height:{{windowHeight50}}px;'>
           <swiper-item>
-            <view style='background-color:#EFEFF4;height:{{windowHeight}}px;'>
+            <view style='background-color:#EFEFF4;height:{{windowHeight+50}}px;'>
               <scroll-view style='height:100%;' scroll-y="true">
                 <view class='day_content' wx:for='{{dayList}}' wx:key="index">
                   <!--竖向分割线-->
