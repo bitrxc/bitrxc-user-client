@@ -14,12 +14,12 @@ Page({
     /*功能菜单*/
     h: app.globalData.h,
     functions: [{
-      icon: "/icons/Set.png",
+      icon: "/icons/process.png",
       name: "预约进度",
       url: "../my/process/process"
     },
     {
-      icon: "/icons/Set.png",
+      icon: "/icons/logs.png",
       name: "预约记录",
       url: "../my/logs/logs"
     },
