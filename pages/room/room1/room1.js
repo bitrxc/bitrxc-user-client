@@ -315,6 +315,11 @@ Page({
     })
   },
 
+  clickHide: function (e) { //隐藏周下拉菜单
+    this.setData({
+      show: false
+    })
+  },
   /** 
    * 选择周数
    * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
