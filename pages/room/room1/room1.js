@@ -15,7 +15,7 @@ const profile = {
    * 第一周的星期一 
    * TODO: 从服务段读取此字段
    */
-  weekbegin : Date.parse("2021-03-01"),
+  weekbegin : Date.parse("2021-02-28"),
   /** @enum {tagType} */
   statusMap : {
     past : {
@@ -290,10 +290,10 @@ Page({
     );
     console.log(schedule);
 
-    let weekNow =  Math.ceil(
+    let weekNow =  Math.floor(
       (date.getTime() - profile.weekbegin) / 
       (7  * 24 * 60 * 60 * 1000 ) 
-    )
+    ) 
     let dayNow = (date.getDay()+6)%7 +1;
     let resWlist  = [];
     for(let item of schedule){
@@ -325,7 +325,8 @@ Page({
       week: week
     })
     let dateNow = new Date(profile.weekbegin);
-    dateNow.setDate(dateNow.getDate() + 7 * week - 7);
+    dateNow.setDate(dateNow.getDate() + 7 * week);
+    console.log(dateNow);
     this.refreshTable(dateNow);
   },
 
