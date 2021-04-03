@@ -5,13 +5,11 @@
 }
 .swiper{
   border-radius: 10rpx;
-
 }
 .roomname{
   font-size:30px;
   margin: 15px 15px 15px 15px ;
   color: rgb(112, 111, 111);
-  
 }
 .title{
   font-size: 20px;

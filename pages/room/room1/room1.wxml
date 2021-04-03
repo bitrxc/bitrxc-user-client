@@ -5,7 +5,6 @@
       <view class="onRight">{{roomName}}</view>
     </view>
   </view>
-
   <swiper class="swiper" style='width:100%;height:100%;'>
     <swiper-item catchtouchmove="stopTouchMove">
       <!--周次选择-->
@@ -22,7 +21,6 @@
       <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
         <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}</view>
       </scroll-view>
-
       <!--时段表-->
       <view class="timeTable">
         <view class="top">
@@ -43,7 +41,6 @@
                 style="width:100%;margin-top:{{(index+1)*50-0.8}}px;  position: absolute;border-bottom:1rpx solid lightgray;">
               </view>
             </view>
-
             <!--预约记录-->
             <view wx:for="{{wlist}}" wx:key="index">
               <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}'
@@ -62,7 +59,6 @@
       </view>
     </swiper-item>
   </swiper>
-
 </view>
 <!--可预约时段弹框-->
 <view class="drawer_screen" data-statu="close" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove'
@@ -85,26 +81,18 @@
         <label class='noidle-item-prefix'>时段：</label>
         <label class='noidle-item-content'>第{{cardView.yysd}}时段（{{schedule[cardView.yysd -1].begin}}-{{schedule[cardView.yysd -1].end}}）</label>
       </view>
-
+      <view class='noidle-item'>
+        <label class='noidle-item-prefix'>预约人：</label>
+        <label class='noidle-item-content'>{{userName}}</label>
+      </view>
       <!--将用户输入信息 传到后台-->
       <form bindsubmit="formSubmit">
         <view class="note">
-
-          <view class="note-detail">
-            <text style="font-size:27rpx;">姓名：</text>
-            <input name="name" placeholder="请输入姓名" type="text" maxlength="30" confirm-type="next"></input>
-          </view>
-          <view class="note-detail">
-            <text style="font-size:27rpx;">使用人数：</text>
-            <input name="number" placeholder="请输入人数" type="namber" maxlength="2" confirm-type="next"></input>
-          </view>
           <view class="note-detail">
             <text style="font-size:27rpx;">用途说明：</text>
             <input name="usefor" placeholder="请输入用途" type="text" maxlength="30" confirm-type="done"></input>
           </view>
-
         </view>
-
         <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
           <!--确定按钮触发表单提交事件，表单将预约数据传到后端，移除onOK函数-->
           <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;"
@@ -113,7 +101,5 @@
         </view>
       </form>
     </view>
-
   </view>
-
 </view>

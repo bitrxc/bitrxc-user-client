@@ -1,5 +1,4 @@
 <!--components/list-view/list-view.wxml-->
-
 <view class="-box toplevel-container">
   <view class="-box-item" wx:for="{{list}}" wx:key="index" style="height: 120px;">
     <view class="-box-item-image">
@@ -9,7 +8,6 @@
       <view class="box-title">
         <navigator url="{{targetPage}}?{{targetID}}={{item.id}}" class="-box-item-title">【{{item.name}}】</navigator>
       </view>
-     
       <text class="-box-item-desc">{{item.description}}</text>                                                                
     </view>    
   </view>

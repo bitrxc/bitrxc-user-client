@@ -3,7 +3,6 @@ import { request } from "../../libs/request.js";
 import { Room } from "../../libs/data.d.js";
 const app = getApp();
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -11,15 +10,12 @@ Page({
     list:[],
     isEmptyList:false,
   },
-   
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad:async function (options) {
     await app.globalData.userInfoP;
     this.refreshList(app.globalData.server + '/room');
-
   },
   /** @param {WechatMiniprogram.Input} event*/
   onFilterChange:function (event) {
@@ -40,7 +36,6 @@ Page({
       method:"GET",
     })
     //1:在控制台打印一下返回的res.data数据
-    console.log(res.data)
     /** @type {Array<Room & {image:string}> } */
     let list = res.data.data.rooms;
     if(list===undefined){
@@ -71,51 +66,38 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
   },
-
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
     this.refreshList(app.globalData.server + '/room');
   },
-
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
   },
-
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
   },
-  
   tofunction: function (e) {
     wx.navigateTo({
       url: e.currentTarget.dataset.url,

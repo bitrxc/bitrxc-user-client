@@ -1,25 +1,59 @@
 <!--pages/my/personalSet/personalSet.wxml-->
-<view class="title1 toplevel-container">用户信息</view>
-<view class="container toplevel-container">
-  <view class="username">
-    <view class="title2">用户名</view>
-    <input type="text" disabled="{{!editable}}" bindblur="replaceUserName" value="{{user.name}}"
-      placeholder="暂未完善用户信息" placeholder-class="placeholder">
-    </input>
-    <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
+<view class="weui-cells weui-cells_after-title">
+  <view class="weui-cell weui-cell_active" style="margin:20px;">
+   <view class="weui-cell__hd">
+    <view class="weui-flex">
+     <view class="weui-flex__item">
+      <view class="placeholder" style="color:red;width:5vw;">*</view>
+     </view>
+     <view class="weui-flex__item">
+      <view class="placeholder" style="width:20vw;">姓名</view>
+     </view>
+    </view>
+   </view>
+   <view class="weui-cell__bd" style="margin:10px;">
+    <input class="weui-input" disabled="{{!editable}}" bindblur="replaceUserName" value="{{user.name}}" placeholder="请输入姓名" />
+   </view>
+   <view class="line" style="width:90%;margin-top:5rpx;  position: absolute;border-bottom:1rpx solid lightgray;"></view>
+  </view>
+
+
+  <view class="weui-cell weui-cell_active" style="margin:20px;">
+   <view class="weui-cell__hd">
+    <view class="weui-flex">
+     <view class="weui-flex__item">
+      <view class="placeholder" style="color:red;width:5vw;">*</view>
+     </view>
+     <view class="weui-flex__item">
+      <view class="placeholder" style="width:20vw;">书院/组织</view>
+     </view>
+    </view>
+   </view>
+   <view class="weui-cell__bd" style="margin:10px;">
+    <input class="weui-input" disabled="{{!editable}}" bindblur="replaceOrg" value="{{user.organization}}" placeholder="请输入书院/组织" />
+   </view>
+   <view class="line" style="width:90%;margin-top:10rpx;  position: absolute;border-bottom:1rpx solid lightgray;"></view>
+  </view>
+
+
+  <view class="weui-cell weui-cell_active" style="margin:20px;">
+   <view class="weui-cell__hd">
+    <view class="weui-flex">
+     <view class="weui-flex__item">
+      <view class="placeholder" style="color:red;width:5vw;">*</view>
+     </view>
+     <view class="weui-flex__item">
+      <view class="placeholder" style="width:20vw;">联系方式</view>
+     </view>
+    </view>
+   </view>
+   <view class="weui-cell__bd" style="margin:10px;">
+    <input class="weui-input" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}" placeholder="请输入联系方式" />
+   </view>
+   <view class="line" style="width:90%;margin-top:15rpx;  position: absolute;border-bottom:1rpx solid lightgray;"></view>
+  </view>
+
+ </view>
+ <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
       使用微信用户名
     </button>
-  </view>
-  <view class="desc">
-    <view class="title2">用户所属组织</view>
-    <input type="text" disabled="{{!editable}}" bindblur="replaceOrg" value="{{user.organization}}"
-      placeholder="暂未完善用户信息" placeholder-class="placeholder">
-    </input>
-  </view>
-  <view class="tel">
-    <view class="title2">电话号码</view>
-    <input type="text" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}"
-      placeholder="暂未完善用户信息" placeholder-class="placeholder">
-    </input>
-  </view>
-</view>

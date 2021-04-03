@@ -18,25 +18,20 @@ Page({
       { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
       { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
       { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
-     
     ]
   },
-
   onLoad:async function (options) {
     await app.globalData.userInfoP;
   },
-
   onShow:async function (){
     await app.globalData.userInfoP;
     await this.refresh()
   },
-
   /**
   * @param {WechatMiniprogram.BaseEvent} event 
   */
   cancel:async function (event) {
     let dataset = event.currentTarget.dataset;
-    console.log(dataset);
     let res = await request({
       url : app.globalData.server + "/appointment/cancel/" + dataset.id,
       header : app.globalData.APIHeader ,
@@ -57,9 +52,7 @@ Page({
       await this.refresh()
     }
   },
-
   refresh:async function(){
-    
     //TODO: 前端实现带缓存的API系统后，将下列代码全部改为缓存读
     // /** @type {WechatMiniprogram.RequestSuccessCallbackResult} */
     // let scheduleRes = await request({
@@ -69,7 +62,6 @@ Page({
     // })
     // /** @type {Array} */
     // let schedule = scheduleRes.data.data.timeList;
-
     //加载预约列表
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
@@ -93,7 +85,6 @@ Page({
         }
       }
     );
-    
     //为什么有两段相似代码？API URL入口点、被映射的属性名和API数据的存储位置都需要定制，复杂度过高。
     /** 提取房间Id
      * @type {Map<number,string>} */
@@ -110,13 +101,11 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        console.log(roomNameRes.data.data)
         roomMap.set(i,roomNameRes.data.data.roomInfo.name);
       }catch(e){
         roomMap.set(i,"房间未找到");
       }
     }
-
     /** 提取用户Id
      * @type {Map<string,string>} */
     let userMap = new Map();
@@ -131,13 +120,11 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        console.log(roomNameRes.data.data)
         userMap.set(i,roomNameRes.data.data.userInfo.name);
       }catch(e){
         userMap.set(i,"用户未找到");
       }
     }
-    
     //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);

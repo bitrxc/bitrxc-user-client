@@ -3,3 +3,7 @@
   align-items: flex-start;
   text-align: left;
 }
+.weui-cell weui-cell_active{
+  display: flex;
+
+}
