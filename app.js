@@ -22,8 +22,8 @@ App({
     this.globalData.APIHeader.token = session.data.data.token;
     this.globalData.openid = session.data.data.openid;
     this.systemInfo = await wx.getSystemInfo();
-    // 获取微信用户信息
-    this.getUserInfo();
+    // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
+    await this.getUserInfo();
   },
   async getUserInfo(){
     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -64,7 +64,11 @@ App({
      */
     userInfoP:null,
     userInfoComplete:false,
+<<<<<<< HEAD
     server: "https://test.ruixincommunity.cn"
+=======
+    server: "https://api.bitrxc.com"
+>>>>>>> 74e8f2cb5a2b2fe6143385ff53e4b840c99f6f8f
   },
   /**@type {WechatMiniprogram.SystemInfo} */
   systemInfo:null,

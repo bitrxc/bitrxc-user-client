@@ -7,28 +7,22 @@
   <image class="backimg-bottom" src='https://wx4.sinaimg.cn/mw690/006cV2kkly1g6j37v8m2lg30f002skhn.gif'
     mode='scaleToFill'></image>
 
-
 <!--信息-->
-    <view class="information">
-      <view class="userinfo-text">
-        <view class="userinfo-nickname">{{userInfo.name}}</view>
-        <view class="userinfo-nickname" wx:if="{{!complete}}">
-        未认证
-        </view>
-      </view>
-        
-   
-    
-    <view class="line"></view>
-    <view class="organization">
-        睿信书院
+  <view class="information">
+    <view class="userinfo-text">
+      <view class="userinfo-nickname">{{userInfo.name}}</view>
+      <view class="userinfo-nickname" wx:if="{{!complete}}">
+      未认证
       </view>
     </view>
+    <view class="line"></view>
+    <view class="organization">{{userInfo.organization}}</view>
+  </view>
       
 </view>
 
 <view class="divLine"></view>
- <view class="box">
+<view class="box">
   <view class="boxitem" wx:key='index' wx:for="{{functions}}" bindtap="tofunction" data-url="{{item.url}}">
     <view class="boxitem_top">
       <image src="{{item.icon}}"></image>

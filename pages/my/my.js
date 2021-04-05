@@ -33,18 +33,6 @@ Page({
   // 事件处理函数
    /* 生命周期函数--监听页面加载*/
   async onLoad() {
-    //阻塞onload函数，等待用户信息返回
-    await app.globalData.userInfoP
-    let userInfoVisible = {...app.globalData.userInfo};
-    userInfoVisible.avatarUrl 
-      = userInfoVisible.avatarUrl
-        ? userInfoVisible.avatarUrl 
-        : "/pages/room/img/123.jpg";
-    //阻塞解除后，新的用户信息已经存在于全局数据中。
-    this.setData({
-      userInfo: userInfoVisible,
-      complete: app.globalData.userInfoComplete,
-    })
   },
 
   /**
@@ -55,7 +43,19 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow:async function () {
+    //阻塞onload函数，等待用户信息返回
+    await app.globalData.userInfoP;
+    let userInfoVisible = {...app.globalData.userInfo};
+    userInfoVisible.avatarUrl 
+      = userInfoVisible.avatarUrl
+        ? userInfoVisible.avatarUrl 
+        : "/pages/room/img/123.jpg";
+    //阻塞解除后，新的用户信息已经存在于全局数据中。
+    this.setData({
+      userInfo: userInfoVisible,
+      complete: app.globalData.userInfoComplete,
+    })
   },
   /**
    * 生命周期函数--监听页面隐藏

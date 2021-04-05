@@ -13,7 +13,7 @@ const profile = {
    * 第一周的星期一 
    * TODO: 从服务段读取此字段
    */
-  weekbegin : Date.parse("2021-03-01"),
+  weekbegin : Date.parse("2021-02-28"),
   /** @enum {tagType} */
   statusMap : {
     past : {
@@ -237,11 +237,14 @@ Page({
       listRes.data.data.busyTime,
       profile.statusMap.occupied
     );
-    let weekNow =  Math.ceil(
+    let weekNow =  Math.floor(
       (date.getTime() - profile.weekbegin) / 
       (7  * 24 * 60 * 60 * 1000 ) 
-    )
+    ) 
     let dayNow = (date.getDay()+6)%7 +1;
+    if(dayNow == 7){
+      weekNow = weekNow -1;
+    }
     let resWlist  = [];
     for(let item of schedule){
       let res= {
@@ -261,7 +264,14 @@ Page({
       show: !this.data.show,
     })
   },
-
+  clickHide: function (e) { //隐藏周下拉菜单
+    this.setData({
+      show: false
+    })
+    let dateNow = new Date(profile.weekbegin);
+    dateNow.setDate(dateNow.getDate() + 7 * week - 7);
+    this.refreshTable(dateNow);
+  },
   /** 
    * 选择周数
    * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
@@ -272,9 +282,11 @@ Page({
       week: week
     })
     let dateNow = new Date(profile.weekbegin);
-    dateNow.setDate(dateNow.getDate() + 7 * week - 7);
+    dateNow.setDate(dateNow.getDate() + 7 * week);
+    console.log(dateNow);
     this.refreshTable(dateNow);
   },
+
   stopTouchMove: function () {
     return false;
   },
