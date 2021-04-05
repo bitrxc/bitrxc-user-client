@@ -45,7 +45,11 @@ Page({
    */
   onShow:async function () {
     //阻塞onload函数，等待用户信息返回
+    await wx.showLoading({
+      title:"小程序初始化中"
+    });
     await app.globalData.userInfoP;
+    await wx.hideLoading();
     let userInfoVisible = {...app.globalData.userInfo};
     userInfoVisible.avatarUrl 
       = userInfoVisible.avatarUrl

@@ -51,6 +51,8 @@ const profile = {
 const app = getApp()
 Page({
   data: {
+    /** @type {Promise<void>} */ 
+    inited:null,
     /** @type {dealSegmentItemType} */
     cardView: null,
     roomId:NaN,
@@ -134,13 +136,22 @@ Page({
       }
     }
   },
-  //初始化页面标题
-  //初始化预约时间列表
-  onLoad: async function (options) {
+  onLoad: function (options) {
+    wx.showLoading({
+      title: '加载预约列表',
+    })
+    let roomId = Number(options.roomId)
+    this.data.roomId = roomId;
+    this.data.inited = this.prefetch(roomId);
+  },
+  /**
+   * 初始化页面标题，初始化预约时间列表
+   * @param {number} roomId
+   */
+  prefetch:async function (roomId){
     await app.globalData.userInfoP;
-    this.data.roomId = Number(options.roomId);
     let roomRes = await request({
-      url: app.globalData.server + '/room/'+options.roomId,
+      url: app.globalData.server + '/room/'+roomId,
       header: app.globalData.APIHeader,
       method:"GET",
     })
@@ -157,16 +168,17 @@ Page({
       (dateNow.getTime() - profile.weekbegin) / 
       (7  * 24 * 60 * 60 * 1000 ) 
     )
-    this.setData({
+    await this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
       schedule :scheduleRes.data.data.timeList,
       week : weekNow,
     })
-    await this.refreshTable(new Date());
   },
   onShow:async function(){
+    await this.data.inited;
     await this.refreshTable(new Date());
+    await wx.hideLoading();
   },
   /** 
    * @param {Date} date 需要查询的周次
@@ -268,9 +280,6 @@ Page({
     this.setData({
       show: false
     })
-    let dateNow = new Date(profile.weekbegin);
-    dateNow.setDate(dateNow.getDate() + 7 * week - 7);
-    this.refreshTable(dateNow);
   },
   /** 
    * 选择周数

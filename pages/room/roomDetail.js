@@ -42,6 +42,15 @@ Page({
         }
       );
     }
+    if(room.gallery.length==0){
+      room.gallery.push(
+        {
+          image:"/pages/room/img/123.jpg",
+          url:"",
+        }
+      );
+    }
+
     room.descObj = JSON.parse(room.description)
     if(room.descObj["图库"] instanceof Array){
       //TODO:后端没有封装相册
@@ -56,17 +65,18 @@ Page({
     }else if(typeof room.descObj["设备情况"] == "string"){
       facilities = room.descObj["设备情况"].split("、");
     }
-    room.facilities = facilities.map((val)=>{
+    facilities = facilities.map((val)=>{
       return {
         label:val,
         img:iconMap.get(val)
       }
     });
+    room.facilities = facilities;
 
     if(room.descObj["承载功能"]){
       room.description = room.descObj["承载功能"];
     }else{
-      room.description = "赞无描述";
+      room.description = "暂无描述";
     }
     this.setData({
       room:room

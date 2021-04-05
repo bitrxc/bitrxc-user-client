@@ -5,7 +5,13 @@ App({
   async onLaunch() {
     this.globalData.userInfoP = this.initialize();
   },
-
+  async onError(e) {
+    await wx.showToast({
+      title:"系统出错！",
+      icon:"error",
+    })
+    //await wx.reportAnalytics('bug',{message:e});
+  },
   /**
    * 工具方法，异步执行业务数据加载操作。加入此函数是方便全局获取初始化状态，存入userInfoP。
    */
