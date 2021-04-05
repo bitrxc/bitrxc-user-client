@@ -268,6 +268,9 @@ Page({
     this.setData({
       show: false
     })
+    let dateNow = new Date(profile.weekbegin);
+    dateNow.setDate(dateNow.getDate() + 7 * week - 7);
+    this.refreshTable(dateNow);
   },
   /** 
    * 选择周数
