@@ -32,7 +32,6 @@ Page({
     })
     /** @type {Room & {area:string,capacity:number,descObj:Record<string,any>, gallery:Array<any>}} */
     let room = res.data.data.roomInfo;
-    console.log(res.data)
     room.gallery = [];
     if(typeof room.image == "string" && room.image.length > 0){
       room.gallery.push(
