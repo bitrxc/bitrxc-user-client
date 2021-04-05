@@ -33,6 +33,17 @@ Page({
   // 事件处理函数
    /* 生命周期函数--监听页面加载*/
   async onLoad() {
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow:async function () {
     //阻塞onload函数，等待用户信息返回
     await app.globalData.userInfoP;
     let userInfoVisible = {...app.globalData.userInfo};
@@ -45,17 +56,6 @@ Page({
       userInfo: userInfoVisible,
       complete: app.globalData.userInfoComplete,
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  },
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
   },
   /**
    * 生命周期函数--监听页面隐藏

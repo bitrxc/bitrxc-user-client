@@ -22,7 +22,7 @@ App({
     this.globalData.APIHeader.token = session.data.data.token;
     this.globalData.openid = session.data.data.openid;
     this.systemInfo = await wx.getSystemInfo();
-    // 获取微信用户信息，获取完成后使得userInfoP字面量完成
+    // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
     await this.getUserInfo();
   },
   async getUserInfo(){
@@ -64,7 +64,7 @@ App({
      */
     userInfoP:null,
     userInfoComplete:false,
-    server: "https://test.ruixincommunity.cn"
+    server: "https://api.bitrxc.com"
   },
   /**@type {WechatMiniprogram.SystemInfo} */
   systemInfo:null,
