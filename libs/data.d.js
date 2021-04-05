@@ -12,7 +12,7 @@ export const Schedule = class{};
 /** 
 * @typedef
 * @property {number} id 
-* @property {number|Array|null} gallery
+* @property {string} image
 * @property {any} description
 * @property {string} name
 */

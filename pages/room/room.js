@@ -36,7 +36,7 @@ Page({
       method:"GET",
     })
     //1:在控制台打印一下返回的res.data数据
-    /** @type {Array<Room & {image:string}> } */
+    /** @type {Array<Room & {descObj:Record<string,any>,image:string}> } */
     let list = res.data.data.rooms;
     if(list===undefined){
       this.setData({
@@ -45,13 +45,15 @@ Page({
       })
     }else{
       for(let items of list){
-        if(items.gallery instanceof Array){
-          items.image = items.gallery[0];
+        if(typeof items.image == "string"){
         }else{
           items.image = "/pages/room/img/123.jpg";
         }
         if(items.description === null){
           items.description = "暂无描述"
+        }else{
+          items.descObj = JSON.parse(items.description) 
+          items.description = items.descObj["承载功能"];
         }
       }
       //2:在请求接口成功之后，用setData渲染数据

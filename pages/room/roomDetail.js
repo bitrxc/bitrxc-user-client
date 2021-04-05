@@ -22,26 +22,34 @@ Page({
       header: getApp().globalData.APIHeader,
       method:"GET",
     })
-    /** @type {Room} */
+    /** @type {Room & {area:string,capacity:number,descObj:Record<string,any>, gallery:Array<any>}} */
     let room = res.data.data.roomInfo;
     console.log(res.data)
-    if(room.gallery===null||room.gallery===undefined){
-      room.gallery=[
+    room.gallery = [];
+    if(typeof room.image == "string" && room.image.length > 0){
+      room.gallery.push(
         {
-          image:"/pages/room/img/123.jpg",
+          image:room.image,
           url:"",
-        },
-        {
-          image:"/icons/Contact.png",
-          url:"",
-        },
-      ]
-    }else if(typeof room.gallery === "number"){
+        }
+      );
+    }
+    room.descObj = JSON.parse(room.description)
+    if(room.descObj["图库"] instanceof Array){
       //TODO:后端没有封装相册
     }
 
-    if(room.description===null){
-      room.description="暂无描述"
+    room.area = room.descObj["面积"];
+    room.capacity = Number(room.descObj["容纳人数"]);
+    if(room.descObj["设施"] instanceof Array){
+      room.facilities = room.descObj["设施"];
+    }else if(typeof room.descObj["设施"] == "string"){
+      room.facilities = room.descObj["设施"].split("、")
+    }
+    if(room.descObj["承载功能"]){
+      room.description = room.descObj["承载功能"];
+    }else{
+      room.description = "赞无描述";
     }
     this.setData({
       room:room
