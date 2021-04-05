@@ -64,11 +64,7 @@ App({
      */
     userInfoP:null,
     userInfoComplete:false,
-<<<<<<< HEAD
-    server: "https://test.ruixincommunity.cn"
-=======
     server: "https://api.bitrxc.com"
->>>>>>> 74e8f2cb5a2b2fe6143385ff53e4b840c99f6f8f
   },
   /**@type {WechatMiniprogram.SystemInfo} */
   systemInfo:null,

@@ -11,28 +11,13 @@
     <view class="box">
     <view class="small-title">基础设施
       <view class="img-content" wx:for="{{room.facilities}}">
-        <image src="../../icons/desk.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">{{item}}</text>
-        <icon class="icon-small" type="success_no_circle" size="23" ></icon>
-      </view>
-      <view class="img-content">
-        <image src="../../icons/chair.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">椅子</text>
+        <image src="../../icons/{{item.img}}" style="height:25px;width:25px;" wx:if="{{item.img}}"></image>
+        <text class="small-content">{{item.label}}</text>
       <!--根据房间实际做判断-->
       <!--有-->
         <icon class="icon-small" type="success_no_circle" size="23"></icon>
         <!--无
         <icon class="icon-small" type="cancel" size="23"></icon>  -->
-      </view>
-      <view class="img-content">
-        <image src="../../icons/medio.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">投影</text>
-        <icon class="icon-small" type="success_no_circle" size="23"></icon>
-      </view>
-      <view class="img-content">
-        <image src="../../icons/air-con.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">空调</text>
-        <icon class="icon-small" type="success_no_circle" size="23"></icon>
       </view>
     </view>
     </view>

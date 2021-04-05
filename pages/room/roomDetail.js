@@ -2,6 +2,14 @@
 import { request } from "../../libs/request.js";
 import { Room } from "../../libs/data.d.js";
 const app = getApp();
+const iconMap = new Map([
+  ["垫子板凳","chair.png"],
+  ["投影","medio.png"],
+  ["桌椅","desk.png"],
+  ["多媒体","medio.png"],
+  ["坐垫","chair.png"],
+  ["阶梯长椅","chair.png"],
+])
 Page({
   /**
    * 页面的初始数据
@@ -41,11 +49,20 @@ Page({
 
     room.area = room.descObj["面积"];
     room.capacity = Number(room.descObj["容纳人数"]);
-    if(room.descObj["设施"] instanceof Array){
-      room.facilities = room.descObj["设施"];
-    }else if(typeof room.descObj["设施"] == "string"){
-      room.facilities = room.descObj["设施"].split("、")
+
+    let facilities = [];
+    if(room.descObj["设备情况"] instanceof Array){
+      facilities = room.descObj["设备情况"];
+    }else if(typeof room.descObj["设备情况"] == "string"){
+      facilities = room.descObj["设备情况"].split("、");
     }
+    room.facilities = facilities.map((val)=>{
+      return {
+        label:val,
+        img:iconMap.get(val)
+      }
+    });
+
     if(room.descObj["承载功能"]){
       room.description = room.descObj["承载功能"];
     }else{
