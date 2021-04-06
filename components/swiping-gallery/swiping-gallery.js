@@ -1,4 +1,4 @@
-// components/swiping-gallery.js
+// @ts-check components/swiping-gallery.js
 Component({
   /**
    * 组件的属性列表
@@ -6,21 +6,17 @@ Component({
   properties: {
     images:Object,
   },
-
   /**
    * 组件的初始数据
    */
   data: {
-
   },
-
   /**
    * 组件的方法列表
    */
   methods: {
     "":function(){}
   },
-
   /**
    * 组件的生命周期函数列表
    */

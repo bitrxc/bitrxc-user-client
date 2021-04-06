@@ -28,7 +28,6 @@ page{
 .title_left > view{
   display: inline-block;
 }
-
 .week{
   font-size: 32rpx;
   line-height: 18rpx;
@@ -47,8 +46,8 @@ page{
 .show{
   width: 100%;
   height: 60px;
-  position: absolute;
-  top: 60px; 
+  position: relative ;
+  
   z-index: 101;
   display: flex;
   align-items: center;
@@ -138,7 +137,6 @@ page{
   word-break: break-all;
   -webkit-box-orient: vertical; */
 }
-
 .drawer_screen {
   width: 100%;
   height: 100%;
@@ -182,7 +180,6 @@ page{
   text-overflow: ellipsis;
   display: flex;
   justify-content: center;
-
 }
 .noidle-item {
   display: flex;
@@ -229,7 +226,6 @@ page{
   margin-bottom: 35rpx;
   margin-right: 20rpx;
 }
-
 .des > text{
   color: rgb(122, 122, 122);
   font-size:25rpx;
@@ -237,8 +233,16 @@ page{
   justify-content: center;
   align-content: center;
 }
-
-
-
-
-
+.note > .note-detail> input{
+  font-size: 27rpx;
+  background-color: rgb(250, 250, 250);
+  border-radius: 3rpx;
+}
+.note > .note-detail> text{
+  padding-top: 3rpx;
+}
+.note-detail{
+  display: flex;
+  flex-direction: row;
+  margin-top: 5rpx;
+}

@@ -6,19 +6,16 @@
   align-items: center;
   justify-content: space-between;
 } 
-
 .toplevel-container{
   margin: auto 40rpx;
   padding: 20rpx 0;
   box-sizing: border-box;
 }
-
 .title2 {
   font-family: sans-serif;
   font-size: 3.5vmax;
   font-weight: bolder;
 }
-
 .title1 {
   font-family: sans-serif;
   font-size: 5vmax;

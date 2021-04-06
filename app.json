@@ -1,13 +1,16 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/room/room",
     "pages/my/my",
-    "pages/logs/logs",
+    
+
+    "pages/room/room",
+    
+    "pages/index/index",
+    
+   
+
     "pages/my/logs/logs",
     "pages/my/process/process",
-    "pages/my/message/message",
-    "pages/my/evaluation/evaluation",
     "pages/my/personalSet/personalSet",
     "pages/room/room1/room1",
     "pages/room/roomDetail"
@@ -20,23 +23,18 @@
   },
   "tabBar": {
     "list": [
+      
       {
-        "pagePath": "pages/index/index",
-        "text": "睿信社区",
-        "iconPath": "/icons/Contact.png",
-        "selectedIconPath": "/icons/Contact.png"
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "/icons/SignIn.png",
+        "selectedIconPath": "/icons/SignIn.png"
       },
       {
         "pagePath": "pages/room/room",
         "text": "活动室预约",
         "iconPath": "/icons/ApplyRoom.png",
         "selectedIconPath": "/icons/ApplyRoom.png"
-      },
-      {
-        "pagePath": "pages/my/my",
-        "text": "我的",
-        "iconPath": "/icons/SignIn.png",
-        "selectedIconPath": "/icons/SignIn.png"
       }
     ]
   },

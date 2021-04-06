@@ -1,24 +1,106 @@
-/* pages/my/process/process.wxss */
-page {
-  background-image: url(https://wx3.sinaimg.cn/mw690/006cV2kkgy1gcz9iabu19j30yi22oabf.jpg);
-  background-size: cover;
-}
-.title{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.container{
-  border: 1rpx rgb(129, 129, 129) dashed;
+page{
   width: 100%;
-  height: 180rpx;
+  height: 100%;
+}
+.content{
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
 }
-.text{
-  margin:20rpx;
-  font-style: normal;
+.day{
+  font-size: 10pt;
+}
+.day_{
+  color: #3CB9FB;
+  padding-bottom: 6rpx; 
+  border-bottom: 4rpx solid #3CB9FB;
+}
+.dayClass{
+  width: 100%;
+  height: 100%;
+}
+.dayClass > swiper-item{
+  width: 100%;
+}
+.day_content{
+  display: flex;
+  flex-direction: row;
+}
+.day_content:first-child{
+  padding-top: 15px;
+}
+/* .day_line{
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 30rpx;
+  font-size: 24rpx;
+  text-align: center;
+  border-radius: 50%;
+  color: #FFF;
+  background-color: #3CB9FB;
+  position: relative;
+  margin-right: 20px;
+} */
+/* .day_line::before{
+  content: '';
+  width: 100px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: -6px;
+  background-color: #3CB9FB;
+} */
+.day_line{
+  width: 1px;
+  height: auto;
+  background-color: #D8D8DC;
+  position: relative;
+  left: 30rpx;
+  margin-left: 20rpx;
+  margin-right: 30px;
+}
+.day_line::before{
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 11px;
+  top: 0;
+  left: -6px;
+}
+.day_type{
+  width: 40rpx;
+  height: 40rpx;
+  font-size: 24rpx;
+  color: #FFF;
+  background-color: #3CB9FB;
+  text-align: center;
+  border-radius: 50%;
+  position: absolute;
+  left: -20rpx;
+}
+.day_wrap{
+  width: 100%;
+  color: #3CB9FB;
+  font-size: 28rpx;
+  padding-bottom: 30rpx;
+}
+.day_card{
+  width: 80%;
+  padding: 20rpx;
+  margin-top: 20rpx;
+  color: #878787;
+  background-color: #FFF;
+  border-radius: 10rpx;
+}
+.day_className{
+  font-size: 32rpx;
+  color: #333;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:ellipsis;
+}
+.day_course{
+  margin-top: 10rpx; 
 }

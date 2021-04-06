@@ -1,28 +1,26 @@
 <view class='content'>
   <!--房间名-->
-  <view class='title_right'> 
+  <view class='title_right'>
     <view class="tab-item ">
       <view class="onRight">{{roomName}}</view>
     </view>
   </view>
-
   <swiper class="swiper" style='width:100%;height:100%;'>
     <swiper-item catchtouchmove="stopTouchMove">
       <!--周次选择-->
-      <view class='title' bindtap='clickHide'>
+      <view class='title' bindtap='clickShow'>
         <view class='title_left'>
-          <view class='btn btn_'></view> 
+          <view class='btn btn_'></view>
           <view class='week' catchtap='clickShow'>
-            第8周
+            第{{week}}周
             <image></image>
           </view>
-          <view class='btn'></view> 
+          <view class='btn'></view>
         </view>
       </view>
       <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
-        <view class='show_week' wx:for="{{weekList}}" wx:key="index">{{item}}</view>
+        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}</view>
       </scroll-view>
-   
       <!--时段表-->
       <view class="timeTable">
         <view class="top">
@@ -39,13 +37,14 @@
               </view>
             </view>
             <view wx:for="{{schedule}}" wx:key="index">
-              <view style="width:100%;margin-top:{{(index+1)*50-0.8}}px;  position: absolute;border-bottom:1rpx solid lightgray;">
+              <view
+                style="width:100%;margin-top:{{(index+1)*50-0.8}}px;  position: absolute;border-bottom:1rpx solid lightgray;">
               </view>
             </view>
-
             <!--预约记录-->
             <view wx:for="{{wlist}}" wx:key="index">
-              <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}' style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*50+2}}px; height:{{item.yycd*50-5}}px;background-color:{{item.color == '0'?'#ffffff':(item.color == '1'?'#04BE02':'#ccc')}}"> 
+              <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}'
+                style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*50+2}}px; height:{{item.yycd*50-5}}px;background-color:{{item.color == '0'?'#ffffff':(item.color == '1'?'#04BE02':'#ccc')}}">
                 <view class="smalltext">{{item.zt}} </view>
                 <!-- xqj代表星期几，yysd是预约时段，yycd预约长度，zt状态-->
               </view>
@@ -53,22 +52,18 @@
           </view>
           <!--时段说明-->
           <view class="des">
-            <text class="des-text" wx:for="{{schedule}}">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
+            <text class="des-text" wx:for="{{schedule}}" wx:key="id">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
             <text class="des-text">实际时间以公告为准</text>
-          </view>
-          <view class="note">
-            <textarea placeholder="请在此输入预约的详细信息" ></textarea>
           </view>
         </scroll-view>
       </view>
     </swiper-item>
-  </swiper>  
-  
+  </swiper>
 </view>
 <!--可预约时段弹框-->
-<view class="drawer_screen" data-statu="close" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove' bindtap='hideModal'></view>
+<view class="drawer_screen" data-statu="close" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove'
+  bindtap='hideModal'></view>
 <view class="drawer_box" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove'>
-
   <view class="do_drawer_content" style="color:#000;background-color:'#3CB9FB'">
     <view class='drawer_top'>
       <text class='drawer_top text'>{{cardView.zt}}</text>
@@ -80,18 +75,31 @@
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时间：</label>
-        <label class='noidle-item-content'>第{{weekList[cardView.djz]}}周  周{{day[cardView.xqj-1]}}</label>
+        <label class='noidle-item-content'>第{{weekList[cardView.djz]}}周 周{{day[cardView.xqj-1]}}</label>
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时段：</label>
-        <label class='noidle-item-content'>第{{cardView.yysd}}时段 (08:30~09:45)</label>
+        <label class='noidle-item-content'>第{{cardView.yysd}}时段（{{schedule[cardView.yysd -1].begin}}-{{schedule[cardView.yysd -1].end}}）</label>
       </view>
-    </view>
-    <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
-      <!--确定按钮将预约数据传到后端，尚未写onOK函数-->
-      <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;" bindtap="onOK">确定</button>
-      <button class="btn-2" size="mini" type="default" style="font-size:35rpx;" bindtap="hideModal">取消</button>
+      <view class='noidle-item'>
+        <label class='noidle-item-prefix'>预约人：</label>
+        <label class='noidle-item-content'>{{userName}}</label>
+      </view>
+      <!--将用户输入信息 传到后台-->
+      <form bindsubmit="formSubmit">
+        <view class="note">
+          <view class="note-detail">
+            <text style="font-size:27rpx;">用途说明：</text>
+            <input name="usefor" placeholder="请输入用途" type="text" maxlength="30" confirm-type="done"></input>
+          </view>
+        </view>
+        <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
+          <!--确定按钮触发表单提交事件，表单将预约数据传到后端，移除onOK函数-->
+          <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;"
+            formType="submit">确定</button>
+          <button class="btn-2" size="mini" type="default" style="font-size:35rpx;" bindtap="hideModal">取消</button>
+        </view>
+      </form>
     </view>
   </view>
 </view>
-

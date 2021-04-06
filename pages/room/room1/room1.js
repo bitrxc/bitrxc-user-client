@@ -1,12 +1,26 @@
-import { request } from "../../../request/index.js";
+// @ts-check pages/room/room1/room1.js
+/* 
+ * TODO: 服务端处理时区问题
+ */
+import { request } from "../../../libs/request.js";
+import { Schedule } from "../../../libs/data.d.js";
+
+/**
+ * @typedef {{zt:string,color:number}} tagType
+ */
 const profile = {
+  /** 
+   * 第一周的星期一 
+   * TODO: 从服务段读取此字段
+   */
   weekbegin : Date.parse("2021-02-28"),
+  /** @enum {tagType} */
   statusMap : {
     past : {
       zt : "来晚了",
       color : -1,
     },
-    occupied : {
+    avaliable : {
       zt : "可预约",
       color : 1,
     },
@@ -14,178 +28,319 @@ const profile = {
       zt : "未开放",
       color : 0,
     },
-    avaliable : {
+    occupied : {
       zt : "已预约",
       color : -1,
     },
+    mine : {
+      zt : "已预约",
+      color : -2,
+    },
   }
 }
+/**
+ * @typedef {object} dealSegmentItemType
+ * @property {number} djz 表示第几周
+ * @property {number} xqj 表示星期几
+ * @property {number} yysd 表示预约时段
+ * @property {number} yycd 表示预约长度（固定为1）
+ * @property {string} [zt] 表示房间状态
+ * @property {number} [color] 用户已预约时段用-1表示，可预约时段用0表示，不可预约时段用-1表示
+ * @property {number} [execDate] 预约的到期日期，为数值型
+ */
 const app = getApp()
-// js
 Page({
   data: {
+    /** @type {Promise<void>} */ 
+    inited:null,
+    /** @type {dealSegmentItemType} */
+    cardView: null,
+    roomId:NaN,
+    inputValue:"",
     roomName: "",
     show: false,
-    weekList: ['1','2','3','4','5','6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+    weekList: [1,2,3,4,5,6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    week: 8,
     day: ['一','二','三','四','五','六','日'],
+    /** @type {Array<Schedule>}*/
     schedule : [],
-    wlist: [ //djz表示第几周，xqj表示星期几，yysd表示预约时段，yycd表示预约长度（固定为1），zt表示房间状态
-      {"djz":8, "xqj": 4, "yysd": 2, "yycd": 1, "zt": "已预约",  "color": 1 },   //用户已预约时段用1表示
-      {"djz":8,  "xqj": 1, "yysd": 2, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
-      {"djz":8,  "xqj": 2, "yysd": 1, "yycd": 1, "zt": "可预约",  "color": 0 },    //用户可预约时段用0表示
-      {"djz":8, "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },   //不可预约时段用-1表示
+    /** @type {Array<dealSegmentItemType>} */
+    wlist: [
+      {"djz":8, "xqj": 4, "yysd": 2, "yycd": 1, "zt": "已预约",  "color": 1 }, 
+      {"djz":8,  "xqj": 1, "yysd": 2, "yycd": 1, "zt": "可预约",  "color": 0 },
+      {"djz":8,  "xqj": 2, "yysd": 1, "yycd": 1, "zt": "可预约",  "color": 0 }, 
+      {"djz":8, "xqj": 1, "yysd": 1, "yycd": 1, "zt": "来晚了",  "color": -1 },
     ],
   },
-  //初始化页面标题
-  //初始化预约时间列表
-  onLoad: async function (options) {
-    this.data.roomId = options.roomID;
-    let res = await wx.getSystemInfo()
+  /**
+   * 检查用户填写的内容
+   * 提交表单中用户填写的内容
+   * 更新视图
+   * @param {WechatMiniprogram.FormSubmit} e
+   */
+  formSubmit:async function (e) {
+    if (e.detail.value.usefor.length == 0) {
+      await wx.showToast({
+        title: '用途不能为空!',
+        icon:"none",
+        duration: 1500
+      })
+      setTimeout(
+        () => { wx.hideToast() }, 
+        2000
+      )
+    } else {
+      let apInfo = this.data.cardView;
+      let execDate = new Date(apInfo.execDate);
+      let res = await request({
+        url : app.globalData.server + "/appointment/appoint",
+        header : app.globalData.APIHeader ,
+        method : "POST",
+        data : {
+          roomId : this.data.roomId,
+          launcher : app.globalData.userInfo.username,
+          launchTime : apInfo.yysd,
+          execDate : execDate.toISODateString(),
+          launchDate : Date.now(),
+          userNote : e.detail.value.usefor,
+        }
+      })
+      if (res.data.code != 200) {
+        await wx.showToast({
+          title: '提交失败！',
+          icon: 'loading',
+          duration: 1500,
+        })
+      } else {
+        //刷新预约时段所在列
+        let list = await this.fetchColumn(execDate);
+        let dayNow = (execDate.getDay()+6) % 7+1;
+        list = list.concat(
+          //将待刷新的列的旧成员移除
+          this.data.wlist.filter((v)=> v.xqj != dayNow)
+        );
+        this.setData({
+          wlist:list,
+        })
+        await wx.showToast({
+          title: '提交成功！',//这里打印出登录成功
+          icon: 'success',
+          duration: 1000,
+        })
+        //不跳转到预约进度页面，多次预约
+        // await wx.navigateTo({ 
+        //   url: '../../my/process/process',
+        // })
+        //播放动画，关闭
+        this.hideModal();
+      }
+    }
+  },
+  onLoad: function (options) {
+    wx.showLoading({
+      title: '加载预约列表',
+    })
+    let roomId = Number(options.roomId)
+    this.data.roomId = roomId;
+    this.data.inited = this.prefetch(roomId);
+  },
+  /**
+   * 初始化页面标题，初始化预约时间列表
+   * @param {number} roomId
+   */
+  prefetch:async function (roomId){
+    await app.globalData.userInfoP;
     let roomRes = await request({
-      url: app.globalData.server + '/room/'+options.roomID,
+      url: app.globalData.server + '/room/'+roomId,
       header: app.globalData.APIHeader,
       method:"GET",
     })
+    let room = roomRes.data.data.roomInfo;
+
     let scheduleRes = await request({
       url: app.globalData.server + '/schedule/all',
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    console.log()
 
-    let room = roomRes.data.data.roomInfo;
-    this.setData({
-      windowHeight: res.windowHeight,
+    let dateNow = new Date()
+    let weekNow =  Math.ceil(
+      (dateNow.getTime() - profile.weekbegin) / 
+      (7  * 24 * 60 * 60 * 1000 ) 
+    )
+    await this.setData({
+      windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
-      roomID: room.id,
       schedule :scheduleRes.data.data.timeList,
+      week : weekNow,
     })
-    await this.refreshTable();
   },
-
   onShow:async function(){
-    await this.refreshTable();
+    await this.data.inited;
+    await this.refreshTable(new Date());
+    await wx.hideLoading();
   },
-  //TODO: 预约数据结构支持隔日预约
-  refreshTable :async function () {
-    let listRes = await request({
-      url: app.globalData.server + '/room/free/time?roomId='+this.data.roomId,
-      header: app.globalData.APIHeader,
-      method:"GET",
-    })
-    console.log(listRes.data.data.freeTime)
-    /** */
-    let rawList = new Set(listRes.data.data.freeTime);
-    let date = new Date();
-    let dateN = date.getTime();
-    let resWlist  = [];
+  /** 
+   * @param {Date} date 需要查询的周次
+   */
+  refreshTable : async function(date){
+    date.setDate(date.getDate() - (date.getDay() + 6)%7);
+    /** @type {Array<Promise>} */
+    let operations = [];
     for(let i = 0;i<7;i++){
-      for(let {id,begin,end} of this.data.schedule){
-        let res= {
-          "djz":8, 
-          "xqj": i, 
-          "yysd": id, 
-          "yycd": 1, 
-        };
-        if(i<date.getDay()){
-          res = Object.assign(res,profile.statusMap.past)
-        }else if(i>date.getDay()){
-          res = Object.assign(res,profile.statusMap.unreachable)
-        }else{
-          if(Date.parse(end) <= dateN){
-            res = Object.assign(res,profile.statusMap.past)
-          }else if(rawList.has(id)){
-            res = Object.assign(res,profile.statusMap.avaliable)
-          }else{
-            res = Object.assign(res,profile.statusMap.occupied)
-          }
-        }
-        resWlist.push(res);
-      }
+      let newDate = new Date(date.getTime());
+      newDate.setDate(newDate.getDate() + i);
+      operations.push(this.fetchColumn(newDate))
     }
-    console.log(resWlist);
+    let results = await Promise.all(operations);
+    let resWlist = results.reduce(
+      (prev,cur) => prev.concat(cur) ,
+    [])
     this.setData({
       wlist:resWlist,
     })
   },
-  clickShow: function (e) { //显示周下拉菜单
-    var that = this;
-    that.setData({
-      show: !that.data.show,
+  /** 
+   * @param {Date} date 需要查询的日期
+   * @returns {Promise<Array<dealSegmentItemType>>}
+   */
+  fetchColumn :async function (date) {
+    //url构造器，微信小程序不支持Web URL规范，此处还要用
+    let urlBuilder = app.globalData.server +
+      '/room/free/time' + '?' +
+      'roomId' + '=' + this.data.roomId + '&' +
+      'username' + '='  + app.globalData.userInfo.username + '&' +
+      'date' + '='  + date.toISODateString();
+    let listRes = await request({
+      url: urlBuilder,
+      header: app.globalData.APIHeader,
+      method:"GET",
+    })
+    /**
+     * 
+     * @param {Array<{id:any,tag?:tagType}>} resList 
+     * @param {Array<{id:any}>} externList 
+     * @param {tagType} tag 
+     */
+    function marker(resList,externList,tag){
+      for(let i of resList){
+        if (
+          externList.some((v)=>  v.id === i.id )
+        ) {
+          i.tag = tag;
+        }
+      }
+    };
+    /** @type {Array<Schedule & {tag?:tagType}>}*/
+    let schedule = Array.from(this.data.schedule)
+    marker(schedule ,
+      listRes.data.data.freeTime,
+      profile.statusMap.avaliable
+    );
+    marker(schedule ,
+      listRes.data.data.passTime,
+      profile.statusMap.past
+    );
+    marker(schedule ,
+      listRes.data.data.myTime,
+      profile.statusMap.mine
+    );
+    marker(schedule ,
+      listRes.data.data.busyTime,
+      profile.statusMap.occupied
+    );
+    let weekNow =  Math.floor(
+      (date.getTime() - profile.weekbegin) / 
+      (7  * 24 * 60 * 60 * 1000 ) 
+    ) 
+    let dayNow = (date.getDay()+6)%7 +1;
+    if(dayNow == 7){
+      weekNow = weekNow -1;
+    }
+    let resWlist  = [];
+    for(let item of schedule){
+      let res= {
+        "djz": weekNow , 
+        "xqj": dayNow , 
+        "yysd": item.id , 
+        "yycd": 1 ,
+        "execDate":date.getTime() ,
+      };
+      res = Object.assign(res,item.tag);
+      resWlist.push(res);
+    }
+    return resWlist;
+  },
+  clickShow: function (e) { //显示或隐藏周下拉菜单
+    this.setData({
+      show: !this.data.show,
     })
   },
-
   clickHide: function (e) { //隐藏周下拉菜单
-    var that = this
-    that.setData({
+    this.setData({
       show: false
     })
+  },
+  /** 
+   * 选择周数
+   * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
+   */
+  selectWeek: function (e) {
+    let week = e.target.dataset.week;
+    this.setData({
+      week: week
+    })
+    let dateNow = new Date(profile.weekbegin);
+    dateNow.setDate(dateNow.getDate() + 7 * week);
+    this.refreshTable(dateNow);
   },
 
   stopTouchMove: function () {
     return false;
   },
-
-  showCardView: function (e) { //点击可预约区域，弹框显示预约信息
-    console.log(e)
-    let cardView = { ...e.currentTarget.dataset.wlist }
+  /** 
+   * 点击可预约区域，检查用户资质，向符合预约资质的用户弹框显示预约信息
+   * @param {WechatMiniprogram.TouchEvent<any,any,{wlist:dealSegmentItemType}>} e
+   */
+  showCardView: function (e) {
+    let cardView = e.currentTarget.dataset.wlist;
     if(e.currentTarget.dataset.wlist.color === 1){
-      this.setData({
-        cardView: cardView
-      })
-      this.util("open");
+      if(app.globalData.userInfoComplete){
+        this.setData({
+          cardView: cardView,
+          userName: app.globalData.userInfo.name,
+          //展示对话框
+          showModalStatus: true,
+        });
+      }else{
+        wx.showToast({
+          title: '用户信息尚不完善，无法预约！',
+        })
+      }
     }
   },
-
   hideModal() { //点击弹框外空白处收起弹框(取消按钮相同)
-    this.util("close");
-  },
-
-  onOK:async function () {  //确定按钮
-
-    let apInfo = this.data.cardView
-    await request({
-      url : app.globalData.server + "/appointment/appoint",
-      header : app.globalData.APIHeader ,
-      method : "POST",
-      data : {
-        roomId : this.data.roomID,
-        launcher : app.globalData.userInfo.username,
-        launchTime : apInfo.yysd,
-      }
-    })
-    await this.refreshTable();
-    this.util("close");
-    
-  },
-  util: function (currentStatu) {
-    var animation = wx.createAnimation({
-      duration: 100, //动画时长 
-      timingFunction: "linear", //线性 
-      delay: 0 //0则不延迟 
-    });
-    this.animation = animation;
-    animation.opacity(0).rotateX(-100).step();
-    this.setData({
-      animationData: animation.export()
-    })
     setTimeout(function () {
-      animation.opacity(1).rotateX(0).step();
       this.setData({
-        animationData: animation
-      })
-
-      if (currentStatu == "close") {
-        this.setData({
-          showModalStatus: false
-        });
-      }
+        showModalStatus: false
+      });
     }.bind(this), 200)
-
-      if (currentStatu == "open") {
-        this.setData({
-          showModalStatus: true
-        });
-    }
   },
-})
+});
+( () => {
+  function pad(number) {
+    if ( number < 10 ) {
+      return '0' + number;
+    }
+    return number;
+  }
+  /**
+   * @function Date#toISODateString
+   * @returns {string}
+   */
+  Date.prototype.toISODateString = function() {
+    return this.getUTCFullYear() +
+      '-' + pad( this.getUTCMonth() + 1 ) +
+      '-' + pad( this.getUTCDate() ) ;
+  };
+} )();

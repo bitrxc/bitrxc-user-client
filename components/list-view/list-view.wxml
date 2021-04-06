@@ -1,13 +1,14 @@
 <!--components/list-view/list-view.wxml-->
-
 <view class="-box toplevel-container">
-  <view class="-box-item" wx:for="{{list}}" wx:key="index">
+  <view class="-box-item" wx:for="{{list}}" wx:key="index" style="height: 120px;">
     <view class="-box-item-image">
-      <image class="-box-image" src="{{item.image}}" mode="aspectFill" ></image>
+      <image class="-box-image" src="{{item.image}}" mode="aspectFill"  style="border-radius:10rpx;"></image>
     </view>
     <view class="-box-item-textcontainer">
-      <navigator url="{{targetPage}}?{{targetID}}={{item.id}}" class="-box-item-title title2">{{item.name}}</navigator>
-      <text class="-box-item-desc">{{item.description}}</text>
+      <view class="box-title">
+        <navigator url="{{targetPage}}?{{targetID}}={{item.id}}" class="-box-item-title">【{{item.name}}】</navigator>
+      </view>
+      <text class="-box-item-desc">{{item.description}}</text>                                                                
     </view>    
   </view>
   <view class="-box-item" wx:if="{{isEmpty}}">  

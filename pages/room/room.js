@@ -1,8 +1,8 @@
-import { request } from "../../request/index.js";
-//  pages/room/room.js
+// @ts-check pages/room/room.js
+import { request } from "../../libs/request.js";
+import { Room } from "../../libs/data.d.js";
 const app = getApp();
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -10,30 +10,34 @@ Page({
     list:[],
     isEmptyList:false,
   },
-   
-
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    this.refreshList(app.globalData.server + '/room/0/20',"items");
-
+  onLoad:async function (options) {
+    await app.globalData.userInfoP;
+    this.refreshList(app.globalData.server + '/room');
   },
+  /** @param {WechatMiniprogram.Input} event*/
   onFilterChange:function (event) {
-    this.refreshList(app.globalData.server + '/room/nameLike?nameLike=' + event.detail.value,"rooms")
+    this.refreshList(app.globalData.server + '/room/nameLike?nameLike=' + event.detail.value)
   },
+  /** @param {WechatMiniprogram.InputBlur} event*/
   onReturn:function (event) {
-    this.refreshList(app.globalData.server + '/room/0/20',"items");
+    this.refreshList(app.globalData.server + '/room');
   },
-  refreshList:async function(url,prop){
+  /**
+   * 
+   * @param {string} url 
+   */
+  refreshList:async function(url){
     let res = await request({
       url: url,//测试用接口
       header: app.globalData.APIHeader,
       method:"GET",
     })
     //1:在控制台打印一下返回的res.data数据
-    console.log(res.data)
-    let list = res.data.data[prop];
+    /** @type {Array<Room & {descObj:Record<string,any>,image:string}> } */
+    let list = res.data.data.rooms;
     if(list===undefined){
       this.setData({
         list: [],
@@ -41,11 +45,15 @@ Page({
       })
     }else{
       for(let items of list){
-        if(items.image===null){
-          items.image="/pages/room/img/123.jpg"
+        if(typeof items.image == "string"){
+        }else{
+          items.image = "/pages/room/img/123.jpg";
         }
-        if(items.description===null){
-          items.description="暂无描述"
+        if(items.description === null){
+          items.description = "暂无描述"
+        }else{
+          items.descObj = JSON.parse(items.description) 
+          items.description = items.descObj["承载功能"];
         }
       }
       //2:在请求接口成功之后，用setData渲染数据
@@ -60,51 +68,38 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
   },
-
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.refreshList(app.globalData.server + '/room/0/20',"items");
+    this.refreshList(app.globalData.server + '/room');
   },
-
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
   },
-
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
   },
-  
   tofunction: function (e) {
     wx.navigateTo({
       url: e.currentTarget.dataset.url,
