@@ -72,23 +72,26 @@ Page({
         roomMap.set(i,"房间未找到");
       }
     }
-    /** 提取用户Id
+
+    /** 如果显示其他用户，则提取用户Id
      * @type {Map<string,string>} */
     let userMap = new Map();
     for(let i of apList){
       userMap.set(i.launcher,"");
     }
-    //加载涉及到的用户名称
-    for(let [i,] of userMap){
-      try{
-        let roomNameRes = await request({
-          url: app.globalData.server + "/user/" +i,
-          header: app.globalData.APIHeader,
-          method:"GET",
-        })
-        userMap.set(i,roomNameRes.data.data.userInfo.name);
-      }catch(e){
-        userMap.set(i,"用户未找到");
+    if(!this.data.selfonly){
+      //加载涉及到的用户名称
+      for(let [i,] of userMap){
+        try{
+          let roomNameRes = await request({
+            url: app.globalData.server + "/user/" +i,
+            header: app.globalData.APIHeader,
+            method:"GET",
+          })
+          userMap.set(i,roomNameRes.data.data.userInfo.name);
+        }catch(e){
+          userMap.set(i,"用户未找到");
+        }
       }
     }
     //适配前端属性名

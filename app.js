@@ -6,10 +6,31 @@ App({
     this.globalData.userInfoP = this.initialize();
   },
   async onError(e) {
+    console.log(e)
+    await this.errorHandler(e);
+  },
+  async onUnhandledRejection(e){
+    console.log(e)
+    await this.errorHandler(e.reason.stack);
+  },
+
+  /**
+   * 
+   * @param {string} errorMsg 
+   */
+  async errorHandler(errorMsg){
+    await wx.hideLoading();
     await wx.showToast({
       title:"系统出错！",
       icon:"error",
     })
+    //处理终结性错误
+    if(errorMsg.search("Failed to login") > -1){
+      console.error("终结性错误")
+      // await wx.redirectTo({
+      //   url: '/pages/fatalError',
+      // })
+    }
     //await wx.reportAnalytics('bug',{message:e});
   },
   /**
@@ -21,12 +42,20 @@ App({
     // 小程序基础库版本2.10.2开始支持异步Promise调用
     // wx.request仍然需要手动封装
     // 发送 weixincode.code 到后台换取 openId, sessionKey, unionId'
-    let session = await request({
-      url:this.globalData.server + "/user/login?code="+weixincode.code,
-      method:"GET",
-    })
-    this.globalData.APIHeader.token = session.data.data.token;
-    this.globalData.openid = session.data.data.openid;
+    try{
+      let session = await request({
+        url:this.globalData.server + "/user/login?code="+weixincode.code,
+        method:"GET",
+      })
+      if(session.data.code<200 || session.data.code>=300){
+        throw new Error()
+      }
+      this.globalData.APIHeader.token = session.data.data.token;
+      this.globalData.openid = session.data.data.openid;
+    }catch(e){
+      // 修改有问题的报错信息。 TODO: 修改错误类型
+      throw new Error("Failed to login");
+    }
     this.systemInfo = await wx.getSystemInfo();
     // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
     await this.getUserInfo();
