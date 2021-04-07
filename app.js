@@ -5,22 +5,20 @@ App({
   async onLaunch() {
     this.globalData.userInfoP = this.initialize();
   },
-  async onError(e) {
-    console.log(e)
-    await this.errorHandler(e);
+  onError(e) {
+    this.errorHandler(e);
   },
-  async onUnhandledRejection(e){
-    console.log(e)
-    await this.errorHandler(e.reason.stack);
+  onUnhandledRejection(e){
+    this.errorHandler('' + e.reason.errMsg + e.reason.stack);
   },
 
   /**
    * 
    * @param {string} errorMsg 
    */
-  async errorHandler(errorMsg){
-    await wx.hideLoading();
-    await wx.showToast({
+  errorHandler(errorMsg){
+    wx.hideLoading();
+    wx.showToast({
       title:"系统出错！",
       icon:"error",
     })
@@ -99,7 +97,7 @@ App({
      */
     userInfoP:null,
     userInfoComplete:false,
-    server: "https://api.bitrxc.com"
+    server: "https://api-dev.bitrxc.com"
   },
   /**@type {WechatMiniprogram.SystemInfo} */
   systemInfo:null,

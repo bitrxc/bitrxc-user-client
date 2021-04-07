@@ -54,6 +54,6 @@
   </view>
 
  </view>
- <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
+ <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo" bindtap="replaceUserProfile">
       使用微信用户名
     </button>

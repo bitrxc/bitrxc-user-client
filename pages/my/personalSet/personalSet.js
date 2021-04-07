@@ -3,6 +3,7 @@
 // TODO: 向用户请求权限，并维护全局用户信息
 import { request } from "../../../libs/request.js";
 import { User } from "../../../libs/data.d.js";
+import { compareVersion } from "../../../libs/compareVersion.js";
 const app = getApp();
 Component({
   /**
@@ -20,17 +21,48 @@ Component({
     onLoad: async function (options) {
     },
     /**
-     * 获取明文编码的用户信息，应该不受 {@link wx.getUserInfo} 接口变化的影响
+     * 获取明文编码的用户信息，受 {@link wx.getUserInfo} 接口变化的影响，只对旧版本小程序有效
      * @param {WechatMiniprogram.ButtonGetUserInfo} e 
      */
     replaceUserInfo:async function (e) {
-      let rawInfo = e.detail.userInfo;
-      await this.setUserProfile({
-        name : rawInfo.nickName,
-      });
+      if(compareVersion(app.systemInfo.SDKVersion,"2.10.4") == -1){
+        let rawInfo = e.detail.userInfo;
+        console.log(e);
+        await this.setUserProfile({
+          name : rawInfo.nickName,
+        });
+      }else{
+        // 新版本忽略此调用，由bindtap处理
+      }
     },
     /**
-     * 获取明文编码的用户信息，应该不受 {@link wx.getUserInfo} 接口变化的影响
+     * 获取明文编码的用户信息，受 {@link wx.getUserInfo} 接口变化的影响，只对旧版本小程序有效
+     * @param {WechatMiniprogram.Touch} e 
+     */
+    replaceUserProfile:async function (e) {
+      if(compareVersion(app.systemInfo.SDKVersion,"2.10.4") == -1){
+      }else{
+        // 新版本调用getUserProfile
+        try{
+          let {userInfo} = await wx.getUserProfile({
+            desc: '预约房间需要提供真实姓名',
+          });
+          await this.setUserProfile({
+            name : userInfo.nickName,
+          });
+
+        }catch(e){
+          if(e.errMsg.search("fail auth")){
+            // 静默处理拒绝授权
+          }else{
+            // 重新抛出错误，供全局捕获
+            throw e;
+          }
+        }
+      }
+    },
+    /**
+     * 从文本框获取预约人姓名
      * @param {WechatMiniprogram.Input} e 
      */
     replaceUserName:async function (e) {
