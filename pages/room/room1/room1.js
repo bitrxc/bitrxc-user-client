@@ -292,7 +292,6 @@ Page({
     })
     let dateNow = new Date(profile.weekbegin);
     dateNow.setDate(dateNow.getDate() + 7 * week);
-    console.log(dateNow);
     this.refreshTable(dateNow);
   },
 
