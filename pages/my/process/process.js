@@ -1,4 +1,4 @@
-import { APIResult } from "../../../libs/data.d.js";
+import { APIResult,Deal } from "../../../libs/data.d.js";
 import { request } from "../../../libs/request.js";
 const app = getApp();
 const mapping = {
@@ -8,9 +8,6 @@ const mapping = {
   reject : "已拒绝",
   cancel : "已取消",
 }
-const allowedStatus = new Set([
-  'new','receive','signed','illegal','missed'
-])
 Page({
   data: {
     dayList: [//yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态
@@ -73,7 +70,7 @@ Page({
     /** @type {Array<any>} */
     let apList = APIResult.checkAPIResult(res.data).appointments;
     apList = apList.filter(
-      (v) => allowedStatus.has(v.status)
+      (v) => Deal.allowedStatus.has(v.status)
     ).sort(
       (a,b)=> {
         let aDate = Date.parse(a.execDate) ;

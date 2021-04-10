@@ -56,3 +56,8 @@ export const APIResult = class{
     }
   }
 };
+export const Deal = class{
+  static allowedStatus = new Set([
+    'new','receive','signed','illegal','missed'
+  ]);
+}

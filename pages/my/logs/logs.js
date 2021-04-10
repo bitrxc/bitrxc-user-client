@@ -5,7 +5,7 @@ const app = getApp();
 const mapping = {
   new : "新请求",
   onhold : "处理中",
-  receive : "已通过",
+  receive : "已通过，待签到",
   reject : "已拒绝",
   cancel : "已取消",
 }
