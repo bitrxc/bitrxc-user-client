@@ -6,7 +6,7 @@ App({
     this.globalData.userInfoP = this.initialize();
   },
   onError(e) {
-    this.errorHandler(e);
+    this.errorHandler('' + e);
   },
   onUnhandledRejection(e){
     this.errorHandler('' + e.reason.errMsg + e.reason.stack);
@@ -69,15 +69,8 @@ App({
     })
     /** @type {User & WechatMiniprogram.UserInfo} */
     let userInfo = appUserInfo.data.data.userInfo
-    // 可以将 res 发送给后台解码出 unionId
-    let settingsRes = await wx.getSetting()
-    if (settingsRes.authSetting['scope.userInfo']) {
-      /** @type {WechatMiniprogram.GetUserInfoSuccessCallbackResult} 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 */ 
-      let userInfoRes = await wx.getUserInfo({})
-      // 可以将 res 发送给后台解码出 unionId
-      userInfo.avatarUrl = userInfoRes.userInfo.avatarUrl
-    }
     this.globalData.userInfo = userInfo;
+    //TODO: 管理员手动审核用户信息
     this.globalData.userInfoComplete 
       = Boolean(userInfo.phone) 
       && Boolean(userInfo.organization) 

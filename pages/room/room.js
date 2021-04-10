@@ -100,9 +100,4 @@ Page({
    */
   onShareAppMessage: function () {
   },
-  tofunction: function (e) {
-    wx.navigateTo({
-      url: e.currentTarget.dataset.url,
-    })
-  }
 })
