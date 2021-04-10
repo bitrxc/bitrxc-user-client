@@ -58,7 +58,7 @@
   </view>
 
 </view>
-<button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo" bindtap="replaceUserProfile" wx:if="{{editable}}">
+<button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo" bindtap="replaceUserProfile" wx:if="{{editable&&false}}">
   使用微信用户名
 </button>
 <button bindtap="enableEdit"  wx:if="{{!editable}}">
@@ -66,4 +66,7 @@
 </button>
 <button bindtap="disableEdit"  wx:else type="primary">
   保存
+</button>
+<button open-type="feedback" wx:if="{{!editable}}">
+  <text>反馈</text>
 </button>
