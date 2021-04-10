@@ -37,7 +37,7 @@ page {
   height: 138rpx;
   border-radius: 50%;
   top: 1rpx;
-  
+  overflow: hidden;
 }
 .information{
   display: flex;
