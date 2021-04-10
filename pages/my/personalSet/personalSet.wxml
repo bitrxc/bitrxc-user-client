@@ -48,12 +48,22 @@
     </view>
    </view>
    <view class="weui-cell__bd" style="margin:10px;">
-    <input class="weui-input" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}" placeholder="请输入联系方式" />
+     <!--TODO: 此处换小字-->
+    {{status.phone}}
+   </view>
+   <view class="weui-cell__bd" style="margin:10px;">
+    <input class="weui-input" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}" placeholder="请输入联系方式" bindfocus="activatePhone"/>
    </view>
    <view class="line" style="width:90%;margin-top:15rpx;  position: absolute;border-bottom:1rpx solid lightgray;"></view>
   </view>
 
- </view>
- <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo" bindtap="replaceUserProfile">
-      使用微信用户名
-    </button>
+</view>
+<button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo" bindtap="replaceUserProfile" wx:if="{{editable}}">
+  使用微信用户名
+</button>
+<button bindtap="enableEdit"  wx:if="{{!editable}}">
+  修改用户信息
+</button>
+<button bindtap="disableEdit"  wx:else type="primary">
+  保存
+</button>
