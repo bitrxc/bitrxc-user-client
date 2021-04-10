@@ -1,6 +1,6 @@
 // @ts-check app.js
 import {request} from  "./libs/request.js";
-import { APIResult, User } from "./libs/data.d.js";
+import { APIResult, User,Deal } from "./libs/data.d.js";
 App({
   async onLaunch() {
     this.globalData.userInfoP = this.initialize();
@@ -75,6 +75,28 @@ App({
       && Boolean(userInfo.name)
     ;
     return userInfo;
+  },
+  /**检查用户是否可以预约 */
+  async checkDealable(){
+    let res = await request({
+      url: this.globalData.server + "/appointment/username/"+this.globalData.openid,
+      header: this.globalData.APIHeader,
+      method:"GET",
+    })
+    /** @type {Array<any>} */
+    let apList = APIResult.checkAPIResult(res.data).appointments;
+    apList = apList.filter(
+      (v) => Deal.allowedStatus.has(v.status)
+    );
+    if(apList.length >= 4){
+      return 'toomuch';
+    }else{
+      if(!this.globalData.userInfoComplete){
+        return 'imcomplete'
+      }else{
+        return 'ok';
+      }
+    }
   },
   globalData: {
     openid:"",

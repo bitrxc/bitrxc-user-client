@@ -18,6 +18,10 @@ Page({
     area:12,
     pnum:15,
     roomId:NaN,
+    deal:{
+      dealable:true,
+      description:""
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -91,7 +95,32 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow:async function(){
+    switch(await app.checkDealable()){
+      case 'ok':
+        this.setData({
+          deal:{
+            dealable:true,
+            description:""
+          }
+        })
+        break;
+      case 'toomuch':
+        this.setData({
+          deal: {
+            dealable : false,
+            description : '待处理预约数已达上限'
+          }
+        })
+        break;
+      case 'imcomplete':
+        this.setData({
+          deal: {
+            dealable : false,
+            description : '用户信息尚不完善，无法预约！'
+          }
+        })
+    }
   },
   /**
    * 生命周期函数--监听页面隐藏

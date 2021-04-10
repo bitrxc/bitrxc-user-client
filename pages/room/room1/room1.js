@@ -3,7 +3,7 @@
  * TODO: 服务端处理时区问题
  */
 import { delay, request } from "../../../libs/request.js";
-import { APIResult, Schedule } from "../../../libs/data.d.js";
+import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
 
 /**
  * @typedef {{zt:string,color:number}} tagType
@@ -124,13 +124,18 @@ Page({
         icon: 'success',
         duration: 1000,
       })
-      //不跳转到预约进度页面，多次预约
-      // await wx.navigateTo({ 
-      //   url: '../../my/process/process',
-      // })
       //播放动画，关闭
       this.hideModal();
-      
+
+      //根据是否可以继续预约判断，留在当前页面，还是跳转到预约进度页面，多次预约
+      switch(await app.checkDealable()){
+        case 'ok':
+          break;
+        default:
+          await wx.navigateTo({ 
+            url: '../../my/process/process?continue=false',
+          })
+      }
     }
   },
   onLoad: function (options) {
@@ -173,9 +178,18 @@ Page({
     })
   },
   onShow:async function(){
-    await this.data.inited;
-    await this.refreshTable(new Date());
-    await wx.hideLoading();
+    switch(await app.checkDealable()){
+      case 'ok':
+        await this.data.inited;
+        await this.refreshTable(new Date());
+        await wx.hideLoading();
+        break;
+      case 'toomuch':
+        await wx.navigateBack();
+        break;
+      case 'imcomplete':
+        await wx.navigateBack();
+    }
   },
   /** 
    * @param {Date} date 需要查询的周次
@@ -303,18 +317,12 @@ Page({
   showCardView: function (e) {
     let cardView = e.currentTarget.dataset.wlist;
     if(e.currentTarget.dataset.wlist.color === 1){
-      if(app.globalData.userInfoComplete){
-        this.setData({
-          cardView: cardView,
-          userName: app.globalData.userInfo.name,
-          //展示对话框
-          showModalStatus: true,
-        });
-      }else{
-        wx.showToast({
-          title: '用户信息尚不完善，无法预约！',
-        })
-      }
+      this.setData({
+        cardView: cardView,
+        userName: app.globalData.userInfo.name,
+        //展示对话框
+        showModalStatus: true,
+      });
     }
   },
   async hideModal() { //点击弹框外空白处收起弹框(取消按钮相同)

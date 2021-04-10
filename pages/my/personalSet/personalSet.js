@@ -84,9 +84,17 @@ Component({
      */
     replaceUserName:async function (e) {
       let rawName = e.detail.value;
-      await this.saveUserProfile({
-        name : rawName,
-      });
+      if(rawName.length>0){
+        await this.saveUserProfile({
+          name : rawName,
+        });
+      }else{
+        this.setData({
+          user:{
+            ...this.data.user
+          }
+        })
+      }
     },
     /**
      * 
@@ -152,9 +160,17 @@ Component({
      */
     replaceOrg:async function (e) {
       let rawOrg = e.detail.value;
-      await this.saveUserProfile({
-        organization : rawOrg,
-      });
+      if(rawOrg.length>0){
+        await this.saveUserProfile({
+          organization : rawOrg,
+        });
+      }else{
+        this.setData({
+          user:{
+            ...this.data.user
+          }
+        })
+      }
     },
     /** 
      * @param {Partial< User | WechatMiniprogram.UserInfo>} userInfo
@@ -176,7 +192,7 @@ Component({
         this.setData({
           user: newInfo ,
         })
-        app.globalData.userInfo = newInfo;
+        app.getUserInfo();
       }catch(e){
         await wx.showToast({
           title: '用户信息保存失败',
