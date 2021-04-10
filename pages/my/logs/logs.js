@@ -29,7 +29,7 @@ Page({
       method:"GET",
     })
     /** @type {Array<Schedule>} */
-    let schedule = scheduleRes.data.data.timeList;
+    let schedule = APIResult.checkAPIResult(scheduleRes.data).timelist;
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
       header: app.globalData.APIHeader,
@@ -37,7 +37,7 @@ Page({
     })
     /** 加载到的预约列表
      *  @type {Array<any>} */
-    let apList = res.data.data.appointments;
+    let apList = APIResult.checkAPIResult(res.data).appointments;
     apList.sort(
       (a,b)=> {
         let aDate = Date.parse(a.launchDate) ;
@@ -67,7 +67,7 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        roomMap.set(i,roomNameRes.data.data.roomInfo.name);
+        roomMap.set(i,APIResult.checkAPIResult(roomNameRes.data).roomInfo.name);
       }catch(e){
         roomMap.set(i,"房间未找到");
       }
@@ -88,7 +88,7 @@ Page({
             header: app.globalData.APIHeader,
             method:"GET",
           })
-          userMap.set(i,roomNameRes.data.data.userInfo.name);
+          userMap.set(i,APIResult.checkAPIResult(roomNameRes.data).userInfo.name);
         }catch(e){
           userMap.set(i,"用户未找到");
         }

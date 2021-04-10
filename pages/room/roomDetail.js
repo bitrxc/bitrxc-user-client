@@ -1,6 +1,6 @@
 // @ts-check pages/room/roomDetail.js
 import { request } from "../../libs/request.js";
-import { Room } from "../../libs/data.d.js";
+import { APIResult, Room } from "../../libs/data.d.js";
 const app = getApp();
 const iconMap = new Map([
   ["垫子板凳","chair.png"],
@@ -30,8 +30,9 @@ Page({
       header: getApp().globalData.APIHeader,
       method:"GET",
     })
-    /** @type {Room & {area:string,capacity:number,descObj:Record<string,any>, gallery:Array<any>}} */
-    let room = res.data.data.roomInfo;
+    /** @type {Room & {area:string,capacity:number,descObj:Record<string,any>, gallery:Array<any>,facilities:Array<{label:string,img:string}>}} */
+    let room = APIResult.checkAPIResult(res.data).roomInfo;
+    console.log(room)
     room.gallery = [];
     if(typeof room.image == "string" && room.image.length > 0){
       room.gallery.push(
@@ -65,9 +66,10 @@ Page({
       facilities = room.descObj["设备情况"].split("、");
     }
     facilities = facilities.map((val)=>{
+      let img = iconMap.get(val) || "";
       return {
         label:val,
-        img:iconMap.get(val)
+        img:img
       }
     });
     room.facilities = facilities;

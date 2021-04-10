@@ -1,6 +1,6 @@
 // @ts-check app.js
 import {request} from  "./libs/request.js";
-import { User } from "./libs/data.d.js";
+import { APIResult, User } from "./libs/data.d.js";
 App({
   async onLaunch() {
     this.globalData.userInfoP = this.initialize();
@@ -24,7 +24,7 @@ App({
     })
     //处理终结性错误
     if(errorMsg.search("Failed to login") > -1){
-      console.error("终结性错误")
+      this.logger.error("终结性错误")
       // await wx.redirectTo({
       //   url: '/pages/fatalError',
       // })
@@ -41,20 +41,18 @@ App({
     // wx.request仍然需要手动封装
     // 发送 weixincode.code 到后台换取 openId, sessionKey, unionId'
     try{
-      let session = await request({
+      let sessionRes = await request({
         url:this.globalData.server + "/user/login?code="+weixincode.code,
         method:"GET",
       })
-      if(session.data.code<200 || session.data.code>=300){
-        throw new Error()
-      }
-      this.globalData.APIHeader.token = session.data.data.token;
-      this.globalData.openid = session.data.data.openid;
+      let session = APIResult.checkAPIResult(sessionRes.data);
+      this.globalData.APIHeader.token = session.token;
+      this.globalData.openid = session.openid;
     }catch(e){
+      this.logger.info(e)
       // 修改有问题的报错信息。 TODO: 修改错误类型
       throw new Error("Failed to login");
     }
-    this.systemInfo = await wx.getSystemInfo();
     // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
     await this.getUserInfo();
   },
@@ -68,7 +66,7 @@ App({
       method:"GET",
     })
     /** @type {User & WechatMiniprogram.UserInfo} */
-    let userInfo = appUserInfo.data.data.userInfo
+    let userInfo = APIResult.checkAPIResult(appUserInfo.data).userInfo
     this.globalData.userInfo = userInfo;
     //TODO: 管理员手动审核用户信息
     this.globalData.userInfoComplete 
@@ -84,6 +82,7 @@ App({
       "content-type":"application/json",
       "token":null,
     },
+    /** @type {User & WechatMiniprogram.UserInfo} */
     userInfo: null,
     /** 
      * @type {Promise<void>} 小程序是否加载完成
@@ -93,5 +92,6 @@ App({
     server: "https://api-dev.bitrxc.com"
   },
   /**@type {WechatMiniprogram.SystemInfo} */
-  systemInfo:null,
+  systemInfo:wx.getSystemInfoSync(),
+  logger:wx.getRealtimeLogManager(),
 })

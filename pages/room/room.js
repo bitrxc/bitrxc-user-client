@@ -1,12 +1,16 @@
 // @ts-check pages/room/room.js
 import { request } from "../../libs/request.js";
-import { Room } from "../../libs/data.d.js";
+import { Room , APIResult } from "../../libs/data.d.js";
+/**
+ * @typedef {Room & {descObj:Record<string,any>,image:string}} RoomDisplay
+ */
 const app = getApp();
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    /** @type {Array<RoomDisplay>} */
     list:[],
     isEmptyList:false,
   },
@@ -36,8 +40,8 @@ Page({
       method:"GET",
     })
     //1:在控制台打印一下返回的res.data数据
-    /** @type {Array<Room & {descObj:Record<string,any>,image:string}> } */
-    let list = res.data.data.rooms;
+    /** @type {Array<RoomDisplay> } */
+    let list = APIResult.checkAPIResult(res.data).rooms;
     if(list===undefined){
       this.setData({
         list: [],
