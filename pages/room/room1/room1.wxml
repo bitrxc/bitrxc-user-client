@@ -89,10 +89,22 @@
       <form bindsubmit="formSubmit">
         <view class="note">
           <view class="note-detail">
+           
+           <text style="font-size:27rpx;">使用人数：</text>
+           <input name="usefor" placeholder="请输入人数" type="number" maxlength="5" confirm-type="done"></input>
+         </view>
+          <view class="note-detail">
+           
             <text style="font-size:27rpx;">用途说明：</text>
             <input name="usefor" placeholder="请输入用途" type="text" maxlength="30" confirm-type="done"></input>
           </view>
+          <view class="note-detail">
+           
+           <text style="font-size:27rpx;">备注：</text>
+           <input name="usefor" placeholder="请输入备注" type="text" maxlength="30" confirm-type="done"></input>
+         </view>
         </view>
+       
         <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
           <!--确定按钮触发表单提交事件，表单将预约数据传到后端，移除onOK函数-->
           <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;"

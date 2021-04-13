@@ -22,8 +22,6 @@
 .roomname{
   font-size:30px;
   margin: 15px 15px 15px 15px ;
-  display:flex;
-  align-content: center;
   color: rgb(112, 111, 111);
 }
 .title{

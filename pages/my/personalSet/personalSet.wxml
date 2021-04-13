@@ -13,7 +13,10 @@
    </view>
    <view class="weui-cell__bd" style="margin:10px;">
      <!--TODO: 此处换小字-->
+   <view class="status">
     {{item.status}}
+   </view>
+   
    </view>
    
    <view class="weui-cell__bd" style="margin:10px;">
@@ -42,6 +45,6 @@
   </view> -->
 
  </view>
- <button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
+ <button class="btn" open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
       使用微信用户名
     </button>
