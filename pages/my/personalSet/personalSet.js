@@ -69,6 +69,11 @@ Component({
       this.setData({
         editable:true,
       })
+      //初始化缓存
+      for(let index in this.data.functions){
+        let functionItem = this.data.functions[index];
+        functionItem.cache = this.data.user[index]
+      }
     },
     async disableEdit(e){
       this.setData({
