@@ -111,7 +111,7 @@ App({
      */
     userInfoP:null,
     userInfoComplete:false,
-    server: "https://api-dev.bitrxc.com"
+    server: "https://api.bitrxc.com"
   },
   /**@type {WechatMiniprogram.SystemInfo} */
   systemInfo:wx.getSystemInfoSync(),

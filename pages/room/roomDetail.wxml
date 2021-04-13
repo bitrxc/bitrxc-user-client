@@ -1,7 +1,8 @@
 <!--pages/room/roomDetail.wxml-->
 <bitrxc-swiping-gallery class="swiper" images="{{room.gallery}}">
 </bitrxc-swiping-gallery>
-<view class="roomname">{{room.name}}</view>
+<view class="content">
+  <view class="roomname">{{room.name}}</view>
   <view class="introction">
     <view class="line-top"></view>
     <view class="title">房间概览</view>
@@ -30,4 +31,10 @@
 <view class="btn">
   <button bindtap="tofunction" disabled="{{!deal.dealable}}" plain="true">预约此房间</button>
 </view>
-{{deal.description}}
+<view class="deal">
+  <view class="deal-des">{{deal.description}}</view>
+</view>
+
+</view>
+
+
