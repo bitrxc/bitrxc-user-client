@@ -5,7 +5,7 @@ const app = getApp();
 const mapping = {
   new : "新请求",
   onhold : "处理中",
-  receive : "已通过",
+  receive : "已通过，待签到",
   reject : "已拒绝",
   cancel : "已取消",
 }
@@ -29,7 +29,7 @@ Page({
       method:"GET",
     })
     /** @type {Array<Schedule>} */
-    let schedule = scheduleRes.data.data.timeList;
+    let schedule = APIResult.checkAPIResult(scheduleRes.data).timelist;
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
       header: app.globalData.APIHeader,
@@ -37,7 +37,7 @@ Page({
     })
     /** 加载到的预约列表
      *  @type {Array<any>} */
-    let apList = res.data.data.appointments;
+    let apList = APIResult.checkAPIResult(res.data).appointments;
     apList.sort(
       (a,b)=> {
         let aDate = Date.parse(a.launchDate) ;
@@ -67,28 +67,31 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        roomMap.set(i,roomNameRes.data.data.roomInfo.name);
+        roomMap.set(i,APIResult.checkAPIResult(roomNameRes.data).roomInfo.name);
       }catch(e){
         roomMap.set(i,"房间未找到");
       }
     }
-    /** 提取用户Id
+
+    /** 如果显示其他用户，则提取用户Id
      * @type {Map<string,string>} */
     let userMap = new Map();
     for(let i of apList){
       userMap.set(i.launcher,"");
     }
-    //加载涉及到的用户名称
-    for(let [i,] of userMap){
-      try{
-        let roomNameRes = await request({
-          url: app.globalData.server + "/user/" +i,
-          header: app.globalData.APIHeader,
-          method:"GET",
-        })
-        userMap.set(i,roomNameRes.data.data.userInfo.name);
-      }catch(e){
-        userMap.set(i,"用户未找到");
+    if(!this.data.selfonly){
+      //加载涉及到的用户名称
+      for(let [i,] of userMap){
+        try{
+          let roomNameRes = await request({
+            url: app.globalData.server + "/user/" +i,
+            header: app.globalData.APIHeader,
+            method:"GET",
+          })
+          userMap.set(i,APIResult.checkAPIResult(roomNameRes.data).userInfo.name);
+        }catch(e){
+          userMap.set(i,"用户未找到");
+        }
       }
     }
     //适配前端属性名

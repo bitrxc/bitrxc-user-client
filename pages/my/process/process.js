@@ -1,3 +1,4 @@
+import { APIResult,Deal } from "../../../libs/data.d.js";
 import { request } from "../../../libs/request.js";
 const app = getApp();
 const mapping = {
@@ -7,9 +8,6 @@ const mapping = {
   reject : "已拒绝",
   cancel : "已取消",
 }
-const allowedStatus = new Set([
-  'new','receive','signed','illegal','missed'
-])
 Page({
   data: {
     dayList: [//yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态
@@ -32,24 +30,25 @@ Page({
   */
   cancel:async function (event) {
     let dataset = event.currentTarget.dataset;
-    let res = await request({
-      url : app.globalData.server + "/appointment/cancel/" + dataset.id,
-      header : app.globalData.APIHeader ,
-      method : "PUT",
-    })
-    if(res.data.code > 299 || res.data.code < 200){
-      wx.showToast({
-        title: '撤销预约失败',
-        icon: 'error',
-        duration: 1500,
+    try{
+      let res = await request({
+        url : app.globalData.server + "/appointment/cancel/" + dataset.id,
+        header : app.globalData.APIHeader ,
+        method : "PUT",
       })
-    }else{
+      APIResult.checkAPIResult(res.data)
       wx.showToast({
         title: '撤销预约成功',
         icon: 'success',
         duration: 1500,
       })
       await this.refresh()
+    }catch(e){
+      wx.showToast({
+        title: '撤销预约失败',
+        icon: 'error',
+        duration: 1500,
+      })
     }
   },
   refresh:async function(){
@@ -69,9 +68,9 @@ Page({
       method:"GET",
     })
     /** @type {Array<any>} */
-    let apList = res.data.data.appointments;
+    let apList = APIResult.checkAPIResult(res.data).appointments;
     apList = apList.filter(
-      (v) => allowedStatus.has(v.status)
+      (v) => Deal.allowedStatus.has(v.status)
     ).sort(
       (a,b)=> {
         let aDate = Date.parse(a.execDate) ;
@@ -101,7 +100,7 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        roomMap.set(i,roomNameRes.data.data.roomInfo.name);
+        roomMap.set(i,APIResult.checkAPIResult(roomNameRes.data).roomInfo.name);
       }catch(e){
         roomMap.set(i,"房间未找到");
       }
@@ -120,7 +119,7 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        userMap.set(i,roomNameRes.data.data.userInfo.name);
+        userMap.set(i,APIResult.checkAPIResult(roomNameRes.data).userInfo.name);
       }catch(e){
         userMap.set(i,"用户未找到");
       }

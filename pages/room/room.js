@@ -1,12 +1,16 @@
 // @ts-check pages/room/room.js
 import { request } from "../../libs/request.js";
-import { Room } from "../../libs/data.d.js";
+import { Room , APIResult } from "../../libs/data.d.js";
+/**
+ * @typedef {Room & {descObj:Record<string,any>,image:string}} RoomDisplay
+ */
 const app = getApp();
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    /** @type {Array<RoomDisplay>} */
     list:[],
     isEmptyList:false,
   },
@@ -36,8 +40,8 @@ Page({
       method:"GET",
     })
     //1:在控制台打印一下返回的res.data数据
-    /** @type {Array<Room & {image:string}> } */
-    let list = res.data.data.rooms;
+    /** @type {Array<RoomDisplay> } */
+    let list = APIResult.checkAPIResult(res.data).rooms;
     if(list===undefined){
       this.setData({
         list: [],
@@ -45,13 +49,15 @@ Page({
       })
     }else{
       for(let items of list){
-        if(items.gallery instanceof Array){
-          items.image = items.gallery[0];
+        if(typeof items.image == "string"){
         }else{
           items.image = "/pages/room/img/123.jpg";
         }
         if(items.description === null){
           items.description = "暂无描述"
+        }else{
+          items.descObj = JSON.parse(items.description) 
+          items.description = items.descObj["承载功能"];
         }
       }
       //2:在请求接口成功之后，用setData渲染数据
@@ -98,9 +104,4 @@ Page({
    */
   onShareAppMessage: function () {
   },
-  tofunction: function (e) {
-    wx.navigateTo({
-      url: e.currentTarget.dataset.url,
-    })
-  }
 })

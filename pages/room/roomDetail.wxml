@@ -1,38 +1,24 @@
 <!--pages/room/roomDetail.wxml-->
 <bitrxc-swiping-gallery class="swiper" images="{{room.gallery}}">
 </bitrxc-swiping-gallery>
-<view class="roomname">{{room.name}}</view>
+<view class="content">
+  <view class="roomname">{{room.name}}</view>
   <view class="introction">
     <view class="line-top"></view>
     <view class="title">房间概览</view>
     <view class="small-title">活动面积
-      <text class="small-content">{{area}}㎡，大致可容纳{{pnum}}人</text>
+      <text class="small-content">{{room.area}}㎡，大致可容纳{{room.capacity}}人</text>
     </view>
     <view class="box">
     <view class="small-title">基础设施
-      <view class="img-content">
-        <image src="../../icons/desk.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">桌子</text>
-        <icon class="icon-small" type="success_no_circle" size="23" ></icon>
-      </view>
-      <view class="img-content">
-        <image src="../../icons/chair.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">椅子</text>
+      <view class="img-content" wx:for="{{room.facilities}}" wx:key="label">
+        <image src="../../icons/{{item.img}}" style="height:25px;width:25px;" wx:if="{{item.img}}"></image>
+        <text class="small-content">{{item.label}}</text>
       <!--根据房间实际做判断-->
       <!--有-->
         <icon class="icon-small" type="success_no_circle" size="23"></icon>
         <!--无
         <icon class="icon-small" type="cancel" size="23"></icon>  -->
-      </view>
-      <view class="img-content">
-        <image src="../../icons/medio.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">投影</text>
-        <icon class="icon-small" type="success_no_circle" size="23"></icon>
-      </view>
-      <view class="img-content">
-        <image src="../../icons/air-con.png" style="height:25px;width:25px;"></image>
-        <text class="small-content">空调</text>
-        <icon class="icon-small" type="success_no_circle" size="23"></icon>
       </view>
     </view>
     </view>
@@ -43,5 +29,12 @@
 </view>
   </view>
 <view class="btn">
-  <button bindtap="tofunction" plain="true">预约此房间</button>
+  <button bindtap="tofunction" disabled="{{!deal.dealable}}" plain="true">预约此房间</button>
 </view>
+<view class="deal">
+  <view class="deal-des">{{deal.description}}</view>
+</view>
+
+</view>
+
+

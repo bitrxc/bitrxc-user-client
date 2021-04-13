@@ -1,7 +1,15 @@
 // @ts-check pages/room/roomDetail.js
 import { request } from "../../libs/request.js";
-import { Room } from "../../libs/data.d.js";
+import { APIResult, Room } from "../../libs/data.d.js";
 const app = getApp();
+const iconMap = new Map([
+  ["垫子板凳","chair.png"],
+  ["投影","medio.png"],
+  ["桌椅","desk.png"],
+  ["多媒体","medio.png"],
+  ["坐垫","chair.png"],
+  ["阶梯长椅","chair.png"],
+])
 Page({
   /**
    * 页面的初始数据
@@ -10,6 +18,10 @@ Page({
     area:12,
     pnum:15,
     roomId:NaN,
+    deal:{
+      dealable:true,
+      description:""
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -22,26 +34,54 @@ Page({
       header: getApp().globalData.APIHeader,
       method:"GET",
     })
-    /** @type {Room} */
-    let room = res.data.data.roomInfo;
-    console.log(res.data)
-    if(room.gallery===null||room.gallery===undefined){
-      room.gallery=[
+    /** @type {Room & {area:string,capacity:number,descObj:Record<string,any>, gallery:Array<any>,facilities:Array<{label:string,img:string}>}} */
+    let room = APIResult.checkAPIResult(res.data).roomInfo;
+    console.log(room)
+    room.gallery = [];
+    if(typeof room.image == "string" && room.image.length > 0){
+      room.gallery.push(
+        {
+          image:room.image,
+          url:"",
+        }
+      );
+    }
+    if(room.gallery.length==0){
+      room.gallery.push(
         {
           image:"/pages/room/img/123.jpg",
           url:"",
-        },
-        {
-          image:"/icons/Contact.png",
-          url:"",
-        },
-      ]
-    }else if(typeof room.gallery === "number"){
+        }
+      );
+    }
+
+    room.descObj = JSON.parse(room.description)
+    if(room.descObj["图库"] instanceof Array){
       //TODO:后端没有封装相册
     }
 
-    if(room.description===null){
-      room.description="暂无描述"
+    room.area = room.descObj["面积"];
+    room.capacity = Number(room.descObj["容纳人数"]);
+
+    let facilities = [];
+    if(room.descObj["设备情况"] instanceof Array){
+      facilities = room.descObj["设备情况"];
+    }else if(typeof room.descObj["设备情况"] == "string"){
+      facilities = room.descObj["设备情况"].split("、");
+    }
+    facilities = facilities.map((val)=>{
+      let img = iconMap.get(val) || "";
+      return {
+        label:val,
+        img:img
+      }
+    });
+    room.facilities = facilities;
+
+    if(room.descObj["承载功能"]){
+      room.description = room.descObj["承载功能"];
+    }else{
+      room.description = "暂无描述";
     }
     this.setData({
       room:room
@@ -55,7 +95,32 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow:async function(){
+    switch(await app.checkDealable()){
+      case 'ok':
+        this.setData({
+          deal:{
+            dealable:true,
+            description:""
+          }
+        })
+        break;
+      case 'toomuch':
+        this.setData({
+          deal: {
+            dealable : false,
+            description : '待处理预约数已达上限'
+          }
+        })
+        break;
+      case 'imcomplete':
+        this.setData({
+          deal: {
+            dealable : false,
+            description : '用户信息尚不完善，无法预约！'
+          }
+        })
+    }
   },
   /**
    * 生命周期函数--监听页面隐藏
