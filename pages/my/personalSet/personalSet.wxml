@@ -1,38 +1,47 @@
 <!--pages/my/personalSet/personalSet.wxml-->
 <view class="weui-cells weui-cells_after-title">
   <view class="weui-cell weui-cell_active" style="margin:20px;" wx:for="{{functions}}" wx:key="title">
+    <view class="weui-cell__hd">
+      <view class="weui-flex">
+        <view class="weui-flex__item">
+          <view class="placeholder" style="color:red;width:5vw;">*</view>
+        </view>
+        <view class="weui-flex__item">
+        </view>
+        <!--TODO: 此处换小字-->
+        <view class="status">
+          {{item.status}}
+        </view>
+
+      </view>
+
+      <view class="weui-cell__bd" style="margin:10px;">
+        <input class="weui-input" disabled="{{!editable}}" value="{{user[index]}}" placeholder="{{item.placeholder}}"
+          bindinput="cacheItem" bindblur="saveItem" data-index="{{index}}" />
+      </view>
+      <view class="line" style="width:90%;margin-top:5rpx;  position: absolute;border-bottom:1rpx solid lightgray;">
+      </view>
+    </view>
+  </view>
+
+  <!-- <view class="weui-cell weui-cell_active" style="margin:20px;">
    <view class="weui-cell__hd">
     <view class="weui-flex">
      <view class="weui-flex__item">
       <view class="placeholder" style="color:red;width:5vw;">*</view>
      </view>
      <view class="weui-flex__item">
-      <view class="placeholder" style="width:20vw;">{{item.title}}</view>
+      <view class="placeholder" style="width:20vw;">联系方式</view>
      </view>
     </view>
    </view>
    <view class="weui-cell__bd" style="margin:10px;">
-     <!--TODO: 此处换小字-->
-    {{item.status}}
+    <input class="weui-input" type="number" disabled="{{!editable}}" bindblur="replacePhone" value="{{user.phone}}" placeholder="请输入电话" maxlength="11"  />
    </view>
-   <view class="weui-cell__bd" style="margin:10px;">
-    <input class="weui-input" disabled="{{!editable}}" value="{{user[index]}}" placeholder="{{item.placeholder}}" 
-      bindinput="cacheItem" bindblur="saveItem" data-index="{{index}}"/>
-   </view>
-   <view class="line" style="width:90%;margin-top:5rpx;  position: absolute;border-bottom:1rpx solid lightgray;"></view>
-  </view>
-
+   <view class="line" style="width:90%;margin-top:15rpx;  position: absolute;border-bottom:1rpx solid lightgray;"></view>
+  </view> -->
 
 </view>
-<button open-type="getUserInfo" bindgetuserinfo="replaceUserInfo" bindtap="replaceUserProfile" wx:if="{{editable&&false}}">
+<button class="btn" open-type="getUserInfo" bindgetuserinfo="replaceUserInfo">
   使用微信用户名
-</button>
-<button bindtap="enableEdit"  wx:if="{{!editable}}">
-  修改用户信息
-</button>
-<button bindtap="disableEdit"  wx:else type="primary">
-  保存
-</button>
-<button open-type="feedback" wx:if="{{!editable}}">
-  <text>反馈</text>
 </button>
