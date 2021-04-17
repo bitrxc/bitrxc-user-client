@@ -31,6 +31,13 @@ Component({
         cache:'',
         validator : (ipt)=>ipt.length>0,
       },
+      stuNum:{
+        placeholder:'请输入学号',
+        title:'学号',
+        status:'未修改',
+        cache:'',
+        validator : (ipt)=>ipt.length>0,
+      },
       organization:{
         placeholder:'请输入书院/组织',
         title:'书院/组织',
@@ -40,7 +47,7 @@ Component({
       },
       phone:{
         placeholder:'请输入电话号码',
-        title:'联系方式（电话）',
+        title:'联系电话',
         status:'未修改',
         cache:'',
         validator : (ipt)=> {
@@ -155,9 +162,7 @@ Component({
       if(compareVersion(app.systemInfo.SDKVersion,"2.10.4") == -1){
         let rawInfo = e.detail.userInfo;
         console.log(e);
-        await this.saveUserProfile({
-          name : rawInfo.nickName,
-        });
+        await this.saveUserProfile();
       }else{
         // 新版本忽略此调用，由bindtap处理
       }

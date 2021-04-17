@@ -19,7 +19,8 @@
         </view>
       </view>
       <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
-        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}</view>
+        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}
+        </view>
       </scroll-view>
       <!--时段表-->
       <view class="timeTable">
@@ -32,22 +33,29 @@
         <scroll-view scroll-y="true" class="scroll" style='height:{{windowHeight-110}}px;' bindtap='clickHide'>
           <view style="width:100%;display:flex;">
             <view style="background-color:#EFEFF4;color:#333;">
-              <view wx:for="{{schedule}}" wx:key="index" class="left" style='height:50px'>
+              <view wx:for="{{schedule}}" wx:key="index" class="left" style='height:60px'>
                 {{item.id}}
               </view>
             </view>
             <view wx:for="{{schedule}}" wx:key="index">
               <view
-                style="width:100%;margin-top:{{(index+1)*50-0.8}}px;  position: absolute;border-bottom:1rpx solid lightgray;">
+                style="width:100%;margin-top:{{(index+1)*60-0.8}}px;  position: absolute;border-bottom:1rpx solid lightgray;">
               </view>
             </view>
             <!--预约记录-->
             <view wx:for="{{wlist}}" wx:key="index">
-              <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}'
-                style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*50+2}}px; height:{{item.yycd*50-5}}px;background-color:{{item.color == '0'?'#ffffff':(item.color == '1'?'#04BE02':'#ccc')}}">
+              <!--    <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}'
+                style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*60+2}}px; height:{{item.yycd*60-5}}px;background-color:{{item.color == '0'?'#ffffff':(item.color == '1'?'#04BE02':'#ccc')}}">
                 <view class="smalltext">{{item.zt}} </view>
-                <!-- xqj代表星期几，yysd是预约时段，yycd预约长度，zt状态-->
+              </view> -->
+              <!-- xqj代表星期几，yysd是预约时段，yycd预约长度，zt状态-->
+
+              <!--尝试更改单元格选择个数，上方注释是原代码-->
+              <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}'
+                style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*60+2}}px; height:{{item.yycd*60-5}}px;background-color:{{item.color == '0'?'#ffffff':(item.color == '1'?'#04BE02':'#ccc')}}">
+                <view class="smalltext">{{item.zt}} </view>
               </view>
+
             </view>
           </view>
           <!--时段说明-->
@@ -79,7 +87,12 @@
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时段：</label>
-        <label class='noidle-item-content'>第{{cardView.yysd}}时段（{{schedule[cardView.yysd -1].begin}}-{{schedule[cardView.yysd -1].end}}）</label>
+        
+        <label wx:if="{{!twoblocks}}" class='noidle-item-content'>第{{cardView.yysd}}时段（{{schedule[cardView.yysd -1].begin}}-{{schedule[cardView.yysd-1].end}}）</label>
+
+          <!-- 如果选择2个时段，即时显示 -->
+          <label wx:if="{{twoblocks}}" class='noidle-item-content'>第{{cardView.yysd}}、{{cardView.yysd+1}}时段（{{schedule[cardView.yysd -1].begin}}-{{schedule[cardView.yysd].end}}）</label>
+
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>预约人：</label>
@@ -88,21 +101,32 @@
       <!--将用户输入信息 传到后台-->
       <form bindsubmit="formSubmit">
         <view class="note">
+
           <view class="note-detail">
-           
-           <text style="font-size:27rpx;">使用人数：</text>
-           <input name="usefor" placeholder="请输入人数" type="number" maxlength="5" confirm-type="done"></input>
-         </view>
+            <text style="font-size:27rpx;">时段长度:</text>
+            <radio-group class="duration" bindchange="radioChange">
+              <label class="duration" wx:for="{{items}}" wx:key="{{item.value}}">
+                <view class="weui-cell__bd">{{item.value}}
+                  <radio value="{{item.value}}" checked="{{item.checked}}" />
+                </view>
+              </label>
+            </radio-group>
+
+          </view>
           <view class="note-detail">
-           
+
+            <text style="font-size:27rpx;">使用人数：</text>
+            <input name="usefor" placeholder="请输入人数" type="number" maxlength="5" confirm-type="done"></input>
+          </view>
+          <view class="note-detail">
+
             <text style="font-size:27rpx;">用途说明：</text>
             <input name="usefor" placeholder="请输入用途" type="text" maxlength="30" confirm-type="done"></input>
           </view>
         </view>
         <view class="btn-bottom" style="display:flex;margin-top:50rpx;">
           <!--确定按钮触发表单提交事件，表单将预约数据传到后端，移除onOK函数-->
-          <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;"
-            formType="submit">确定</button>
+          <button class="btn-1" size="mini" type="primary" style="font-size:35rpx;" formType="submit">确定</button>
           <button class="btn-2" size="mini" type="default" style="font-size:35rpx;" bindtap="hideModal">取消</button>
         </view>
       </form>

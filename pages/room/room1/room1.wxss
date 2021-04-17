@@ -124,18 +124,13 @@ page{
 }
 .smalltext {
   position: absolute;
-  top: 30rpx;
+  top: 35rpx;
   left: 8rpx;
   font-size: 26rpx;
   color: #fff;
   display: flex;
   justify-content: center;
   align-content: center;
-  /*display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
-  -webkit-box-orient: vertical; */
 }
 .drawer_screen {
   width: 100%;
@@ -245,4 +240,8 @@ page{
   display: flex;
   flex-direction: row;
   margin-top: 5rpx;
+}
+.duration{
+  display: flex;
+
 }
