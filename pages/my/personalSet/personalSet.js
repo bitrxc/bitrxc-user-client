@@ -31,7 +31,7 @@ Component({
         cache:'',
         validator : (ipt)=>true,
       },
-      stuNum:{
+      schoolId:{
         placeholder:'请输入学号',
         title:'学号',
         status:'未修改',
@@ -60,11 +60,6 @@ Component({
     editable:false,
     /** @type {User} */
     user:app.globalData.userInfo,
-    status:{
-      phone:"未修改",
-      name:"",
-      organization:"",
-    }
   },
   methods:{
     /**

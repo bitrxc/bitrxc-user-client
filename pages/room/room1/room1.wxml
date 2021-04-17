@@ -104,9 +104,9 @@
 
           <view class="note-detail">
             <text style="font-size:27rpx;">时段长度:</text>
-            <radio-group class="duration" bindchange="radioChange">
+            <radio-group name="duration" class="duration" bindchange="radioChange">
               <label class="duration" wx:for="{{items}}" wx:key="{{item.value}}">
-                <view class="weui-cell__bd">{{item.value}}
+                <view class="weui-cell__bd">{{item.name}}
                   <radio value="{{item.value}}" checked="{{item.checked}}" />
                 </view>
               </label>
@@ -116,7 +116,7 @@
           <view class="note-detail">
 
             <text style="font-size:27rpx;">使用人数：</text>
-            <input name="usefor" placeholder="请输入人数" type="number" maxlength="5" confirm-type="done"></input>
+            <input name="attendence" placeholder="请输入人数" type="number" maxlength="5" confirm-type="done"></input>
           </view>
           <view class="note-detail">
 

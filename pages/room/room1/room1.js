@@ -66,12 +66,12 @@ Page({
     schedule : [],
     /** @type {Array<dealSegmentItemType>} */
     wlist: [],
-
+    /** 预约弹窗内是否有两个时段 */
     twoblocks:false,
-
+    /** 多选框的选项 */
     items: [
-      {value: '1', name: 'one',checked: 'true'},
-      {value: '2', name: 'two'},
+      {value: 0, name: '1',checked: 'true'},
+      {value: 1, name: '2'},
     ]    
   },
 
@@ -79,21 +79,20 @@ Page({
   radioChange(e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value)
 
-    const items = this.data.items
-    for (let i = 0, len = items.length; i < len; ++i) {
-      items[i].checked = items[i].value === e.detail.value
-    }
-    this.setData({
-      items
-    });
-    if( e.detail.value == 1){
+    // const items = this.data.items
+    // for (let i = 0, len = items.length; i < len; ++i) {
+    //   items[i].checked = items[i].value === e.detail.value
+    // }
+    // this.setData({
+    //   items
+    // });
+    if( e.detail.value == 0){
       this.setData({
         twoblocks:false
       });
       console.log('twoblocks值为：', this.data.twoblocks);
 
-    }
-    if( e.detail.value == 2){
+    }else if( e.detail.value == 1){
       this.setData({
         twoblocks:true
       });
@@ -111,7 +110,9 @@ Page({
    * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
-    if (e.detail.value.usefor.length == 0) {
+    let form = e.detail.value;
+    console.log(form)
+    if (form.usefor.length == 0) {
       await wx.showToast({
         title: '用途不能为空!',
         icon:"none",
@@ -119,9 +120,20 @@ Page({
       })
       await delay(2000);
       await wx.hideToast();
+    } else if(isNaN(Number(form.attendence) )){
+      await wx.showToast({
+        title: '人数格式错误!',
+        icon:"none",
+        duration: 1500
+      })
+
     } else {
       let apInfo = this.data.cardView;
       let execDate = new Date(apInfo.execDate);
+      let endSegment = apInfo.yysd;
+      if(this.data.twoblocks){
+        endSegment += 1;
+      }
       try{
         let res = await request({
           url : app.globalData.server + "/appointment/appoint",
@@ -130,10 +142,13 @@ Page({
           data : {
             roomId : this.data.roomId,
             launcher : app.globalData.userInfo.username,
+            begin : apInfo.yysd,
+            end : endSegment,
+            attendence : form.attendence,
             launchTime : apInfo.yysd,
             execDate : execDate.toISODateString(),
             launchDate : Date.now(),
-            userNote : e.detail.value.usefor,
+            userNote : form.usefor,
           }
         })
         APIResult.checkAPIResult(res.data)
@@ -158,8 +173,8 @@ Page({
       await wx.showToast({
         /* title: '预约成功！',//这里打印出登录成功
         icon: 'success', */
-        title: '预约无效！',
-          icon: 'loading',
+        title: '预约成功！',
+        icon: 'success',
         duration: 1000,
       })
       //播放动画，关闭

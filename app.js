@@ -89,7 +89,7 @@ App({
     apList = apList.filter(
       (v) => Deal.allowedStatus.has(v.status)
     );
-    if(apList.length >= 4){
+    if(apList.length >= 1){
       return 'toomuch';
     }else{
       if(!this.globalData.userInfoComplete){
