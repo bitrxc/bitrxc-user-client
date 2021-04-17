@@ -87,7 +87,7 @@
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时段：</label>
-        
+
         <label wx:if="{{!twoblocks}}" class='noidle-item-content'>第{{cardView.yysd}}时段（{{schedule[cardView.yysd -1].begin}}-{{schedule[cardView.yysd-1].end}}）</label>
 
           <!-- 如果选择2个时段，即时显示 -->
