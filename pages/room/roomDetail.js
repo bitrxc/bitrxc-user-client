@@ -9,6 +9,10 @@ const iconMap = new Map([
   ["多媒体","medio.png"],
   ["坐垫","chair.png"],
   ["阶梯长椅","chair.png"],
+  ["桌游","poker.png"],
+  ["健身器材","FitEq.png"],
+  ["棋类道具","games.png"],
+  ["坐垫","cushion.png"]
 ])
 Page({
   /**

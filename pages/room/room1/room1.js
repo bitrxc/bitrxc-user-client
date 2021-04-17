@@ -29,7 +29,7 @@ const profile = {
       color : 0,
     },
     occupied : {
-      zt : "已预约",
+      zt : "被预约",
       color : -1,
     },
     mine : {
