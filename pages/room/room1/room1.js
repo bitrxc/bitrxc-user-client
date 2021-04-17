@@ -65,9 +65,45 @@ Page({
     /** @type {Array<Schedule>}*/
     schedule : [],
     /** @type {Array<dealSegmentItemType>} */
-    wlist: [
-    ],
+    wlist: [],
+
+    twoblocks:false,
+
+    items: [
+      {value: '1', name: 'one',checked: 'true'},
+      {value: '2', name: 'two'},
+    ]    
   },
+
+
+  radioChange(e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+
+    const items = this.data.items
+    for (let i = 0, len = items.length; i < len; ++i) {
+      items[i].checked = items[i].value === e.detail.value
+    }
+    this.setData({
+      items
+    });
+    if( e.detail.value == 1){
+      this.setData({
+        twoblocks:false
+      });
+      console.log('twoblocks值为：', this.data.twoblocks);
+
+    }
+    if( e.detail.value == 2){
+      this.setData({
+        twoblocks:true
+      });
+      console.log('twoblocks值为：', this.data.twoblocks);
+
+    }
+    
+  },
+
+
   /**
    * 检查用户填写的内容
    * 提交表单中用户填写的内容
@@ -276,8 +312,8 @@ Page({
       let res= {
         "djz": weekNow , 
         "xqj": dayNow , 
-        "yysd": item.id , 
-        "yycd": 1 ,
+        "yysd": item.id ,
+        "yycd": 1,
         "execDate":date.getTime() ,
       };
       res = Object.assign(res,item.tag);

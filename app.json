@@ -1,14 +1,8 @@
 {
   "pages": [
-    "pages/my/my",
-    
-
     "pages/room/room",
-    
+    "pages/my/my", 
     "pages/index/index",
-    
-   
-
     "pages/my/logs/logs",
     "pages/my/process/process",
     "pages/my/personalSet/personalSet",
@@ -24,17 +18,18 @@
   "tabBar": {
     "list": [
       
-      {
-        "pagePath": "pages/my/my",
-        "text": "我的",
-        "iconPath": "/icons/SignIn.png",
-        "selectedIconPath": "/icons/SignIn.png"
-      },
+     
       {
         "pagePath": "pages/room/room",
         "text": "活动室预约",
         "iconPath": "/icons/ApplyRoom.png",
         "selectedIconPath": "/icons/ApplyRoom.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "/icons/SignIn.png",
+        "selectedIconPath": "/icons/SignIn.png"
       }
     ]
   },
