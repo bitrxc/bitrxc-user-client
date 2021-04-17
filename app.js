@@ -73,6 +73,7 @@ App({
       = Boolean(userInfo.phone) 
       && Boolean(userInfo.organization) 
       && Boolean(userInfo.name)
+      && Boolean(userInfo.schoolId)
     ;
     return userInfo;
   },
@@ -111,7 +112,7 @@ App({
      */
     userInfoP:null,
     userInfoComplete:false,
-    server: "https://api.bitrxc.com"
+    server: "https://api-dev.bitrxc.com"
   },
   /**@type {WechatMiniprogram.SystemInfo} */
   systemInfo:wx.getSystemInfoSync(),

@@ -12,7 +12,7 @@
       <view class="weui-cell__bd" style="margin:10px;">
         <input class="weui-input" disabled="{{!editable}}" value="{{user[index]}}" placeholder="{{item.placeholder}}"
           bindinput="cacheItem" bindblur="saveItem" data-index="{{index}}" />
-        <view class="status">
+        <view class="status" wx:if="{{editable}}">
           {{item.status}}
         </view>
       </view>
