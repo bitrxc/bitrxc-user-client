@@ -29,7 +29,7 @@
     保存
   </button>
   <button class="btn" open-type="feedback" plain="true">
-    <text>反馈</text>
+    <text>小程序问题反馈</text>
   </button>
 </view>
 {{note}}
