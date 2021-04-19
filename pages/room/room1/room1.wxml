@@ -19,7 +19,7 @@
         </view>
       </view>
       <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
-        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}
+        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{index+1}}">{{item}}
         </view>
       </scroll-view>
       <!--时段表-->
@@ -83,7 +83,7 @@
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时间：</label>
-        <label class='noidle-item-content'>第{{weekList[cardView.djz]}}周 周{{day[cardView.xqj-1]}}</label>
+        <label class='noidle-item-content'>第{{weekList[cardView.djz-1]}}周 周{{day[cardView.xqj-1]}}</label>
       </view>
       <view class='noidle-item'>
         <label class='noidle-item-prefix'>时段：</label>
@@ -105,7 +105,7 @@
           <view class="note-detail">
             <text style="font-size:27rpx;">时段长度:</text>
             <radio-group name="duration" class="duration" bindchange="radioChange">
-              <label class="duration" wx:for="{{items}}" wx:key="{{item.value}}">
+              <label class="duration" wx:for="{{items}}" wx:key="value">
                 <view class="weui-cell__bd">{{item.name}}
                   <radio value="{{item.value}}" checked="{{item.checked}}" />
                 </view>

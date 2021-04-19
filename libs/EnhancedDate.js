@@ -24,7 +24,7 @@ export class EnhancedDate extends Date{
     if(this.weekDay == 7){
       weekNow = weekNow -1;
     }
-    return weekNow
+    return weekNow + 1
   }
 
   /**
@@ -41,7 +41,7 @@ export class EnhancedDate extends Date{
   }
   /**
    * 
-   * @param {{week:number,weekDay:number,time:number,date:Date}} options 
+   * @param {{week:number,weekDay:number}|{time:number}|{date:Date}} options 
    */
   constructor({week:weekParam,weekDay:weekDayParam,time,date}){
     if(weekParam && weekDayParam){
