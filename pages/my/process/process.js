@@ -1,4 +1,5 @@
 import { APIResult,Deal } from "../../../libs/data.d.js";
+import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 import { request } from "../../../libs/request.js";
 const app = getApp();
 const mapping = {
@@ -53,14 +54,14 @@ Page({
   },
   refresh:async function(){
     //TODO: 前端实现带缓存的API系统后，将下列代码全部改为缓存读
-    // /** @type {WechatMiniprogram.RequestSuccessCallbackResult} */
-    // let scheduleRes = await request({
-    //   url: app.globalData.server + '/schedule/all',
-    //   header: app.globalData.APIHeader,
-    //   method:"GET",
-    // })
-    // /** @type {Array} */
-    // let schedule = scheduleRes.data.data.timeList;
+    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timeList:Array}>>} */
+    let scheduleRes = await request({
+      url: app.globalData.server + '/schedule/all',
+      header: app.globalData.APIHeader,
+      method:"GET",
+    })
+    /** @type {Array<Schedule>} */
+    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
     //加载预约列表
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
@@ -128,8 +129,16 @@ Page({
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.yyrxm = userMap.get(i.launcher);
-      i.yyzt = mapping[i.status];
-      let dateO =  new Date(i.execDate);
+      i.yyzt = mapping[i.status];      let dateO =  new EnhancedDate({date:new Date(i.execDate)})
+      i.week = dateO.week;
+      i.weekDay = dateO.weekDay;
+      if(i.begin == i.end){
+        i.schedule = i.begin;
+      }else{
+        i.schedule = i.begin + "、" + i.end;
+      }
+      i.beginTime = schedule[i.begin].begin;
+      i.endTime = schedule[i.end].end;
       i.yysj = dateO.toLocaleDateString("zh-cn");
       i.rs = i.attendance
       /** @type {String} */
