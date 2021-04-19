@@ -4,6 +4,7 @@
  */
 import { delay, request } from "../../../libs/request.js";
 import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
+import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 
 /**
  * @typedef {{zt:string,color:number}} tagType
@@ -66,43 +67,12 @@ Page({
     schedule : [],
     /** @type {Array<dealSegmentItemType>} */
     wlist: [],
-
-    twoblocks:false,
-
+    /** 多选框的选项 */
     items: [
-      {value: '1', name: 'one',checked: 'true'},
-      {value: '2', name: 'two'},
+      {value: 0, name: '1',checked: 'true'},
+      {value: 1, name: '2'},
     ]    
   },
-
-
-  radioChange(e) {
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
-
-    const items = this.data.items
-    for (let i = 0, len = items.length; i < len; ++i) {
-      items[i].checked = items[i].value === e.detail.value
-    }
-    this.setData({
-      items
-    });
-    if( e.detail.value == 1){
-      this.setData({
-        twoblocks:false
-      });
-      console.log('twoblocks值为：', this.data.twoblocks);
-
-    }
-    if( e.detail.value == 2){
-      this.setData({
-        twoblocks:true
-      });
-      console.log('twoblocks值为：', this.data.twoblocks);
-
-    }
-    
-  },
-
 
   /**
    * 检查用户填写的内容
@@ -111,7 +81,9 @@ Page({
    * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
-    if (e.detail.value.usefor.length == 0) {
+    /** @type {Record<'duration' | 'attendence' | 'usefor',string>} */
+    let form = e.detail.value;
+    if (form.usefor.length == 0) {
       await wx.showToast({
         title: '用途不能为空!',
         icon:"none",
@@ -119,9 +91,17 @@ Page({
       })
       await delay(2000);
       await wx.hideToast();
+    } else if(isNaN(Number(form.attendence) )){
+      await wx.showToast({
+        title: '人数格式错误!',
+        icon:"none",
+        duration: 1500
+      })
+
     } else {
       let apInfo = this.data.cardView;
-      let execDate = new Date(apInfo.execDate);
+      let execDate = new EnhancedDate({time:apInfo.execDate});
+      let endSegment = apInfo.yysd + Number(form.duration) ;
       try{
         let res = await request({
           url : app.globalData.server + "/appointment/appoint",
@@ -130,10 +110,12 @@ Page({
           data : {
             roomId : this.data.roomId,
             launcher : app.globalData.userInfo.username,
-            launchTime : apInfo.yysd,
+            begin : apInfo.yysd,
+            end : endSegment,
+            attendance : Number(form.attendence),
             execDate : execDate.toISODateString(),
             launchDate : Date.now(),
-            userNote : e.detail.value.usefor,
+            userNote : form.usefor,
           }
         })
         APIResult.checkAPIResult(res.data)
@@ -147,7 +129,7 @@ Page({
       }
       //刷新预约时段所在列
       let list = await this.fetchColumn(execDate);
-      let dayNow = (execDate.getDay()+6) % 7+1;
+      let dayNow = execDate.weekDay;
       list = list.concat(
         //将待刷新的列的旧成员移除
         this.data.wlist.filter((v)=> v.xqj != dayNow)
@@ -156,10 +138,8 @@ Page({
         wlist:list,
       })
       await wx.showToast({
-        /* title: '预约成功！',//这里打印出登录成功
-        icon: 'success', */
-        title: '预约无效！',
-          icon: 'loading',
+        title: '预约成功！',
+        icon: 'success',
         duration: 1000,
       })
       //播放动画，关闭
@@ -203,23 +183,19 @@ Page({
       method:"GET",
     })
 
-    let dateNow = new Date()
-    let weekNow =  Math.ceil(
-      (dateNow.getTime() - profile.weekbegin) / 
-      (7  * 24 * 60 * 60 * 1000 ) 
-    )
+    let dateNow = new EnhancedDate({time:Date.now()})
     await this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
       schedule : APIResult.checkAPIResult(scheduleRes.data).timeList,
-      week : weekNow,
+      week : dateNow.week,
     })
   },
   onShow:async function(){
     switch(await app.checkDealable()){
       case 'ok':
         await this.data.inited;
-        await this.refreshTable(new Date());
+        await this.refreshTable(new EnhancedDate({time:Date.now()}));
         await wx.hideLoading();
         break;
       case 'toomuch':
@@ -230,15 +206,14 @@ Page({
     }
   },
   /** 
-   * @param {Date} date 需要查询的周次
+   * @param {EnhancedDate} date 需要查询的周次
    */
   refreshTable : async function(date){
-    date.setDate(date.getDate() - (date.getDay() + 6)%7);
     /** @type {Array<Promise>} */
     let operations = [];
-    for(let i = 0;i<7;i++){
-      let newDate = new Date(date.getTime());
-      newDate.setDate(newDate.getDate() + i);
+    for(let i = 1;i<=7;i++){
+      let newDate = new EnhancedDate({date});
+      newDate.weekDay = i;
       operations.push(this.fetchColumn(newDate))
     }
     let results = await Promise.all(operations);
@@ -250,7 +225,7 @@ Page({
     })
   },
   /** 
-   * @param {Date} date 需要查询的日期
+   * @param {EnhancedDate} date 需要查询的日期
    * @returns {Promise<Array<dealSegmentItemType>>}
    */
   fetchColumn :async function (date) {
@@ -299,19 +274,11 @@ Page({
       listData.busyTime,
       profile.statusMap.occupied
     );
-    let weekNow =  Math.floor(
-      (date.getTime() - profile.weekbegin) / 
-      (7  * 24 * 60 * 60 * 1000 ) 
-    ) 
-    let dayNow = (date.getDay()+6)%7 +1;
-    if(dayNow == 7){
-      weekNow = weekNow -1;
-    }
-    let resWlist  = [];
+    let resWlist  = [];    
     for(let item of schedule){
       let res= {
-        "djz": weekNow , 
-        "xqj": dayNow , 
+        "djz": date.week , 
+        "xqj": date.weekDay , 
         "yysd": item.id ,
         "yycd": 1,
         "execDate":date.getTime() ,
@@ -336,12 +303,12 @@ Page({
    * @param {WechatMiniprogram.TouchEvent<any,any,{week:number}>} e
    */
   selectWeek: function (e) {
+    
     let week = e.target.dataset.week;
     this.setData({
       week: week
     })
-    let dateNow = new Date(profile.weekbegin);
-    dateNow.setDate(dateNow.getDate() + 7 * week);
+    let dateNow = new EnhancedDate({week,weekDay:1});
     this.refreshTable(dateNow);
   },
 
@@ -354,7 +321,7 @@ Page({
    */
   showCardView: function (e) {
     let cardView = e.currentTarget.dataset.wlist;
-    if(e.currentTarget.dataset.wlist.color === 1){
+    if(cardView.color === 1){
       this.setData({
         cardView: cardView,
         userName: app.globalData.userInfo.name,
@@ -370,20 +337,3 @@ Page({
     });
   },
 });
-( () => {
-  function pad(number) {
-    if ( number < 10 ) {
-      return '0' + number;
-    }
-    return number;
-  }
-  /**
-   * @function Date#toISODateString
-   * @returns {string}
-   */
-  Date.prototype.toISODateString = function() {
-    return this.getUTCFullYear() +
-      '-' + pad( this.getUTCMonth() + 1 ) +
-      '-' + pad( this.getUTCDate() ) ;
-  };
-} )();

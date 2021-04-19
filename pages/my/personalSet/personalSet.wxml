@@ -12,7 +12,7 @@
       <view class="weui-cell__bd" style="margin:10px;">
         <input class="weui-input" disabled="{{!editable}}" value="{{user[index]}}" placeholder="{{item.placeholder}}"
           bindinput="cacheItem" bindblur="saveItem" data-index="{{index}}" />
-        <view class="status">
+        <view class="status" wx:if="{{editable}}">
           {{item.status}}
         </view>
       </view>
@@ -32,6 +32,6 @@
     保存
   </button>
   <button class="btn" open-type="feedback" plain="true">
-    <text>反馈</text>
+    <text>小程序问题反馈</text>
   </button>
 </view>

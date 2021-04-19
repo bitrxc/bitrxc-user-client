@@ -29,21 +29,21 @@ Component({
         title:'姓名',
         status:'未修改',
         cache:'',
-        validator : (ipt)=>ipt.length>0,
+        validator : (ipt)=>true,
       },
-      stuNum:{
+      schoolId:{
         placeholder:'请输入学号',
         title:'学号',
         status:'未修改',
         cache:'',
-        validator : (ipt)=>ipt.length>0,
+        validator : (ipt)=>true,
       },
       organization:{
         placeholder:'请输入书院/组织',
         title:'书院/组织',
         status:'未修改',
         cache:'',
-        validator : (ipt)=>ipt.length>0,
+        validator : (ipt)=>true,
       },
       phone:{
         placeholder:'请输入电话号码',
@@ -60,11 +60,6 @@ Component({
     editable:false,
     /** @type {User} */
     user:app.globalData.userInfo,
-    status:{
-      phone:"未修改",
-      name:"",
-      organization:"",
-    }
   },
   methods:{
     /**
