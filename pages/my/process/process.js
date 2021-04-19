@@ -67,7 +67,7 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    /** @type {Array<any>} */
+    /** @type {Array<Deal>} */
     let apList = APIResult.checkAPIResult(res.data).appointments;
     apList = apList.filter(
       (v) => Deal.allowedStatus.has(v.status)
@@ -131,6 +131,7 @@ Page({
       i.yyzt = mapping[i.status];
       let dateO =  new Date(i.execDate);
       i.yysj = dateO.toLocaleDateString("zh-cn");
+      i.rs = i.attendance
       /** @type {String} */
       let noteO = i.userNote;
       if(!noteO){

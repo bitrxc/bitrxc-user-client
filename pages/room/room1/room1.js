@@ -112,7 +112,7 @@ Page({
             launcher : app.globalData.userInfo.username,
             begin : apInfo.yysd,
             end : endSegment,
-            attendence : Number(form.attendence),
+            attendance : Number(form.attendence),
             execDate : execDate.toISODateString(),
             launchDate : Date.now(),
             userNote : form.usefor,
