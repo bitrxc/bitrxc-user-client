@@ -19,7 +19,7 @@
         </view>
       </view>
       <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
-        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{index+1}}">{{item}}
+        <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}
         </view>
       </scroll-view>
       <!--时段表-->
