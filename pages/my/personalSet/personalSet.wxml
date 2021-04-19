@@ -12,9 +12,6 @@
       <view class="weui-cell__bd" style="margin:10px;">
         <input class="weui-input" disabled="{{!editable}}" value="{{user[index]}}" placeholder="{{item.placeholder}}"
           bindinput="cacheItem" bindblur="saveItem" data-index="{{index}}" />
-        <view class="status" wx:if="{{editable}}">
-          {{item.status}}
-        </view>
       </view>
 
       <view class="line" style="width:90%;margin-top:5rpx;  position: absolute;border-bottom:1rpx solid lightgray;">
@@ -35,3 +32,4 @@
     <text>反馈</text>
   </button>
 </view>
+{{note}}
