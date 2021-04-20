@@ -19,3 +19,16 @@ export const request = (params) => {
     });
   });
 };
+
+/**
+ * 用promise封装的延时函数
+ * @param {number} delay 以毫秒计的延时
+ * @returns {Promise<void>}
+ */
+export const delay = (delay) =>{
+  return new Promise((res) =>
+    setTimeout(() => {
+      res();
+    }, delay)
+  );
+}

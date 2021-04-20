@@ -1,11 +1,12 @@
 // @ts-check pages/my/logs/logs.js
 import { request } from "../../../libs/request.js";
 import { APIResult, Schedule } from "../../../libs/data.d.js";
+import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 const app = getApp();
 const mapping = {
   new : "新请求",
   onhold : "处理中",
-  receive : "已通过",
+  receive : "已通过，待签到",
   reject : "已拒绝",
   cancel : "已取消",
 }
@@ -22,14 +23,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timelist:Array}>>} */
+    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timeList:Array}>>} */
     let scheduleRes = await request({
       url: app.globalData.server + '/schedule/all',
       header: app.globalData.APIHeader,
       method:"GET",
     })
     /** @type {Array<Schedule>} */
-    let schedule = scheduleRes.data.data.timeList;
+    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
       header: app.globalData.APIHeader,
@@ -37,7 +38,7 @@ Page({
     })
     /** 加载到的预约列表
      *  @type {Array<any>} */
-    let apList = res.data.data.appointments;
+    let apList = APIResult.checkAPIResult(res.data).appointments;
     apList.sort(
       (a,b)=> {
         let aDate = Date.parse(a.launchDate) ;
@@ -67,28 +68,31 @@ Page({
           header: app.globalData.APIHeader,
           method:"GET",
         })
-        roomMap.set(i,roomNameRes.data.data.roomInfo.name);
+        roomMap.set(i,APIResult.checkAPIResult(roomNameRes.data).roomInfo.name);
       }catch(e){
         roomMap.set(i,"房间未找到");
       }
     }
-    /** 提取用户Id
+
+    /** 如果显示其他用户，则提取用户Id
      * @type {Map<string,string>} */
     let userMap = new Map();
     for(let i of apList){
       userMap.set(i.launcher,"");
     }
-    //加载涉及到的用户名称
-    for(let [i,] of userMap){
-      try{
-        let roomNameRes = await request({
-          url: app.globalData.server + "/user/" +i,
-          header: app.globalData.APIHeader,
-          method:"GET",
-        })
-        userMap.set(i,roomNameRes.data.data.userInfo.name);
-      }catch(e){
-        userMap.set(i,"用户未找到");
+    if(!this.data.selfonly){
+      //加载涉及到的用户名称
+      for(let [i,] of userMap){
+        try{
+          let roomNameRes = await request({
+            url: app.globalData.server + "/user/" +i,
+            header: app.globalData.APIHeader,
+            method:"GET",
+          })
+          userMap.set(i,APIResult.checkAPIResult(roomNameRes.data).userInfo.name);
+        }catch(e){
+          userMap.set(i,"用户未找到");
+        }
       }
     }
     //适配前端属性名
@@ -96,8 +100,18 @@ Page({
       i.roomName = roomMap.get(i.roomId);
       i.userName = userMap.get(i.launcher);
       i.result = mapping[i.status];
-      let dateO =  new Date(i.launchDate)
+      let dateO =  new EnhancedDate({date:new Date(i.execDate)})
       i.dateTime = dateO.toLocaleString("zh-cn");
+      i.week = dateO.week;
+      i.weekDay = dateO.weekDay;
+      if(i.begin == i.end){
+        i.schedule = i.begin;
+      }else{
+        i.schedule = i.begin + "、" + i.end;
+      }
+      i.beginTime = schedule[i.begin].begin;
+      i.endTime = schedule[i.end].end;
+      i.rs = i.attendance
       /** @type {String} */
       let noteO = i.userNote
       if(!noteO){

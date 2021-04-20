@@ -5,5 +5,30 @@
 }
 .weui-cell weui-cell_active{
   display: flex;
+ 
 
+}
+.weui-flex__item{
+  display:flex ;
+}
+.weui-cell__bd{
+  display: flex;
+
+}
+.weui-input{
+  margin: 0px 80px 0px 10px;
+}
+.status{
+  background-color: #77e43d;
+  border-radius: 5px;
+  width:fit-content;
+  padding:0 3px 0 3px;
+  color:white;
+  font-size: 13px;
+}
+.btn-group{
+  margin: 50px;
+}
+.btn{
+  margin:20px 0 0 0;
 }

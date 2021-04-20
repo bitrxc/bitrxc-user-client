@@ -17,15 +17,15 @@
     <text class="text">使用情况：{{item.result}}</text>
   </view>
 </view>-->
-<view class='content'  wx:for='{{array}}' wx:key="id" >
-  <swiper class="swiper" style='width:100%;height:100%;'  >
-    <swiper-item >
+<view class='content' wx:for='{{array}}' wx:key="id">
+  <swiper class="swiper" style='width:100%;height:100%;'>
+    <swiper-item>
       <view>
         <swiper class='dayClass' style='height:{{windowHeight}}px;'>
           <swiper-item>
             <view style='background-color:#EFEFF4;height:{{windowHeight}}px;'>
               <scroll-view style='height:100%;' scroll-y="true">
-                <view class='day_content' >
+                <view class='day_content'>
                   <!--竖向分割线-->
                   <view class="day_line">
                     <view class='day_type'></view>
@@ -37,13 +37,32 @@
                     <view class='day_card'>
                       <view class='day_className'>{{item.roomName}}</view>
                       <view class='day_course'>
-                        <view   wx:if="{{!selfonly}}">预约人：{{item.userName}}</view>
-                        <!--<view>使用人数：{{item.rs}}</view>
-                        <view>用途说明：{{item.ytsm}}</view>-->
-                        <view>预约状态：{{item.result}}</view> 
+                        <view wx:if="{{!selfonly}}">预约人：{{item.userName}}</view>
+
+
+                        <!--添加预约时段信息-->
+                        <view class='noidle-item'>
+                          <label class='noidle-item-prefix'>预约时间：</label>
+                          <label class='noidle-item-content'>第{{item.week}}周
+                            周{{item.weekDay}}</label>
+                        </view>
+                        <view class='noidle-item'>
+                          <label class='noidle-item-prefix'>时段：</label>
+
+                          <!-- 脚本处理多个时段的显示 -->
+                          <label class='noidle-item-content'>
+                            第{{item.schedule}}时段（{{item.beginTime}}-{{item.endTime}}）
+                          </label>
+
+                        </view>
+                        <!--添加预约时段信息，夹上-->
+
+                        <view>使用人数：{{item.rs}}</view>
+                        <view>用途说明：{{item.ytsm}}</view>
+                        <view>预约状态：{{item.result}}</view>
                       </view>
-                    </view>                   
-                    <!--yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
+                    </view>
+                    <!-- yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
                   </view>
                 </view>
               </scroll-view>

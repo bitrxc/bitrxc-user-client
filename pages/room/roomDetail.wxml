@@ -1,7 +1,8 @@
 <!--pages/room/roomDetail.wxml-->
 <bitrxc-swiping-gallery class="swiper" images="{{room.gallery}}">
 </bitrxc-swiping-gallery>
-<view class="roomname">{{room.name}}</view>
+<view class="content">
+  <view class="roomname">{{room.name}}</view>
   <view class="introction">
     <view class="line-top"></view>
     <view class="title">房间概览</view>
@@ -10,7 +11,7 @@
     </view>
     <view class="box">
     <view class="small-title">基础设施
-      <view class="img-content" wx:for="{{room.facilities}}">
+      <view class="img-content" wx:for="{{room.facilities}}" wx:key="label">
         <image src="../../icons/{{item.img}}" style="height:25px;width:25px;" wx:if="{{item.img}}"></image>
         <text class="small-content">{{item.label}}</text>
       <!--根据房间实际做判断-->
@@ -30,3 +31,10 @@
 <view class="btn">
   <button bindtap="tofunction" plain="true">预约此房间</button>
 </view>
+<view class="deal">
+  <view class="deal-des">{{deal.description}}</view>
+</view>
+
+</view>
+
+

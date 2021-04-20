@@ -1,15 +1,34 @@
 // @ts-check app.js
 import {request} from  "./libs/request.js";
-import { User } from "./libs/data.d.js";
+import { APIResult, User,Deal } from "./libs/data.d.js";
 App({
   async onLaunch() {
     this.globalData.userInfoP = this.initialize();
   },
-  async onError(e) {
-    await wx.showToast({
+  onError(e) {
+    this.errorHandler('' + e);
+  },
+  onUnhandledRejection(e){
+    this.errorHandler('' + e.reason.errMsg + e.reason.stack);
+  },
+
+  /**
+   * 
+   * @param {string} errorMsg 
+   */
+  errorHandler(errorMsg){
+    wx.hideLoading();
+    wx.showToast({
       title:"系统出错！",
       icon:"error",
     })
+    //处理终结性错误
+    if(errorMsg.search("Failed to login") > -1){
+      this.logger.error("终结性错误")
+      // await wx.redirectTo({
+      //   url: '/pages/fatalError',
+      // })
+    }
     //await wx.reportAnalytics('bug',{message:e});
   },
   /**
@@ -21,13 +40,19 @@ App({
     // 小程序基础库版本2.10.2开始支持异步Promise调用
     // wx.request仍然需要手动封装
     // 发送 weixincode.code 到后台换取 openId, sessionKey, unionId'
-    let session = await request({
-      url:this.globalData.server + "/user/login?code="+weixincode.code,
-      method:"GET",
-    })
-    this.globalData.APIHeader.token = session.data.data.token;
-    this.globalData.openid = session.data.data.openid;
-    this.systemInfo = await wx.getSystemInfo();
+    try{
+      let sessionRes = await request({
+        url:this.globalData.server + "/user/login?code="+weixincode.code,
+        method:"GET",
+      })
+      let session = APIResult.checkAPIResult(sessionRes.data);
+      this.globalData.APIHeader.token = session.token;
+      this.globalData.openid = session.openid;
+    }catch(e){
+      this.logger.info(e)
+      // 修改有问题的报错信息。 TODO: 修改错误类型
+      throw new Error("Failed to login");
+    }
     // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
     await this.getUserInfo();
   },
@@ -41,22 +66,38 @@ App({
       method:"GET",
     })
     /** @type {User & WechatMiniprogram.UserInfo} */
-    let userInfo = appUserInfo.data.data.userInfo
-    // 可以将 res 发送给后台解码出 unionId
-    let settingsRes = await wx.getSetting()
-    if (settingsRes.authSetting['scope.userInfo']) {
-      /** @type {WechatMiniprogram.GetUserInfoSuccessCallbackResult} 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 */ 
-      let userInfoRes = await wx.getUserInfo({})
-      // 可以将 res 发送给后台解码出 unionId
-      userInfo.avatarUrl = userInfoRes.userInfo.avatarUrl
-    }
+    let userInfo = APIResult.checkAPIResult(appUserInfo.data).userInfo
     this.globalData.userInfo = userInfo;
+    //TODO: 管理员手动审核用户信息
     this.globalData.userInfoComplete 
       = Boolean(userInfo.phone) 
       && Boolean(userInfo.organization) 
       && Boolean(userInfo.name)
+      && Boolean(userInfo.schoolId)
     ;
     return userInfo;
+  },
+  /**检查用户是否可以预约 */
+  async checkDealable(){
+    let res = await request({
+      url: this.globalData.server + "/appointment/username/"+this.globalData.openid,
+      header: this.globalData.APIHeader,
+      method:"GET",
+    })
+    /** @type {Array<any>} */
+    let apList = APIResult.checkAPIResult(res.data).appointments;
+    apList = apList.filter(
+      (v) => Deal.allowedStatus.has(v.status)
+    );
+    if(apList.length >= 1){
+      return 'toomuch';
+    }else{
+      if(!this.globalData.userInfoComplete){
+        return 'imcomplete'
+      }else{
+        return 'ok';
+      }
+    }
   },
   globalData: {
     openid:"",
@@ -64,14 +105,16 @@ App({
       "content-type":"application/json",
       "token":null,
     },
+    /** @type {User & WechatMiniprogram.UserInfo} */
     userInfo: null,
     /** 
      * @type {Promise<void>} 小程序是否加载完成
      */
     userInfoP:null,
     userInfoComplete:false,
-    server: "https://api.bitrxc.com"
+    server: "https://api-dev.bitrxc.com"
   },
   /**@type {WechatMiniprogram.SystemInfo} */
-  systemInfo:null,
+  systemInfo:wx.getSystemInfoSync(),
+  logger:wx.getRealtimeLogManager(),
 })

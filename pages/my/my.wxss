@@ -1,7 +1,5 @@
 /* pages/my/my.wxss */
-page {
-  
-}
+
 .container{
   height:auto;
   position: top;
@@ -37,7 +35,7 @@ page {
   height: 138rpx;
   border-radius: 50%;
   top: 1rpx;
-  
+  overflow: hidden;
 }
 .information{
   display: flex;
@@ -73,15 +71,15 @@ page {
   position: absolute;
   left: 67vw;
   top: 10px;
-  
+  font-size: 18px;
     color: #00b9d3;
-    font-weight: 600;
+    font-weight: 700;
 }
 .userinfo-nickname {
   
     color: #00b9d3;
-    font-weight: 600;
-  font-size: 15px;
+    font-weight: 700;
+  font-size: 18px;
   width: 35vw;
 }
 
@@ -134,7 +132,7 @@ page {
   height: 80%;
 }
 .boxitem_bottom {
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
   text-align: center;
 }
