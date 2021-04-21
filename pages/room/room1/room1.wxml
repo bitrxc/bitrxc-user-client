@@ -52,7 +52,7 @@
 
               <!--尝试更改单元格选择个数，上方注释是原代码-->
               <view class="flex-item kcb-item" bindtap="showCardView" data-wlist='{{item}}' data-index='{{index}}'
-                style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*60+2}}px; height:{{item.yycd*60-5}}px;background-color:{{item.color == '0'?'#ffffff':(item.color == '1'?'#04BE02':'#ccc')}}">
+                style="margin-left:{{(item.xqj-1)*98}}rpx;margin-top:{{(item.yysd-1)*60+2}}px; height:{{item.yycd*60-5}}px;background-color:{{item.color == '-2'?'#FF7F24':(item.color == '1'?'#04BE02':'#ccc')}}">
                 <view class="smalltext">{{item.zt}} </view>
               </view>
 
@@ -120,7 +120,7 @@
           </view>
           <view class="note-detail">
 
-            <text style="font-size:27rpx;">用途说明：</text>
+            <text style="font-size:30rpx;">用途说明：</text>
             <input name="usefor" placeholder="请输入用途" type="text" maxlength="30" confirm-type="done"></input>
           </view>
         </view>

@@ -22,7 +22,7 @@ const profile = {
       color : -1,
     },
     avaliable : {
-      zt : "可预约",
+      zt : "空闲",
       color : 1,
     },
     unreachable : {
@@ -30,7 +30,7 @@ const profile = {
       color : 0,
     },
     occupied : {
-      zt : "已预约",
+      zt : "被预约",
       color : -1,
     },
     mine : {
@@ -60,11 +60,13 @@ Page({
     inputValue:"",
     roomName: "",
     show: false,
+    dealable:false,
     weekList: [1,2,3,4,5,6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     week: 8,
     day: ['一','二','三','四','五','六','日'],
     /** @type {Array<Schedule>}*/
     schedule : [],
+    twoblocks:false,
     /** @type {Array<dealSegmentItemType>} */
     wlist: [],
     /** 多选框的选项 */
@@ -73,7 +75,22 @@ Page({
       {value: 1, name: '2'},
     ]    
   },
+  radioChange(e) {
+    if( e.detail.value == 0){
+      this.setData({
+        twoblocks:false
+      });
+      console.log('twoblocks值为：', this.data.twoblocks);
 
+    }else if( e.detail.value == 1){
+      this.setData({
+        twoblocks:true
+      });
+      console.log('twoblocks值为：', this.data.twoblocks);
+
+    }
+    
+  },
   /**
    * 检查用户填写的内容
    * 提交表单中用户填写的内容
@@ -150,8 +167,8 @@ Page({
         case 'ok':
           break;
         default:
-          await wx.navigateTo({ 
-            url: '../../my/process/process?continue=false',
+          this.setData({
+            dealable:false
           })
       }
     }
@@ -189,21 +206,23 @@ Page({
       roomName: room.name,
       schedule : APIResult.checkAPIResult(scheduleRes.data).timeList,
       week : dateNow.week,
+      weekList : [dateNow.week,dateNow.week+1]
     })
   },
   onShow:async function(){
+    await this.data.inited;
+    await this.refreshTable(new EnhancedDate({time:Date.now()}));
     switch(await app.checkDealable()){
       case 'ok':
-        await this.data.inited;
-        await this.refreshTable(new EnhancedDate({time:Date.now()}));
-        await wx.hideLoading();
+        this.setData({
+          dealable:true
+        })
         break;
       case 'toomuch':
-        await wx.navigateBack();
         break;
       case 'imcomplete':
-        await wx.navigateBack();
     }
+    await wx.hideLoading();
   },
   /** 
    * @param {EnhancedDate} date 需要查询的周次
@@ -321,7 +340,7 @@ Page({
    */
   showCardView: function (e) {
     let cardView = e.currentTarget.dataset.wlist;
-    if(cardView.color === 1){
+    if(cardView.color === 1&&this.data.dealable){
       this.setData({
         cardView: cardView,
         userName: app.globalData.userInfo.name,

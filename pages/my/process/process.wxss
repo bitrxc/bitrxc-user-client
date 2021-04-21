@@ -30,27 +30,7 @@ page{
 .day_content:first-child{
   padding-top: 15px;
 }
-/* .day_line{
-  width: 40rpx;
-  height: 40rpx;
-  margin-left: 30rpx;
-  font-size: 24rpx;
-  text-align: center;
-  border-radius: 50%;
-  color: #FFF;
-  background-color: #3CB9FB;
-  position: relative;
-  margin-right: 20px;
-} */
-/* .day_line::before{
-  content: '';
-  width: 100px;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: -6px;
-  background-color: #3CB9FB;
-} */
+
 .day_line{
   width: 1px;
   height: auto;
@@ -103,4 +83,21 @@ page{
 }
 .day_course{
   margin-top: 10rpx; 
+}
+.prompt{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.prompt > text{
+  background-color: rgba(241, 100, 123, 0.931);
+  border-radius: 5px;
+  width: 90%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin:10px 0 20px 0px;
+  padding:2px 2px 5px 10px;
+  color:white;
+  font-size: 13px;
 }

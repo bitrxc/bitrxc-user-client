@@ -1,11 +1,20 @@
 <view class='content' style='height:{{windowHeight+50}}px;'>
+
   <swiper class="swiper" style='height:{{windowHeight+50}}px;'>
-    <swiper-item >
+    <swiper-item>
+
       <view style='height:{{windowHeight+50}}px;'>
+
         <swiper class='dayClass' style='height:{{windowHeight50}}px;'>
           <swiper-item>
+
             <view style='background-color:#EFEFF4;height:{{windowHeight+50}}px;'>
               <scroll-view style='height:100%;' scroll-y="true">
+
+                <view class="prompt">
+                  <text>提示：每个用户当前仅能进行一次预约，如预约额度已满，请先取消预约再重新预约。</text>
+                </view>
+
                 <view class='day_content' wx:for='{{dayList}}' wx:key="index">
                   <!--竖向分割线-->
                   <view class="day_line">
@@ -19,12 +28,35 @@
                       <view class='day_className'>{{item.roomName}}</view>
                       <view class='day_course'>
                         <view>预约人：{{item.yyrxm}}</view>
+
+
+                        <!--添加预约时段信息-->
+                        <view class='noidle-item'>
+                          <label class='noidle-item-prefix'>预约时间：</label>
+                          <label class='noidle-item-content'>第{{item.week}}周
+                            周{{item.weekDay}}</label>
+                        </view>
+                        <view class='noidle-item'>
+                          <label class='noidle-item-prefix'>时段：</label>
+
+                          <!-- 如果选择2个时段在后端处理，即时显示 -->
+                          <label class='noidle-item-content'>
+                            第{{item.schedule}}时段（{{item.beginTime}}-{{item.endTime}}）
+                          </label>
+
+                        </view>
+                        <!--添加预约时段信息，夹上-->
+
+
+
+                        
                         <view>使用人数：{{item.rs}}</view>
                         <view>用途说明：{{item.ytsm}}</view>
-                        <view>预约状态：{{item.yyzt}}</view> 
+                        <view>预约状态：{{item.yyzt}}</view>
                       </view>
                       <!--取消按钮，cancelBtn函数未写-->
-                      <button class="btn" bindtap="cancel" style="font-size:35rpx;margin-top:10px;margin-bottom:10px;" data-id="{{item.id}}">取消预约</button>
+                      <button class="btn" bindtap="cancel" style="font-size:35rpx;margin-top:10px;margin-bottom:10px;"
+                        data-id="{{item.id}}">取消预约</button>
                     </view>
                     <!--yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
                   </view>

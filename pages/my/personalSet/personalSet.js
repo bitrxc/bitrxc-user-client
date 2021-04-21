@@ -11,7 +11,6 @@ import { APIError } from "../../../libs/errors.d.js";
  * @typedef {Object} FunctionalItem 
  * @property {string} placeholder
  * @property {string} title 
- * @property {string} status
  * @property {string} cache
  * @property { (ipt:string) => boolean } validator
  * 
@@ -22,33 +21,30 @@ Component({
    * 页面的初始数据
    */
   data: {
+    note:'',
     /** @type {Record<string,FunctionalItem>} */
     functions:{
       name:{
         placeholder:'请输入姓名',
         title:'姓名',
-        status:'未修改',
         cache:'',
-        validator : (ipt)=>true,
+        validator : (ipt)=>{return ipt && ipt.length>0},
       },
       schoolId:{
         placeholder:'请输入学号',
         title:'学号',
-        status:'未修改',
         cache:'',
-        validator : (ipt)=>true,
+        validator : (ipt)=>{return ipt && ipt.length==10},
       },
       organization:{
         placeholder:'请输入书院/组织',
         title:'书院/组织',
-        status:'未修改',
         cache:'',
-        validator : (ipt)=>true,
+        validator : (ipt)=>{return ipt && ipt.length>0},
       },
       phone:{
         placeholder:'请输入电话号码',
         title:'联系电话',
-        status:'未修改',
         cache:'',
         validator : (ipt)=> {
           const phonePattern = RegExp("^1(3\\d{2}|4[14-9]\\d|5([0-35689]\\d|7[1-79])|66\\d|7[2-35-8]\\d|8\\d{2}|9[13589]\\d)\\d{7}$");
@@ -92,63 +88,12 @@ Component({
       return e.detail.value;
     },
     /**
+     * @deprecated
      * @param {WechatMiniprogram.InputBlur<any,{index:string}>} e
      */
     async saveItem(e){
-      let index = e.currentTarget.dataset.index;
-      let rawValue = this.data.functions[index].cache;
-      // 电话号码校验
-      if(this.data.functions[index].validator(rawValue)){
-        try{
-          await this.saveUserProfile();
-          this.setData({
-            functions:{
-              ...this.data.functions,
-              [index]:{
-                ...this.data.functions[index],
-                status:"修改成功"
-              }
-            },
-          })
-        }catch(e){
-          this.setData({
-            functions:{
-              ...this.data.functions,
-              [index]:{
-                ...this.data.functions[index],
-                status:"未成功修改" + this.data.functions[index].title,
-              }
-            },
-            user:{
-              ...this.data.user,
-            }
-          })
-        }
-      }else{
-        this.setData({
-          functions:{
-            ...this.data.functions,
-            [index]:{
-              ...this.data.functions[index],
-              status:this.data.functions[index].title + "格式不正确",
-            }
-          },
-          user:{
-            ...this.data.user,
-          }
-        })
-      }
-      await delay(2000);
-      this.setData({
-        functions:{
-          ...this.data.functions,
-          [index]:{
-            ...this.data.functions[index],
-            status:"未修改",
-          }
-        },
-      });
     },
+    
     /**
      * 获取明文编码的用户信息，受 {@link wx.getUserInfo} 接口变化的影响，只对旧版本小程序有效
      * @param {WechatMiniprogram.ButtonGetUserInfo} e 
@@ -194,11 +139,14 @@ Component({
       let newInfo = {
         ...this.data.user,
       }
+      let note = "";
       //读缓存
       for(let index in this.data.functions){
         let functionItem = this.data.functions[index];
         if(functionItem.validator(functionItem.cache)){
           newInfo[index] = functionItem.cache
+        }else{
+          note += functionItem.title + "格式不正确"
         }
       }
       try{
@@ -211,6 +159,7 @@ Component({
         APIResult.checkAPIResult(res.data);
         this.setData({
           user: newInfo ,
+          note:note,
         })
         app.getUserInfo();
       }catch(e){

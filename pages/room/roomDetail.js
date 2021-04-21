@@ -9,6 +9,10 @@ const iconMap = new Map([
   ["多媒体","medio.png"],
   ["坐垫","chair.png"],
   ["阶梯长椅","chair.png"],
+  ["桌游","poker.png"],
+  ["健身器材","FitEq.png"],
+  ["棋类道具","games.png"],
+  ["坐垫","cushion.png"]
 ])
 Page({
   /**
@@ -18,10 +22,6 @@ Page({
     area:12,
     pnum:15,
     roomId:NaN,
-    deal:{
-      dealable:true,
-      description:""
-    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -96,31 +96,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow:async function(){
-    switch(await app.checkDealable()){
-      case 'ok':
-        this.setData({
-          deal:{
-            dealable:true,
-            description:""
-          }
-        })
-        break;
-      case 'toomuch':
-        this.setData({
-          deal: {
-            dealable : false,
-            description : '待处理预约数已达上限'
-          }
-        })
-        break;
-      case 'imcomplete':
-        this.setData({
-          deal: {
-            dealable : false,
-            description : '用户信息尚不完善，无法预约！'
-          }
-        })
-    }
   },
   /**
    * 生命周期函数--监听页面隐藏

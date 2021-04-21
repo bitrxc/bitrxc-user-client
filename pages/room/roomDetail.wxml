@@ -29,7 +29,7 @@
 </view>
   </view>
 <view class="btn">
-  <button bindtap="tofunction" disabled="{{!deal.dealable}}" plain="true">预约此房间</button>
+  <button bindtap="tofunction" plain="true">预约此房间</button>
 </view>
 <view class="deal">
   <view class="deal-des">{{deal.description}}</view>
