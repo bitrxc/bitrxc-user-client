@@ -57,6 +57,19 @@ export const APIResult = class{
     }
   }
 };
+/** 
+* @typedef
+* @property {string} status 
+* @property {string} userNote 
+* @property {number} roomId
+* @property {string} launcher
+* @property {string} execDate 
+* @property {number} id 
+* @property {number} begin 
+* @property {number} end
+* @property {number} attendance
+* @property {string} launchDate
+*/
 export const Deal = class{
   static allowedStatus = new Set([
     'new','receive','signed','illegal','missed'

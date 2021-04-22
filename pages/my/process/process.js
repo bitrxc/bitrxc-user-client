@@ -1,4 +1,5 @@
-import { APIResult,Deal } from "../../../libs/data.d.js";
+// @ts-check
+import { APIResult,Deal ,Schedule} from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 import { request } from "../../../libs/request.js";
 const app = getApp();
@@ -125,11 +126,13 @@ Page({
         userMap.set(i,"用户未找到");
       }
     }
+    console.log(apList)
     //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.yyrxm = userMap.get(i.launcher);
-      i.yyzt = mapping[i.status];      let dateO =  new EnhancedDate({date:new Date(i.execDate)})
+      i.yyzt = mapping[i.status];      
+      let dateO =  new EnhancedDate({date:new Date(i.execDate)})
       i.week = dateO.week;
       i.weekDay = dateO.weekDay;
       if(i.begin == i.end){
@@ -137,8 +140,8 @@ Page({
       }else{
         i.schedule = i.begin + "、" + i.end;
       }
-      i.beginTime = schedule[i.begin].begin;
-      i.endTime = schedule[i.end].end;
+      i.beginTime = schedule.find((v)=>i.begin==v.id).begin;
+      i.endTime = schedule.find((v)=>i.end==v.id).end;
       i.yysj = dateO.toLocaleDateString("zh-cn");
       i.rs = i.attendance
       /** @type {String} */

@@ -35,14 +35,6 @@ App({
    * 工具方法，异步执行业务数据加载操作。加入此函数是方便全局获取初始化状态，存入userInfoP。
    */
   async initialize(){
-    //获取服务器状态
-    let serverStatus = await request({
-      url:"https://static.bitrxc.com/json/ServerStatus.json",
-      method:"GET",
-    })
-    this.globalData.serverStatus = serverStatus.data;
-    console.log(serverStatus.data)
-    this.globalData.serverStatus = {notice:''};
     // 登录
     let weixincode = await wx.login()
     // 小程序基础库版本2.10.2开始支持异步Promise调用
@@ -63,6 +55,12 @@ App({
     }
     // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
     await this.getUserInfo();
+    //获取服务器状态
+    let serverStatus = await request({
+      url:"https://static.bitrxc.com/json/ServerStatus.json",
+      method:"GET",
+    })
+    this.globalData.serverStatus = serverStatus.data;
   },
   async getUserInfo(){
     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
