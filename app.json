@@ -2,7 +2,6 @@
   "pages": [
     "pages/room/room",
     "pages/my/my", 
-    "pages/index/index",
     "pages/my/logs/logs",
     "pages/my/process/process",
     "pages/my/personalSet/personalSet",
