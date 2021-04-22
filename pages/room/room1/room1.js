@@ -66,6 +66,7 @@ Page({
     day: ['一','二','三','四','五','六','日'],
     /** @type {Array<Schedule>}*/
     schedule : [],
+    maxSchedule : 6,
     twoblocks:false,
     /** @type {Array<dealSegmentItemType>} */
     wlist: [],
@@ -73,7 +74,7 @@ Page({
     items: [
       {value: 0, name: '1',checked: 'true'},
       {value: 1, name: '2'},
-    ]    
+    ]
   },
   radioChange(e) {
     if( e.detail.value == 0){
@@ -199,12 +200,16 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
+    /** @type {Array<Schedule>} */
+    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
+    schedule = schedule.sort((a,b)=> Date.parse(b.begin) - Date.parse(a.begin));
 
     let dateNow = new EnhancedDate({time:Date.now()})
     await this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
-      schedule : APIResult.checkAPIResult(scheduleRes.data).timeList,
+      schedule,
+      maxSchedule : schedule[schedule.length-1].id,
       week : dateNow.week,
       weekList : [dateNow.week,dateNow.week+1]
     })
@@ -341,11 +346,21 @@ Page({
   showCardView: function (e) {
     let cardView = e.currentTarget.dataset.wlist;
     if(cardView.color === 1&&this.data.dealable){
+      let cardChoices = [
+        {value: 0, name: '1',checked: 'true'},
+        {value: 1, name: '2'},
+      ]
+      if(cardView.yysd == this.data.maxSchedule){
+        cardChoices = [
+          {value: 0, name: '1',checked: 'true'},
+        ]
+      }
       this.setData({
         cardView: cardView,
         userName: app.globalData.userInfo.name,
         //展示对话框
         showModalStatus: true,
+        items:cardChoices
       });
     }
   },
