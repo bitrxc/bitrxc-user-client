@@ -1,3 +1,6 @@
+<bitrxc-notice placeholder="提示：每个用户当前仅能进行一次预约，如预约额度已满，请先取消预约再重新预约。">
+</bitrxc-notice>
+
 <view class='content' style='height:{{windowHeight+50}}px;'>
 
   <swiper class="swiper" style='height:{{windowHeight+50}}px;'>
@@ -8,12 +11,8 @@
         <swiper class='dayClass' style='height:{{windowHeight50}}px;'>
           <swiper-item>
 
-            <view style='background-color:#EFEFF4;height:{{windowHeight+50}}px;'>
+            <view style='height:{{windowHeight+50}}px;'>
               <scroll-view style='height:100%;' scroll-y="true">
-
-                <view class="prompt">
-                  <text>提示：每个用户当前仅能进行一次预约，如预约额度已满，请先取消预约再重新预约。</text>
-                </view>
 
                 <view class='day_content' wx:for='{{dayList}}' wx:key="index">
                   <!--竖向分割线-->

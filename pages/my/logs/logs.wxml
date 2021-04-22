@@ -23,7 +23,7 @@
       <view>
         <swiper class='dayClass' style='height:{{windowHeight}}px;'>
           <swiper-item>
-            <view style='background-color:#EFEFF4;height:{{windowHeight}}px;'>
+            <view style='height:{{windowHeight}}px;'>
               <scroll-view style='height:100%;' scroll-y="true">
                 <view class='day_content'>
                   <!--竖向分割线-->
