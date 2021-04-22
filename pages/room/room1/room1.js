@@ -49,12 +49,13 @@ const profile = {
  * @property {number} [color] 用户已预约时段用-1表示，可预约时段用0表示，不可预约时段用-1表示
  * @property {number} execDate 预约的到期日期，为数值型
  */
-const app = getApp()
+/** @type {import("../../../app.js").MiniprogramContext} */
+const app = getApp();
 Page({
   data: {
-    /** @type {Promise<void>} */ 
+    /** @type {Promise<void>} *///@ts-ignore
     inited:null,
-    /** @type {dealSegmentItemType} */
+    /** @type {dealSegmentItemType} *///@ts-ignore
     cardView: null,
     roomId:NaN,
     inputValue:"",
@@ -66,6 +67,7 @@ Page({
     day: ['一','二','三','四','五','六','日'],
     /** @type {Array<Schedule>}*/
     schedule : [],
+    maxSchedule : 6,
     twoblocks:false,
     /** @type {Array<dealSegmentItemType>} */
     wlist: [],
@@ -73,7 +75,7 @@ Page({
     items: [
       {value: 0, name: '1',checked: 'true'},
       {value: 1, name: '2'},
-    ]    
+    ]
   },
   radioChange(e) {
     if( e.detail.value == 0){
@@ -194,17 +196,13 @@ Page({
     })
     let room = APIResult.checkAPIResult(roomRes.data).roomInfo;
 
-    let scheduleRes = await request({
-      url: app.globalData.server + '/schedule/all',
-      header: app.globalData.APIHeader,
-      method:"GET",
-    })
-
+    let schedule = Array.from(app.globalData.schedule.values());
     let dateNow = new EnhancedDate({time:Date.now()})
     await this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
-      schedule : APIResult.checkAPIResult(scheduleRes.data).timeList,
+      schedule,
+      maxSchedule : schedule[schedule.length-1].id,
       week : dateNow.week,
       weekList : [dateNow.week,dateNow.week+1]
     })
@@ -341,11 +339,21 @@ Page({
   showCardView: function (e) {
     let cardView = e.currentTarget.dataset.wlist;
     if(cardView.color === 1&&this.data.dealable){
+      let cardChoices = [
+        {value: 0, name: '1',checked: 'true'},
+        {value: 1, name: '2'},
+      ]
+      if(cardView.yysd == this.data.maxSchedule){
+        cardChoices = [
+          {value: 0, name: '1',checked: 'true'},
+        ]
+      }
       this.setData({
         cardView: cardView,
         userName: app.globalData.userInfo.name,
         //展示对话框
         showModalStatus: true,
+        items:cardChoices
       });
     }
   },

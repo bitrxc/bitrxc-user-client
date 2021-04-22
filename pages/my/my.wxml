@@ -24,6 +24,7 @@
 </view>
 
 <view class="divLine"></view>
+<bitrxc-notice infoName="notice" placeholder="" type="warn"></bitrxc-notice>
 <view class="box">
   <navigator class="boxitem" wx:key='index' wx:for="{{functions}}" url="{{item.url}}">
     <view class="boxitem_top">

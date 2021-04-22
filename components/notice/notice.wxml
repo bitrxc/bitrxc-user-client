@@ -1,0 +1,4 @@
+<!--components/notice/notice.wxml-->
+<view class="prompt">
+  <text class="content {{background}}">{{text}}</text>
+</view>

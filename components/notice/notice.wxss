@@ -1,0 +1,33 @@
+/* components/notice/notice.wxss */
+.prompt{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.content{
+  border-radius: 5px;
+  width: 90%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin:10px 0 20px 0px;
+  padding:2px 2px 5px 10px;
+  color:white;
+  font-size: 13px;
+}
+
+.error{
+  background-color: #fa5151ee;
+}
+
+.warn{
+  background-color: #c87e2fee;
+}
+
+.info{
+  background-color: #10aeffee;
+}
+
+.none{
+  background-color: #00000000;
+}

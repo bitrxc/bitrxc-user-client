@@ -1,7 +1,8 @@
 // @ts-check pages/my/logs/logs.js
 import { request } from "../../../libs/request.js";
-import { APIResult, Schedule } from "../../../libs/data.d.js";
+import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
+/** @type {import("../../../app.js").MiniprogramContext} */
 const app = getApp();
 const mapping = {
   new : "新请求",
@@ -23,21 +24,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timeList:Array}>>} */
-    let scheduleRes = await request({
-      url: app.globalData.server + '/schedule/all',
-      header: app.globalData.APIHeader,
-      method:"GET",
-    })
-    /** @type {Array<Schedule>} */
-    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
       header: app.globalData.APIHeader,
       method:"GET",
     })
     /** 加载到的预约列表
-     *  @type {Array<any>} */
+     * @type {Array<Deal>} */
     let apList = APIResult.checkAPIResult(res.data).appointments;
     apList.sort(
       (a,b)=> {
@@ -95,13 +88,14 @@ Page({
         }
       }
     }
+    let schedule = app.globalData.schedule;
     //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.userName = userMap.get(i.launcher);
       i.result = mapping[i.status];
-      let dateO =  new EnhancedDate({date:new Date(i.execDate)})
-      i.dateTime = dateO.toLocaleString("zh-cn");
+      let dateO =  new EnhancedDate({date:new Date(i.launchDate)})
+      i.dateTime = dateO.toLocaleString("zh");
       i.week = dateO.week;
       i.weekDay = dateO.weekDay;
       if(i.begin == i.end){
@@ -109,8 +103,8 @@ Page({
       }else{
         i.schedule = i.begin + "、" + i.end;
       }
-      i.beginTime = schedule[i.begin].begin;
-      i.endTime = schedule[i.end].end;
+      i.beginTime = schedule.get(i.begin).begin;
+      i.endTime = schedule.get(i.end).end;
       i.rs = i.attendance
       /** @type {String} */
       let noteO = i.userNote

@@ -31,9 +31,7 @@
 <view class="btn">
   <button bindtap="tofunction" plain="true">预约此房间</button>
 </view>
-<view class="deal">
-  <view class="deal-des">{{deal.description}}</view>
-</view>
+<bitrxc-notice placeholder="{{deal.description}}" type="alert"></bitrxc-notice>
 
 </view>
 

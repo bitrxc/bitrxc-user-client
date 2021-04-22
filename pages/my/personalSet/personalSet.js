@@ -28,19 +28,19 @@ Component({
         placeholder:'请输入姓名',
         title:'姓名',
         cache:'',
-        validator : (ipt)=>{return ipt && ipt.length>0},
+        validator : (ipt)=>{return Boolean(ipt) && ipt.length>0},
       },
       schoolId:{
         placeholder:'请输入学号',
         title:'学号',
         cache:'',
-        validator : (ipt)=>{return ipt && ipt.length==10},
+        validator : (ipt)=>{return Boolean(ipt) && ipt.length==10},
       },
       organization:{
         placeholder:'请输入书院/组织',
         title:'书院/组织',
         cache:'',
-        validator : (ipt)=>{return ipt && ipt.length>0},
+        validator : (ipt)=>{return Boolean(ipt) && ipt.length>0},
       },
       phone:{
         placeholder:'请输入电话号码',

@@ -1,4 +1,6 @@
-// @ts-check pages/my/my.js
+// @ts-check /pages/my/my.js
+
+/** @type {import("../../app.js").MiniprogramContext} *///@ts-ignore
 const app = getApp();
 //my页面只负责渲染页面，不负责拉取用户数据，由个人信息页面负责拉取和更新数据。
 Page({
@@ -44,12 +46,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow:async function () {
-    //阻塞onload函数，等待用户信息返回
-    await wx.showLoading({
-      title:"小程序初始化中"
-    });
-    await app.globalData.userInfoP;
-    await wx.hideLoading();
     let userInfoVisible = {...app.globalData.userInfo};
     userInfoVisible.avatarUrl 
       = userInfoVisible.avatarUrl
