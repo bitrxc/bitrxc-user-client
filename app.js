@@ -1,9 +1,15 @@
 // @ts-check app.js
 import {request} from  "./libs/request.js";
-import { APIResult, User,Deal } from "./libs/data.d.js";
-App({
+import { APIResult, User,Deal,Schedule } from "./libs/data.d.js";
+let miniprogramContext = {
   async onLaunch() {
     this.globalData.userInfoP = this.initialize();
+    //阻塞onload函数，等待用户信息返回
+    await wx.showLoading({
+      title:"小程序初始化中"
+    });
+    await this.globalData.userInfoP;
+    await wx.hideLoading();
   },
   onError(e) {
     this.errorHandler('' + e);
@@ -61,6 +67,23 @@ App({
       method:"GET",
     })
     this.globalData.serverStatus = serverStatus.data;
+    
+    //加载预约时间段列表
+    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timeList:Array}>>} */
+    let scheduleRes = await request({
+      url: this.globalData.server + '/schedule/all',
+      header: this.globalData.APIHeader,
+      method:"GET",
+    })
+    /** @type {Array<Schedule>} */
+    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
+    schedule = schedule.sort((a,b)=> Date.parse(b.begin) - Date.parse(a.begin))
+    /** @type {Map<number,Schedule>} */
+    let scheduleMap = new Map();
+    for(let i of schedule){
+      scheduleMap.set(i.id,i);
+    }
+    this.globalData.schedule = scheduleMap;
   },
   async getUserInfo(){
     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -111,18 +134,20 @@ App({
       "content-type":"application/json",
       "token":null,
     },
-    /** @type {User & WechatMiniprogram.UserInfo} */
+    /** @type {User & WechatMiniprogram.UserInfo} *///@ts-ignore
     userInfo: null,
-    /** 
-     * @type {Promise<void>} 小程序是否加载完成
-     */
+    /** @type {Promise<void>} 小程序是否加载完成 *///@ts-ignore
     userInfoP:null,
     userInfoComplete:false,
     server: "https://api-dev.bitrxc.com",
     /** @type {Record<string,any>} */
     serverStatus:{},
+    /** @type {Map<number,Schedule>} 预约时间段表*///@ts-ignore
+    schedule:null
   },
   /**@type {WechatMiniprogram.SystemInfo} */
   systemInfo:wx.getSystemInfoSync(),
   logger:wx.getRealtimeLogManager(),
-})
+}
+/** @typedef {WechatMiniprogram.App.Instance<typeof miniprogramContext>} MiniprogramContext*/
+App(miniprogramContext);

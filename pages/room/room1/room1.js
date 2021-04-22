@@ -49,12 +49,13 @@ const profile = {
  * @property {number} [color] 用户已预约时段用-1表示，可预约时段用0表示，不可预约时段用-1表示
  * @property {number} execDate 预约的到期日期，为数值型
  */
-const app = getApp()
+/** @type {import("../../../app.js").MiniprogramContext} */
+const app = getApp();
 Page({
   data: {
-    /** @type {Promise<void>} */ 
+    /** @type {Promise<void>} *///@ts-ignore
     inited:null,
-    /** @type {dealSegmentItemType} */
+    /** @type {dealSegmentItemType} *///@ts-ignore
     cardView: null,
     roomId:NaN,
     inputValue:"",
@@ -195,15 +196,7 @@ Page({
     })
     let room = APIResult.checkAPIResult(roomRes.data).roomInfo;
 
-    let scheduleRes = await request({
-      url: app.globalData.server + '/schedule/all',
-      header: app.globalData.APIHeader,
-      method:"GET",
-    })
-    /** @type {Array<Schedule>} */
-    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
-    schedule = schedule.sort((a,b)=> Date.parse(b.begin) - Date.parse(a.begin));
-
+    let schedule = Array.from(app.globalData.schedule.values());
     let dateNow = new EnhancedDate({time:Date.now()})
     await this.setData({
       windowHeight: app.systemInfo.windowHeight,

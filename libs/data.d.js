@@ -23,6 +23,7 @@ export const Room = class{};
 /** 
  * @typedef
  * @property {string} name 
+ * @property {string} username 微信openid 
  * @property {string} phone
  * @property {string} organization
  * @property {string} schoolId 学号

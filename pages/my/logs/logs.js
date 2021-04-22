@@ -2,6 +2,7 @@
 import { request } from "../../../libs/request.js";
 import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
+/** @type {import("../../../app.js").MiniprogramContext} */
 const app = getApp();
 const mapping = {
   new : "新请求",
@@ -23,14 +24,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timeList:Array}>>} */
-    let scheduleRes = await request({
-      url: app.globalData.server + '/schedule/all',
-      header: app.globalData.APIHeader,
-      method:"GET",
-    })
-    /** @type {Array<Schedule>} */
-    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
       header: app.globalData.APIHeader,
@@ -95,6 +88,7 @@ Page({
         }
       }
     }
+    let schedule = app.globalData.schedule;
     //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
@@ -109,8 +103,8 @@ Page({
       }else{
         i.schedule = i.begin + "、" + i.end;
       }
-      i.beginTime = schedule.find((v)=>i.begin==v.id).begin;
-      i.endTime = schedule.find((v)=>i.end==v.id).end;
+      i.beginTime = schedule.get(i.begin).begin;
+      i.endTime = schedule.get(i.end).end;
       i.rs = i.attendance
       /** @type {String} */
       let noteO = i.userNote

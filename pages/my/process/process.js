@@ -2,6 +2,7 @@
 import { APIResult,Deal ,Schedule} from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 import { request } from "../../../libs/request.js";
+/** @type {import("../../../app.js").MiniprogramContext} */
 const app = getApp();
 const mapping = {
   new : "新请求",
@@ -55,14 +56,6 @@ Page({
   },
   refresh:async function(){
     //TODO: 前端实现带缓存的API系统后，将下列代码全部改为缓存读
-    /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timeList:Array}>>} */
-    let scheduleRes = await request({
-      url: app.globalData.server + '/schedule/all',
-      header: app.globalData.APIHeader,
-      method:"GET",
-    })
-    /** @type {Array<Schedule>} */
-    let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
     //加载预约列表
     let res = await request({
       url: app.globalData.server + "/appointment/username/"+app.globalData.openid,
@@ -127,6 +120,8 @@ Page({
       }
     }
     console.log(apList)
+    let schedule = app.globalData.schedule;
+    schedule.values
     //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
@@ -140,8 +135,8 @@ Page({
       }else{
         i.schedule = i.begin + "、" + i.end;
       }
-      i.beginTime = schedule.find((v)=>i.begin==v.id).begin;
-      i.endTime = schedule.find((v)=>i.end==v.id).end;
+      i.beginTime = schedule.get(i.begin).begin;
+      i.endTime = schedule.get(i.begin).end;
       i.yysj = dateO.toLocaleDateString("zh-cn");
       i.rs = i.attendance
       /** @type {String} */
