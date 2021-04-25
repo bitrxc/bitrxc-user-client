@@ -21,3 +21,4 @@
   font-size: 5vmax;
   font-weight: bold;
 }
+@import 'app-wxa-auto-dark.wxss'
