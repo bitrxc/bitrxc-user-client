@@ -4,13 +4,7 @@ import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 import { request } from "../../../libs/request.js";
 /** @type {import("../../../app.js").MiniprogramContext} */
 const app = getApp();
-const mapping = {
-  new : "新请求",
-  onhold : "处理中",
-  receive : "已通过，待签到",
-  reject : "已拒绝",
-  cancel : "已取消",
-}
+const mapping = null
 Page({
   data: {
     dayList: [//yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态
@@ -126,7 +120,7 @@ Page({
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.yyrxm = userMap.get(i.launcher);
-      i.yyzt = mapping[i.status];      
+      i.yyzt = app.globalData.appointmentStatus[i.status];      
       let dateO =  new EnhancedDate({date:new Date(i.execDate)})
       i.week = dateO.week;
       i.weekDay = dateO.weekDay;

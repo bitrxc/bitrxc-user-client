@@ -129,18 +129,30 @@ let miniprogramContext = {
     }
   },
   globalData: {
+    /** @type {Record<string,string>} 预约状态的用户界面文字 */
+    appointmentStatus:{
+      new : "新请求",
+      onhold : "处理中",
+      receive : "已通过，待签到",
+      signed : "已签到，待签退",
+      missed : "规定时间内未签到",
+      illegal : "规定时间内未签退",
+      finish : "已签退",
+      reject : "已拒绝",
+      cancel : "已取消",
+    },
     openid:"",
     APIHeader: {
       "content-type":"application/json",
-      "token":null,
+      "token":"",
     },
-    /** @type {User & WechatMiniprogram.UserInfo} *///@ts-ignore
+    /** @type {User & WechatMiniprogram.UserInfo} 用户信息 *///@ts-ignore
     userInfo: null,
     /** @type {Promise<void>} 小程序是否加载完成 *///@ts-ignore
     userInfoP:null,
     userInfoComplete:false,
     server: "https://api-dev.bitrxc.com",
-    /** @type {Record<string,any>} */
+    /** @type {Record<string,any>} 服务器状态文件，内含公告栏*/
     serverStatus:{},
     /** @type {Map<number,Schedule>} 预约时间段表*///@ts-ignore
     schedule:null

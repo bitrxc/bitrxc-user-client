@@ -4,13 +4,6 @@ import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 /** @type {import("../../../app.js").MiniprogramContext} */
 const app = getApp();
-const mapping = {
-  new : "新请求",
-  onhold : "处理中",
-  receive : "已通过，待签到",
-  reject : "已拒绝",
-  cancel : "已取消",
-}
 Page({
   /**
    * 页面的初始数据
@@ -93,7 +86,7 @@ Page({
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.userName = userMap.get(i.launcher);
-      i.result = mapping[i.status];
+      i.result = app.globalData.appointmentStatus[i.status];;
       let dateO =  new EnhancedDate({date:new Date(i.launchDate)})
       i.dateTime = dateO.toLocaleString("zh");
       i.week = dateO.week;
