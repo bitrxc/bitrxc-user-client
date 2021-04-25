@@ -100,7 +100,8 @@ Page({
    * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
-    /** @type {Record<'duration' | 'attendence' | 'usefor',string>} */
+    console.log(e)
+    /** @type {Record<'duration' | 'attendence' | 'usefor',string>&Record<'requires',Array<string>>} */
     let form = e.detail.value;
     if (form.usefor.length == 0) {
       await wx.showToast({
@@ -121,6 +122,14 @@ Page({
       let apInfo = this.data.cardView;
       let execDate = new EnhancedDate({time:apInfo.execDate});
       let endSegment = apInfo.yysd + Number(form.duration) ;
+      let requires = new Set(form.requires)
+      if(requires.has('airConditioner')){
+        form.usefor += '\n\r 使用器材：空调'
+      }
+      
+      if(requires.has('medio')){
+        form.usefor += '\n\r 使用器材：投影仪'
+      }
       try{
         let res = await request({
           url : app.globalData.server + "/appointment/appoint",

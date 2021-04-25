@@ -105,7 +105,7 @@
         <view class="note">
 
           <view class="note-detail">
-            <text style="font-size:27rpx;">时段长度:</text>
+            <text class="note-title">时段长度:</text>
             <radio-group name="duration" class="duration" bindchange="radioChange">
               <label class="duration" wx:for="{{items}}" wx:key="value">
                 <view class="weui-cell__bd">{{item.name}}
@@ -117,12 +117,20 @@
           </view>
           <view class="note-detail">
 
-            <text style="font-size:27rpx;">使用人数：</text>
+            <text class="note-title">特殊器件：</text>
+            <checkbox-group name="requires">
+              <checkbox value="airConditioner">空调</checkbox>
+              <checkbox value="medio">投影仪</checkbox>
+            </checkbox-group>
+          </view>
+          <view class="note-detail">
+
+            <text class="note-title">使用人数：</text>
             <input name="attendence" placeholder="请输入人数" type="number" maxlength="5" confirm-type="done"></input>
           </view>
           <view class="note-detail">
 
-            <text style="font-size:30rpx;">用途说明：</text>
+            <text class="note-title">用途说明：</text>
             <input name="usefor" placeholder="请输入用途" type="text" maxlength="30" confirm-type="done"></input>
           </view>
         </view>
