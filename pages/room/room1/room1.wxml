@@ -22,6 +22,8 @@
         <view class='show_week' wx:for="{{weekList}}" wx:key="index" bindtap="selectWeek" data-week="{{item}}">{{item}}
         </view>
       </scroll-view>
+      <bitrxc-notice wx:if="{{!dealable}}" type="warn" placeholder="当前无法预约房间！"></bitrxc-notice>
+
       <!--时段表-->
       <view class="timeTable">
         <view class="top">
