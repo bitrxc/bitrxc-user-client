@@ -3,7 +3,7 @@
 .-box {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
 
 }
@@ -16,7 +16,7 @@
 
   background-color: white;
   flex-direction: column;
-  margin: 20px 10px;
+  margin: 20px 0px;
 }
 .-box-item-image {
   width: auto;

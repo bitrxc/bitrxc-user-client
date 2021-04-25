@@ -3,7 +3,7 @@
   <navigator url="{{targetPage}}?{{targetID}}={{item.id}}" class="-box-item" wx:for="{{list}}" wx:key="index"
     style="height: 120px;">
     <view class="-box-item-image">
-      <image class="-box-image" src="{{item.image}}" mode="aspectFill" style="width: 90px; height: 90px;"></image>
+      <image class="-box-image" src="{{item.image}}" mode="aspectFill" style="width: 105px; height: 105px;"></image>
     </view>
     <view class="-box-item-title">{{item.name}}</view>
 
