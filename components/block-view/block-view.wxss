@@ -16,7 +16,7 @@
 
   background-color: white;
   flex-direction: column;
-  margin: 20px 0px;
+  margin: 40rpx 0px;
 }
 .-box-item-image {
   width: auto;
@@ -33,13 +33,13 @@
 }
 
 .-box-item-title{
-  
+  font-size:30rpx;
   color:gray;
   width: auto;
   margin: 0 2rpx;
   font-weight: 700;
   border-radius: 5px;
   flex: 0 0 25%;
-  padding: 6px 5px 0 5px;
+  padding: 6rpx 5rpx 0 5rpx;
   /* grid-area: title; */
 }
