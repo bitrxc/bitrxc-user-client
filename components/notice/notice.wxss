@@ -31,3 +31,5 @@
 .none{
   background-color: #00000000;
 }
+
+@import 'notice-wxa-auto-dark.wxss'
