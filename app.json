@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/room/room",
-    "pages/index/index",
     
     "pages/my/my",
     "pages/my/logs/logs",
@@ -18,12 +17,6 @@
   },
   "tabBar": {
     "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "新闻主页",
-        "iconPath": "/icons/SearchRoom.png",
-        "selectedIconPath": "/icons/SearchRoom.png"
-      },
       {
         "pagePath": "pages/room/room",
         "text": "活动室预约",

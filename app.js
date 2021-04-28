@@ -151,7 +151,7 @@ let miniprogramContext = {
     /** @type {Promise<void>} 小程序是否加载完成 *///@ts-ignore
     userInfoP:null,
     userInfoComplete:false,
-    server: "https://api-dev.bitrxc.com",
+    server: "https://api.bitrxc.com",
     /** @type {Record<string,any>} 服务器状态文件，内含公告栏*/
     serverStatus:{},
     /** @type {Map<number,Schedule>} 预约时间段表*///@ts-ignore
