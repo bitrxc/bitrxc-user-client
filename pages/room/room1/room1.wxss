@@ -237,6 +237,9 @@ page{
   padding-top: 3rpx;
   
 }
+.note > .note-detail> .note-title{
+  font-size:30rpx;
+}
 .note-detail{
   display: flex;
   flex-direction: row;

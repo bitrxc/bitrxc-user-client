@@ -1,0 +1,30 @@
+/* 
+此文件为开发者工具生成，生成时间: 2021/4/25 下午9:53:07
+使用方法：
+在 notice.wxss 文件末尾引入样式
+```
+@import "./notice-wxa-auto-dark.wxss";
+```
+ */
+
+@media (prefers-color-scheme: dark) {
+    .content {
+        color: rgb(17, 17, 17);
+    }
+
+    .error {
+        background-color: rgba(205, 33, 49, 0.9333333333333333);
+    }
+
+    .warn {
+        background-color: rgba(157, 89, 2, 0.9333333333333333);
+    }
+
+    .info {
+        background-color: rgba(0, 100, 173, 0.9333333333333333);
+    }
+
+    .none {
+        background-color: rgba(0, 0, 0, 0);
+    }
+}

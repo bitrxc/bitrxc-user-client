@@ -57,3 +57,4 @@
   padding:2rpx, 2rpx,2rpx,2rpx;
   margin: 2rpx, 2rpx,2rpx,2rpx;
 }
+@import 'list-view-wxa-auto-dark.wxss'
