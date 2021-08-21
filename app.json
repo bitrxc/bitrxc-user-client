@@ -4,6 +4,7 @@
     "pages/index/index",
     
     "pages/my/my",
+   
     "pages/my/logs/logs",
     "pages/my/process/process",
     "pages/my/personalSet/personalSet",
@@ -12,9 +13,9 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "睿信空间小程序",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#002446",
+    "navigationBarTitleText": "睿信空间",
+    "navigationBarTextStyle": "white"
   },
   "tabBar": {
     "list": [
@@ -26,15 +27,15 @@
       },
       {
         "pagePath": "pages/room/room",
-        "text": "活动室预约",
-        "iconPath": "/icons/ApplyRoom.png",
-        "selectedIconPath": "/icons/ApplyRoom.png"
+        "text": "预约房间",
+        "iconPath": "/icons/book_rooms1.png",
+        "selectedIconPath": "/icons/book_rooms_selected1.png"
       },
       {
         "pagePath": "pages/my/my",
         "text": "我的",
-        "iconPath": "/icons/SignIn.png",
-        "selectedIconPath": "/icons/SignIn.png"
+        "iconPath": "/icons/personal_information1.png",
+        "selectedIconPath": "/icons/personal_information_selected1.png"
       }
     ]
   },

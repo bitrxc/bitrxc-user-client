@@ -4,8 +4,9 @@
     <view class="weui-cell__hd">
       <view class="weui-flex">
         <view class="weui-flex__item">
-          <view class="placeholder" style="color:red;width:5vw;">*</view>
+          <!--<view class="placeholder" style="color:red;width:5vw;">*</view>-->
           <view class="placeholder" style="width:20vw;">{{item.title}}</view>
+          <view class="blueline"></view>
         </view>
       </view>
 

@@ -10,6 +10,8 @@
 }
 .weui-flex__item{
   display:flex ;
+  flex-direction: column;
+  left:10rpx;
 }
 .weui-cell__bd{
   display: flex;
@@ -19,7 +21,7 @@
   margin: 0px 80px 0px 10px;
 }
 .status{
-  background-color: #77e43d;
+  background-color: #5d7599;
   border-radius: 5px;
   width:fit-content;
   padding:0 3px 0 3px;
@@ -32,3 +34,9 @@
 .btn{
   margin:20px 0 0 0;
 }
+.blueline{
+  width:20%;
+  position: relative;
+  border-bottom:10rpx solid #7a8eab ;
+}
+

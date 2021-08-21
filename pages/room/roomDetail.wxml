@@ -2,15 +2,32 @@
 <bitrxc-swiping-gallery class="swiper" images="{{room.gallery}}">
 </bitrxc-swiping-gallery>
 <view class="content">
+ <view class="room">
   <view class="roomname">{{room.name}}</view>
+  <view class="line-top"></view>
+</view>
   <view class="introction">
-    <view class="line-top"></view>
-    <view class="title">房间概览</view>
-    <view class="small-title">活动面积
-      <text class="small-content">{{room.area}}㎡，大致可容纳{{room.capacity}}人</text>
+   <view class="part">
+   <!--<view class="title">房间概览</view>-->
+    <view class="small-title">活动面积</view>
+    <view class="line-bottom"></view>
+      <text class="small-content">{{room.area}}㎡</text>
     </view>
+    <view class="part">
+    <view class="small-title">容纳人数</view>
+    <view class="line-bottom"></view>
+      <text class="small-content">{{room.capacity}}</text>
+    </view>
+    <view class="part">
+     <view class="small-title">用途</view>
+     <view class="line-bottom"></view>
+      <text class="small-content">{{room.description}}</text>
+    </view>
+  </view>
     <view class="box">
-    <view class="small-title">基础设施
+    <view class="basic">
+    <view class="small-title">基础设施 </view>
+    <view class="line-bottom"></view>
       <view class="img-content" wx:for="{{room.facilities}}" wx:key="label">
         <image src="../../icons/{{item.img}}" style="height:25px;width:25px;" wx:if="{{item.img}}"></image>
         <text class="small-content">{{item.label}}</text>
@@ -21,17 +38,15 @@
         <icon class="icon-small" type="cancel" size="23"></icon>  -->
       </view>
     </view>
-    </view>
-    <view class="line-bottom"></view>
-  <view class="title">房间介绍</view>
-  <view class="small-title">描述
-      <text class="small-content">{{room.description}}</text>
-</view>
-  </view>
-<view class="btn">
-  <button bindtap="tofunction" plain="true">预约此房间</button>
+
+      <view class="btn">
+      <button bindtap="tofunction" plain="true" size="mini">预约</button>
+      </view>
 </view>
 <bitrxc-notice placeholder="{{deal.description}}" type="alert"></bitrxc-notice>
+    
+  
+
 
 </view>
 
