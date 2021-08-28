@@ -102,11 +102,13 @@ Page({
    * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
-    //一次通知询问
-    wx.requestSubscribeMessage({
-      tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn2vltNKXs5ABQ'],
-      success (res) { }
-    })
+
+        //一次通知询问
+        wx.requestSubscribeMessage({
+          tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn2vltNKXs5ABQ'],
+          success (res) { }
+        })
+   
     console.log(e)
     /** @type {Record<'duration' | 'attendence' | 'usefor',string>&Record<'requires',Array<string>>} */
     let form = e.detail.value;
@@ -162,6 +164,7 @@ Page({
         })
         return;
       }
+
       //刷新预约时段所在列
       let list = await this.fetchColumn(execDate);
       let dayNow = execDate.weekDay;
