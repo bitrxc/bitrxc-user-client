@@ -75,7 +75,8 @@ Page({
     items: [
       {value: 0, name: '1',checked: 'true'},
       {value: 1, name: '2'},
-    ]
+    ],
+    openid:""
   },
   radioChange(e) {
     if( e.detail.value == 0){
@@ -93,6 +94,7 @@ Page({
     }
     
   },
+
   /**
    * 检查用户填写的内容
    * 提交表单中用户填写的内容
@@ -100,6 +102,11 @@ Page({
    * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
+    //一次通知询问
+    wx.requestSubscribeMessage({
+      tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn2vltNKXs5ABQ'],
+      success (res) { }
+    })
     console.log(e)
     /** @type {Record<'duration' | 'attendence' | 'usefor',string>&Record<'requires',Array<string>>} */
     let form = e.detail.value;
@@ -183,6 +190,7 @@ Page({
           })
       }
     }
+    
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -372,4 +380,59 @@ Page({
       showModalStatus: false
     });
   },
+
+//发送模板消息
+message: function () {
+  var that = this;
+  //订阅消息模板id
+  var template_id ="F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn";
+  wx.requestSubscribeMessage({
+    tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn'],
+    success(res) {
+    //发送access_token请求
+      wx.request({
+        url: 'https://api-dev.bitrxc.com/accessToken.php',//这里的url我不知道怎么写
+        data:{
+          access_token: that.data.accessToken,
+          //数据包
+          data:{
+          //openid
+            "touser": that.data.openid,
+          //模板id
+            "template_id": template_id,
+            "page": "index",
+            "miniprogram_state": "developer",
+            "lang": "zh_CN",
+            "data": {
+              "name5": {
+                "value": "睿小信" //申请人
+              },
+              "thing2": {
+                "value": "会议室" //预约地点
+              },
+              "date3": {
+                "value": "2021-08-29 8:00" //开始时间，预约起点
+              },
+              "date4": {
+                "value": "2021-08-29 8:00" //结束时间，预约终点
+              },
+              "phrase8": {
+                "value": "通过" //申请结果
+              }
+            }
+          }
+        },
+        success: function(res) {
+          console.log("订阅成功");
+          console.log(res);
+        },
+        fail: function(res) {
+          console.log("订阅失败");
+        },
+      })
+    }
+  })
+},
+
+
 });

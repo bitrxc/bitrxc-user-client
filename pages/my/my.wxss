@@ -34,7 +34,7 @@
   width: 138rpx;
   height: 138rpx;
   border-radius: 50%;
-  top: 1rpx;
+  top:  1vh;
   overflow: hidden;
 }
 .information{
