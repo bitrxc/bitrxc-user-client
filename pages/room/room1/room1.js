@@ -403,7 +403,7 @@ message: function () {
             "touser": that.data.openid,
           //模板id
             "template_id": template_id,
-            "page": "index",
+            "page": "pages/logs/logs",
             "miniprogram_state": "developer",
             "lang": "zh_CN",
             "data": {
