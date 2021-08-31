@@ -6,6 +6,7 @@ import { delay, request } from "../../../libs/request.js";
 import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 
+
 /**
  * @typedef {{zt:string,color:number}} tagType
  */
@@ -102,12 +103,6 @@ Page({
    * @param {WechatMiniprogram.FormSubmit} e
    */
   formSubmit:async function (e) {
-
-        //一次通知询问
-        wx.requestSubscribeMessage({
-          tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn2vltNKXs5ABQ'],
-          success (res) { }
-        })
    
     console.log(e)
     /** @type {Record<'duration' | 'attendence' | 'usefor',string>&Record<'requires',Array<string>>} */
@@ -139,6 +134,15 @@ Page({
       if(requires.has('medio')){
         form.usefor += '\n\r 使用器材：投影仪'
       }
+      //一次通知询问
+ wx.requestSubscribeMessage({
+  tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn2vltNKXs5ABQ'],
+  success (res) {
+    console.log("一次订阅请求显示成功")
+   }
+  
+})
+
       try{
         let res = await request({
           url : app.globalData.server + "/appointment/appoint",
@@ -162,6 +166,7 @@ Page({
           icon: 'loading',
           duration: 1500,
         })
+        console.log("一次订阅请求显示失败")
         return;
       }
 
@@ -180,8 +185,12 @@ Page({
         icon: 'success',
         duration: 1000,
       })
+
+ 
       //播放动画，关闭
       this.hideModal();
+
+      
 
       //根据是否可以继续预约判断，留在当前页面，还是跳转到预约进度页面，多次预约
       switch(await app.checkDealable()){
