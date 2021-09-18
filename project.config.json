@@ -21,15 +21,15 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
-    "useApiHook": false,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
     "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
-    "bundle": false,
+    "enableEngineNative": false,
     "useIsolateContext": true,
     "userConfirmedBundleSwitch": true,
     "packNpmManually": false,

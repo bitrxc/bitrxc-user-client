@@ -14,7 +14,7 @@ const profile = {
    * 第一周的星期一 
    * TODO: 从服务段读取此字段
    */
-  weekbegin : Date.parse("2021-08-23"),
+  weekbegin : Date.parse("2021-08-22"),
   /** @enum {tagType} */
   statusMap : {
     past : {
@@ -155,6 +155,9 @@ Page({
         })
         return;
       }
+      wx.requestSubscribeMessage({
+        tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn2vltNKXs5ABQ']        
+      })
       //刷新预约时段所在列
       let list = await this.fetchColumn(execDate);
       let dayNow = execDate.weekDay;
