@@ -14,7 +14,7 @@ const profile = {
    * 第一周的星期一 
    * TODO: 从服务段读取此字段
    */
-  weekbegin : Date.parse("2021-02-28"),
+  weekbegin : Date.parse("2021-08-23"),
   /** @enum {tagType} */
   statusMap : {
     past : {

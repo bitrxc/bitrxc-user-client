@@ -2,8 +2,8 @@
  /**
   * 
   */
-export class EnhancedDate extends Date{
-  static weekBegin = Date.parse("2021-02-28");
+ export class EnhancedDate extends Date{
+  static weekBegin = Date.parse("2021-08-23");
 
   /**
    * @param {number} newval
