@@ -5,8 +5,10 @@
       <view class="weui-flex">
         <view class="weui-flex__item">
           <!--<view class="placeholder" style="color:red;width:5vw;">*</view>-->
-          <view class="placeholder" style="width:20vw;">{{item.title}}</view>
-          <view class="blueline"></view>
+          <view class="placeholder" style="width:fit-content;">{{item.title}}
+            <view class="blueline"></view>
+          </view>
+          
         </view>
       </view>
 
@@ -23,13 +25,18 @@
 </view> 
 
 <view class="btn-group">
-  <button class="btn" bindtap="enableEdit" wx:if="{{!editable}}" plain="true">
+  <button class="btn1" style="background-color:#5d7599;color:#FFF;" bindtap="enableEdit" wx:if="{{!editable}}" plain="true">
     修改用户信息
   </button>
-  <button class="btn" bindtap="disableEdit" wx:else type="primary">
+  <button class="btn1" bindtap="disableEdit" wx:else type="primary">
     保存
   </button>
-  <button class="btn" open-type="feedback" plain="true">
+  <view class="cut-line">
+    <view class="c-line"></view>
+    <text class="cut" style="color:darkgray"> OR </text>
+    <view class="c-line"></view>
+  </view>
+  <button class="btn2" style="background-color:#6b6c6d;color:#FFF;" open-type="feedback" plain="true">
     <text>小程序问题反馈</text>
   </button>
 </view>

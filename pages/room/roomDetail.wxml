@@ -3,10 +3,12 @@
 </bitrxc-swiping-gallery>
 <view class="content">
  <view class="room">
-  <view class="roomname">{{room.name}}</view>
-  <view class="line-top"></view>
+  <view class="roomname">{{room.name}}
+    <view class="line-top"></view>
+  </view>
+  
 </view>
-  <view class="introction">
+  <view class="introduction">
    <view class="part">
    <!--<view class="title">房间概览</view>-->
     <view class="small-title">活动面积</view>
