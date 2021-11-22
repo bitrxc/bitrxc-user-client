@@ -169,7 +169,7 @@ Page({
         wlist:list,
       })
       await wx.showToast({
-        title: '预约成功！',
+        title: '提交成功！',
         icon: 'success',
         duration: 1000,
       })
