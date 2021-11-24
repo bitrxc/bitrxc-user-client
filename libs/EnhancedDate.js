@@ -2,8 +2,8 @@
  /**
   * 
   */
-export class EnhancedDate extends Date{
-  static weekBegin = Date.parse("2021-02-28");
+ export class EnhancedDate extends Date{
+  static weekBegin = Date.parse("2021-08-22");
 
   /**
    * @param {number} newval
@@ -58,9 +58,9 @@ export class EnhancedDate extends Date{
   }
 
   toISODateString () {
-    return this.getUTCFullYear() +
-      '-' + pad( this.getUTCMonth() + 1 ) +
-      '-' + pad( this.getUTCDate() ) ;
+    return this.getFullYear() +
+      '-' + pad( this.getMonth() + 1 ) +
+      '-' + pad( this.getDate() ) ;
   };
 }
 

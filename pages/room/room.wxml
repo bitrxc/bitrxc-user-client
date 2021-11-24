@@ -3,6 +3,7 @@
   <input class="header-input" type="text" placeholder="搜索房间" bindinput="onFilterChange"/>
   <icon class="header-icon" bindtap="onReturn" type="clear" color="grey"></icon>
 </view>
+<bitrxc-notice id="notice" infoName="notice" placeholder="" type="warn"></bitrxc-notice>
 <view class="map-block">
   <image class="map" src="img/map.jpg"></image>
 </view>

@@ -1,5 +1,5 @@
 // @ts-check pages/room/room.js
-import { request } from "../../libs/request.js";
+import { delay, request } from "../../libs/request.js";
 import { Room , APIResult } from "../../libs/data.d.js";
 /**
  * @typedef {Room & {descObj:Record<string,any>,image:string}} RoomDisplay
@@ -19,6 +19,7 @@ Page({
    */
   onLoad:async function (options) {
     await app.globalData.userInfoP;
+    this.refreshNotice();
     this.refreshList(app.globalData.server + '/room');
   },
   /** @param {WechatMiniprogram.Input} event*/
@@ -69,6 +70,13 @@ Page({
     }
   },
   /**
+   * 刷新顶栏通知
+   */
+  refreshNotice(){
+    let notice = this.selectComponent("#notice");
+    notice.refresh();
+  },
+  /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
@@ -93,6 +101,8 @@ Page({
    */
   onPullDownRefresh: function () {
     this.refreshList(app.globalData.server + '/room');
+    let notice = this.selectComponent("#notice");
+    notice.refresh();
   },
   /**
    * 页面上拉触底事件的处理函数
