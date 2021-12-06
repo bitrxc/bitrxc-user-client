@@ -31,14 +31,14 @@ Component({
         validator : (ipt)=>{return Boolean(ipt) && ipt.length>0},
       },
       schoolId:{
-        placeholder:'请输入学号',
-        title:'学号',
+        placeholder:'请输入学号/工号',
+        title:'学号/工号',
         cache:'',
         validator : (ipt)=>{return Boolean(ipt) && ipt.length==10},
       },
       organization:{
-        placeholder:'请输入书院/组织',
-        title:'书院/组织',
+        placeholder:'请输入书院/学院',
+        title:'书院/学院',
         cache:'',
         validator : (ipt)=>{return Boolean(ipt) && ipt.length>0},
       },

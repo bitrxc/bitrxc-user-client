@@ -37,7 +37,7 @@
 
               <!--添加预约时段信息-->
               <view class='noidle-item'>
-                <label class='noidle-item-prefix'>预约时间：</label>
+                <label class='noidle-item-prefix'>预约请求提交日期：</label>
                 <label class='noidle-item-content'>第{{item.week}}周
                   周{{item.weekDay}}</label>
               </view>
