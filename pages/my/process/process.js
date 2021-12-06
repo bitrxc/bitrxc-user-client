@@ -120,7 +120,7 @@ Page({
       i.roomName = roomMap.get(i.roomId);
       i.yyrxm = userMap.get(i.launcher);
       i.yyzt = app.globalData.appointmentStatus[i.status];
-      i.cancelable = i.status == "new";
+      i.cancelable = i.status == "new"||i.status == "receive";
       let dateO =  new EnhancedDate({date:new Date(i.execDate)})
       i.week = dateO.week;
       i.weekDay = dateO.weekDay;

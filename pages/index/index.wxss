@@ -1,7 +1,0 @@
-.header{
-    display: flex;
-    background-color: aquamarine;
-    border-radius: 5px;
-    width: fit-content;
-    margin: 5px 50vw 5px 5px;
-}
