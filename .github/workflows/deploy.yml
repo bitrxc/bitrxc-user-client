@@ -8,7 +8,7 @@ on:
 
 jobs:
   my-job:
-    name: My Job
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       #获取代码
