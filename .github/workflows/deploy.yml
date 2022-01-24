@@ -29,4 +29,4 @@ jobs:
       #使用miniprogram-ci上传代码
       - name: upload
         run: miniprogram-ci upload --pp  ./ --pkp $HOME/secrets/my_secret.key --appid wx807f40cbd0449570 --uv 1.18 -r 1 --enable-es6 true
-      #--uv 版本号  -r ci机器人编号(1-30)  需要手动更改
+      #--uv 版本号  -r ci机器人编号(1-30)  需要手动更改，同一个编号提交代码会覆盖
