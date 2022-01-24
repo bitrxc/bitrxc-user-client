@@ -1,31 +1,32 @@
-#main.yml
-name: Github Action deploy
-#触发条件
-on:
+name: Deploy
+
+on: 
   push:
-      branches:
-          - master
-          - dev
+    branches:
+      - master
+      - dev
+
 jobs:
-  deploy:
-      #虚拟机环境
-      runs-on: windows-latest 
-      steps:
+  my-job:
+    name: My Job
+    runs-on: ubuntu-latest
+    steps:
       #获取代码
       - uses: actions/checkout@v2
+      #给文件执行权限
+      - name: chmod
+        run: chmod +x decrypt_secret.sh
+      #解密密钥
+      - name: Decrypt large secret
+        run: ./decrypt_secret.sh
+        env:
+          LARGE_SECRET_PASSPHRASE: ${{ secrets.GPG_KEY }}
+      #安装npm
       - uses: actions/setup-node@v1
       #安装miniprogram-ci
       - name: install miniprogram-ci
         run: npm install -g miniprogram-ci
       #使用miniprogram-ci上传代码
-      #上传代码
       - name: upload
-        run: miniprogram-ci \
-             upload \
-             --pp  ./ \
-             --pkp ./private.wx807f40cbd0449570.key \
-             --appid wx807f40cbd0449570 \
-             --uv 1.18 \
-             -r 1 \
-             --enable-es6 true \
-      #--uv 版本号
+        run: miniprogram-ci upload --pp  ./ --pkp $HOME/secrets/my_secret.key --appid wx807f40cbd0449570 --uv 1.18 -r 1 --enable-es6 true
+      #--uv 版本号  -r ci机器人编号(1-30)  需要手动更改
