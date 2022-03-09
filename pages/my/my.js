@@ -54,7 +54,7 @@ Page({
     //阻塞解除后，新的用户信息已经存在于全局数据中。
     this.setData({
       userInfo: userInfoVisible,
-      complete: app.globalData.userInfoComplete,
+      complete: app.globalData.userInfo.checked,
     })
   },
   /**

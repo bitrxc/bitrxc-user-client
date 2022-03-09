@@ -27,6 +27,7 @@ export const Room = class{};
  * @property {string} phone
  * @property {string} organization
  * @property {string} schoolId 学号
+ * @property {boolean} checked 学号
  * @property {number} id
  */
 export const User = class{};
