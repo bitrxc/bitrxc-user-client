@@ -81,6 +81,7 @@ Page({
     await this.data.inited;
     let dateNow = new EnhancedDate({week:this.data.week,weekDay:1})
     await this.refreshTable(dateNow);
+    await wx.stopPullDownRefresh();
   },
   radioChange(e) {
     if( e.detail.value == 0){
