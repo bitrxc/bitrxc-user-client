@@ -1,21 +1,19 @@
 <view class='content'>
-  <!--房间名-->
-  <view class='title_right'>
-    <view class="tab-item ">
-      <view class="onRight">{{roomName}}</view>
-    </view>
-  </view>
-  <swiper class="swiper" style='width:100%;height:100%;'>
-    <swiper-item catchtouchmove="stopTouchMove">
       <!--周次选择-->
       <view class='title' bindtap='clickShow'>
         <view class='title_left'>
           <view class='btn btn_'></view>
           <view class='week' catchtap='clickShow'>
-            第{{week}}周
-            <image></image>
+            <view>第{{week}}周</view>
+            <view>{{dateBegin}} - {{dateEnd}}</view>
           </view>
           <view class='btn'></view>
+        </view>
+        <!--房间名-->
+        <view class='title_right'>
+          <view class="tab-item ">
+            <view class="onRight">{{roomName}}</view>
+          </view>
         </view>
       </view>
       <scroll-view scroll-x="true" class='show' wx:if='{{show}}'>
@@ -70,8 +68,6 @@
           <bitrxc-notice placeholder="{{deal.description}}" type="alert"></bitrxc-notice>
         </scroll-view>
       </view>
-    </swiper-item>
-  </swiper>
 </view>
 <!--可预约时段弹框-->
 <view class="drawer_screen" data-statu="close" wx:if="{{showModalStatus}}" catchtouchmove='preventTouchMove'

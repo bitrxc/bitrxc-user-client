@@ -215,12 +215,18 @@ Page({
 
     let schedule = Array.from(app.globalData.schedule.values());
     let dateNow = new EnhancedDate({time:Date.now()})
+    let dateBegin = new EnhancedDate(dateNow)
+    dateBegin.weekDay = 1;
+    let dateEnd = new EnhancedDate(dateNow)
+    dateEnd.weekDay = 7;
     await this.setData({
       windowHeight: app.systemInfo.windowHeight,
       roomName: room.name,
       schedule,
       maxSchedule : schedule[schedule.length-1].id,
       week : dateNow.week,
+      dateBegin : dateBegin.toISODateString(),
+      dateEnd : dateEnd.toISODateString(),
       weekList : [dateNow.week,dateNow.week+1]
     })
   },
@@ -339,11 +345,14 @@ Page({
   selectWeek: function (e) {
     
     let week = e.target.dataset.week;
+    let dateBegin = new EnhancedDate({week,weekDay:1});
+    let dateEnd = new EnhancedDate({week,weekDay:7});
     this.setData({
+      dateBegin: dateBegin.toISODateString(),
+      dateEnd: dateEnd.toISODateString(),
       week: week
     })
-    let dateNow = new EnhancedDate({week,weekDay:1});
-    this.refreshTable(dateNow);
+    this.refreshTable(dateBegin);
   },
 
   stopTouchMove: function () {
