@@ -64,6 +64,7 @@
           <view class="des">
             <text class="des-text" wx:for="{{schedule}}" wx:key="id">时段{{item.id}}：{{item.begin}}-{{item.end}}</text>
             <text class="des-text">实际时间以公告为准</text>
+            <text class="des-text">下拉以刷新页面</text>
           </view>
           <!--显示用户达到预约额度-->
           <bitrxc-notice placeholder="{{deal.description}}" type="alert"></bitrxc-notice>

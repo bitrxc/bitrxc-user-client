@@ -1,6 +1,6 @@
 // @ts-check pages/room/room1/room1.js
 /* 
- * TODO: 服务端处理时区问题
+ * 
  */
 import { delay, request } from "../../../libs/request.js";
 import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
@@ -76,6 +76,11 @@ Page({
       {value: 0, name: '1',checked: 'true'},
       {value: 1, name: '2'},
     ]
+  },
+  onPullDownRefresh: async function(e){
+    await this.data.inited;
+    let dateNow = new EnhancedDate({week:this.data.week,weekDay:1})
+    await this.refreshTable(dateNow);
   },
   radioChange(e) {
     if( e.detail.value == 0){
@@ -196,7 +201,7 @@ Page({
     this.data.inited = this.prefetch(roomId);
   },
   /**
-   * 初始化页面标题，初始化预约时间列表
+   * 初始化页面标题，房间信息，初始化预约时间列表
    * @param {number} roomId
    */
   prefetch:async function (roomId){
