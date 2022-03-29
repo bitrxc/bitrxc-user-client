@@ -47,15 +47,21 @@ let miniprogramContext = {
    * 工具方法，异步执行业务数据加载操作。加入此函数是方便全局获取初始化状态，存入userInfoP。
    */
   async initialize(){
-    await this.login();
-    // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
-    await this.getUserInfo();
     //获取服务器状态
     let serverStatus = await request({
       url:"https://static.bitrxc.com/json/ServerStatus.json",
       method:"GET",
     })
     this.globalData.serverStatus = serverStatus.data;
+    let {miniProgram:{envVersion}} = wx.getAccountInfoSync();
+    if(envVersion === 'develop'){
+      this.globalData.server = "https://api-dev.bitrxc.com";
+    }else{
+      this.globalData.server = "https://api.bitrxc.com"
+    }
+    await this.login();
+    // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除
+    await this.getUserInfo();
     
     //加载预约时间段列表
     /** @type {WechatMiniprogram.RequestSuccessCallbackResult<APIResult<{timeList:Array}>>} */
@@ -161,7 +167,7 @@ let miniprogramContext = {
     userInfoP:null,
     /** @deprecated */
     userInfoComplete:false,
-    server: "https://api-dev.bitrxc.com",
+    server: '',
     /** @type {Record<string,any>} 服务器状态文件，内含公告栏*/
     serverStatus:{},
     /** @type {Map<number,Schedule>} 预约时间段表*///@ts-ignore
