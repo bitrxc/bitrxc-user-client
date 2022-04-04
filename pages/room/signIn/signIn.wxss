@@ -1,0 +1,36 @@
+/* pages/room/signIn/signIn.wxss */
+.page{
+  height: 100%;
+}
+.line{
+  width: 100%;
+  height: 0.1px;
+  background-color: #D8D8DC;
+}
+.text{
+  height:50px;
+  display:flex;
+  align-items: center;
+}
+.check__label{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  margin-inline-start: 50px;
+}
+.button{
+  width: 60%;
+  height: 60px;
+  background-color: green;
+  border-radius: 8px;
+  margin-block-start: 50px;
+  margin-block-end: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.button-text{
+  font-weight: bolder;
+  font-size: 20px;
+}

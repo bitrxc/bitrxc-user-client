@@ -102,3 +102,22 @@ page{
   color:white;
   font-size: 13px;
 }
+.button-box{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.button{
+  width: 62%;
+  height: 40px;
+  background-color: green;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.button-text{
+  font-weight: bolder;
+  font-size: 20px;
+}

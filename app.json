@@ -1,7 +1,9 @@
 {
   "pages": [
+    
     "pages/room/room",
     "pages/my/my",
+    "pages/room/signIn/signIn",
    
     "pages/my/logs/logs",
     "pages/my/process/process",

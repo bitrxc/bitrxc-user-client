@@ -1,0 +1,109 @@
+<view class="container" style="background-color:whitesmoke">
+
+  <!--活动标题和介绍-->
+  <view class="head-box" style="width:100%;background-color:white;margin-bottom: 30px;">
+    <view class="title-box" style="margin-top: 10px;width:95%;margin-inline-end:10px;margin-inline-start: 10px;">
+      <textarea placeholder="请输入活动标题...（1-40字）" placeholder-style="color:gray;" style="height:50px;width:100%;"
+        maxlength="40"></textarea>
+    </view>
+    <view class="line"></view>
+    <view class="intro-box" style="margin-top:10px;width:95%;margin-inline-end:10px;margin-inline-start: 10px;">
+      <textarea placeholder="请输入介绍...（1-120字）" placeholder-style="color:gray;" style="height:80px;width:100%;"
+        maxlength="120"></textarea>
+    </view>
+  </view>
+
+  <!--活动开始和结束时间-->
+  <view class="time-box" style="width:100%;background-color:white;margin-bottom: 30px;">
+
+    <!--开始时间设置-->
+    <view class="begin-time">
+      <view class="text">
+        <text style="margin-inline-start: 10px;">活动开始时间</text>
+      </view>
+      <!--开始时间选择器 目前只设置了年月日-->
+      <view>
+        <picker-view class="begin-time-picker" indicator-style="height: 50px;" style="width: 100%; height: 60px;"
+          value="{{value}}" bindchange="bindChange">
+          <picker-view-column>
+            <view wx:for="{{years}}" wx:key="years" style="line-height: 50px; text-align: center;">{{item}}年</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{months}}" wx:key="months" style="line-height: 50px; text-align: center;">{{item}}月
+            </view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="days" style="line-height: 50px; text-align: center;">{{item}}日</view>
+          </picker-view-column>
+      <!--开始时间-时-分 未设置，显示效果暂时用 日 的形式替代-->
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="days" style="line-height: 50px; text-align: center;">{{item}}时</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="days" style="line-height: 50px; text-align: center;">{{item}}分</view>
+          </picker-view-column>
+      <!--开始时间-时-分 未设置，显示效果暂时用 日 的形式替代-->
+        </picker-view>
+      </view>
+    </view>
+
+    <!--结束时间设置-->
+    <view class="end-time">
+      <view class="text">
+        <text style="margin-inline-start: 10px;">活动结束时间</text>
+      </view>
+      <!--结束时间选择器 目前只设置了年月日-->
+      <view>
+        <picker-view class="end-time-picker" indicator-style="height: 50px;" style="width: 100%; height: 60px;"
+          value="{{value}}" bindchange="bindChange">
+          <picker-view-column>
+            <view wx:for="{{years}}" wx:key="years" style="line-height: 50px; text-align: center;">{{item}}年</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{months}}" wx:key="months" style="line-height: 50px; text-align: center;">{{item}}月
+            </view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="days" style="line-height: 50px; text-align: center;">{{item}}日</view>
+          </picker-view-column>
+
+      <!--结束时间-时-分 未设置，显示效果暂时用 日 的形式替代-->
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="days" style="line-height: 50px; text-align: center;">{{item}}时</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="days" style="line-height: 50px; text-align: center;">{{item}}分</view>
+          </picker-view-column>
+      <!--结束时间-时-分 未设置，显示效果暂时用 日 的形式替代-->
+
+        </picker-view>
+      </view>
+
+    </view>
+
+  </view>
+
+  <!--签到时间设置-->
+  <view class="timeSet-box" style="background-color:white;width:100%;margin-bottom:50px;">
+    <view class="text">
+      <text style="margin-inline-start: 10px;">可签到时段</text>
+    </view>
+    <view class="line"></view>
+    <view class="radio" style="height:100px;display:flex;align-items: center;">
+      <radio-group bindchange="radioChange">
+        <label class="check__label" wx:for="{{items}}" wx:key="value">
+          <view class="hd">
+            <radio value="{{item.value}}" checked="true" />
+          </view>
+          <view class="bd">{{item.name}}</view>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+
+  <!--自定义确认创建按钮-->
+  <view class="button" bindtap="">
+    <text class="button-text" style="color:white;text-align:center;">确认创建</text>
+  </view>
+
+</view>

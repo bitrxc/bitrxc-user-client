@@ -145,5 +145,10 @@ Page({
       windowHeight: app.systemInfo.windowHeight,
       dayList:apList
     })
+  },
+  tofunction: function (e) {
+    wx.navigateTo({
+      url: '../../room/signIn/signIn',
+    })
   }
 })
