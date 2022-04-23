@@ -3,7 +3,7 @@
   * 
   */
  export class EnhancedDate extends Date{
-  static weekBegin = Date.parse("2022-02-27");
+  static weekBegin = Date.parse("2022-02-20");
 
   /**
    * @param {number} newval

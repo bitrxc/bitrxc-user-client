@@ -90,7 +90,8 @@ Page({
       let dateO =  new EnhancedDate({date:new Date(i.launchDate)})
       i.dateTime = dateO.toLocaleString("zh");
       i.week = dateO.week;
-      i.weekDay = dateO.weekDay;
+      const weekDay = ['一','二','三','四','五','六','日']
+      i.weekDay = weekDay[dateO.weekDay-1];
       if(i.begin == i.end){
         i.schedule = i.begin;
       }else{
