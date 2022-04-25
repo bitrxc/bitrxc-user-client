@@ -49,15 +49,15 @@ let miniprogramContext = {
   async initialize(){
     //获取服务器状态
     let serverStatus = await request({
-      url:"https://static.bitrxc.com/json/ServerStatus.json",
+      url:"https://static-renwen.bitrxc.com/json/ServerStatus.json",
       method:"GET",
     })
     this.globalData.serverStatus = serverStatus.data;
     let {miniProgram:{envVersion}} = wx.getAccountInfoSync();
     if(envVersion === 'develop'){
-      this.globalData.server = "https://api-dev.bitrxc.com";
+      this.globalData.server = "https://api-renwen.bitrxc.com";
     }else{
-      this.globalData.server = "https://api.bitrxc.com"
+      this.globalData.server = "https://api-renwen.bitrxc.com"
     }
     await this.login();
     // 获取微信用户信息，获取完成后使得userInfoP字面量完成，此处await关键字不能删除

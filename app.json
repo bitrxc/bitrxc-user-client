@@ -11,7 +11,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "睿信空间小程序",
+    "navigationBarTitleText": "人文学院教育教学实践中心房间预约",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
