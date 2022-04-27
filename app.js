@@ -47,16 +47,21 @@ let miniprogramContext = {
    * 工具方法，异步执行业务数据加载操作。加入此函数是方便全局获取初始化状态，存入userInfoP。
    */
   async initialize(){
-    //获取服务器状态
-    let serverStatus = await request({
-      url:"https://static.bitrxc.com/json/ServerStatus.json",
-      method:"GET",
-    })
-    this.globalData.serverStatus = serverStatus.data;
     let {miniProgram:{envVersion}} = wx.getAccountInfoSync();
-    if(envVersion === 'develop'){
+    // 根据小程序版本，加载服务器公告并设置API地址
+    if(envVersion === 'develop'){ //开发版小程序
+      let serverStatus = await request({
+        url:"https://static.bitrxc.com/json/ServerStatus.json",
+        method:"GET",
+      })
+      this.globalData.serverStatus = serverStatus.data;
       this.globalData.server = "https://api-dev.bitrxc.com";
-    }else{
+    }else{ //线上版小程序
+      let serverStatus = await request({
+        url:"https://static-dev.bitrxc.com/json/ServerStatus.json",
+        method:"GET",
+      })
+      this.globalData.serverStatus = serverStatus.data;
       this.globalData.server = "https://api.bitrxc.com"
     }
     await this.login();
@@ -72,7 +77,6 @@ let miniprogramContext = {
     })
     /** @type {Array<Schedule>} */
     let schedule = APIResult.checkAPIResult(scheduleRes.data).timeList;
-    schedule = schedule.sort((a,b)=> Date.parse(b.begin) - Date.parse(a.begin))
     /** @type {Map<number,Schedule>} */
     let scheduleMap = new Map();
     for(let i of schedule){
@@ -112,13 +116,6 @@ let miniprogramContext = {
     /** @type {User & WechatMiniprogram.UserInfo} */
     let userInfo = APIResult.checkAPIResult(appUserInfo.data).userInfo
     this.globalData.userInfo = userInfo;
-    //TODO: 管理员手动审核用户信息
-    this.globalData.userInfoComplete 
-      = Boolean(userInfo.phone) 
-      && Boolean(userInfo.organization) 
-      && Boolean(userInfo.name)
-      && Boolean(userInfo.schoolId)
-    ;
     return userInfo;
   },
   /**检查用户是否可以预约 */
@@ -165,8 +162,6 @@ let miniprogramContext = {
     userInfo: null,
     /** @type {Promise<void>} 小程序是否加载完成 *///@ts-ignore
     userInfoP:null,
-    /** @deprecated */
-    userInfoComplete:false,
     server: '',
     /** @type {Record<string,any>} 服务器状态文件，内含公告栏*/
     serverStatus:{},

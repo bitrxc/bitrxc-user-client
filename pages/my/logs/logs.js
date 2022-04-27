@@ -1,7 +1,8 @@
 // @ts-check pages/my/logs/logs.js
 import { request } from "../../../libs/request.js";
-import { APIResult, Schedule,Deal } from "../../../libs/data.d.js";
+import { APIResult } from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
+/** @typedef {import("../../../typings/display").appointmentCard} appointmentCard */
 /** @type {import("../../../app.js").MiniprogramContext} */
 const app = getApp();
 Page({
@@ -9,6 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    /** @type {Array<appointmentCard>} */
     array: [
     ],
     selfonly:true,
@@ -23,7 +25,7 @@ Page({
       method:"GET",
     })
     /** 加载到的预约列表
-     * @type {Array<Deal>} */
+    /** @type {Array<Deal & appointmentCard>} */
     let apList = APIResult.checkAPIResult(res.data).appointments;
     apList.sort(
       (a,b)=> {
@@ -86,9 +88,9 @@ Page({
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
       i.userName = userMap.get(i.launcher);
-      i.result = app.globalData.appointmentStatus[i.status];;
+      i.statusText = app.globalData.appointmentStatus[i.status];;
       let dateO =  new EnhancedDate({date:new Date(i.launchDate)})
-      i.dateTime = dateO.toLocaleString("zh");
+      i.launchTime = dateO.toLocaleString("zh");
       i.week = dateO.week;
       const weekDay = ['一','二','三','四','五','六','日']
       i.weekDay = weekDay[dateO.weekDay-1];
@@ -97,8 +99,8 @@ Page({
       }else{
         i.schedule = i.begin + "、" + i.end;
       }
-      i.beginTime = schedule.get(i.begin).begin;
-      i.endTime = schedule.get(i.end).end;
+      i.beginTime = schedule.get(i.begin)?.begin;
+      i.endTime = schedule.get(i.end)?.end;
       i.rs = i.attendance
       /** @type {String} */
       let noteO = i.userNote

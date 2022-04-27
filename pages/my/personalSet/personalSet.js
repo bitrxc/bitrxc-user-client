@@ -168,7 +168,7 @@ Component({
           title: '用户信息保存失败',
         });
         await delay(2000);
-        await wx.hideToast()
+        await wx.hideToast({})
         throw e
       }
     },

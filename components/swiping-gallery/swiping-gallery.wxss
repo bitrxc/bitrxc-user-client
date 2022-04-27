@@ -3,4 +3,3 @@
   width: 100%;
   height: 220px;
 }
-@import 'swiping-gallery-wxa-auto-dark.wxss'

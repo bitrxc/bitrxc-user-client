@@ -2,17 +2,7 @@
 </bitrxc-notice>
 
 <view class='content' style='height:{{windowHeight+50}}px;'>
-
-  <swiper class="swiper" style='height:{{windowHeight+50}}px;'>
-    <swiper-item>
-
-      <view style='height:{{windowHeight+50}}px;'>
-
-        <swiper class='dayClass' style='height:{{windowHeight50}}px;'>
-          <swiper-item>
-
-            <view style='height:{{windowHeight+50}}px;'>
-              <scroll-view style='height:100%;' scroll-y="true">
+              <scroll-view class="dayClass" scroll-y="true">
 
                 <view class='day_content' wx:for='{{dayList}}' wx:key="index">
                   <!--竖向分割线-->
@@ -26,10 +16,10 @@
                     <view class='day_card'>
                       <view class='day_className'>{{item.roomName}}</view>
                       <view class='day_course'>
-                        <view>预约人：{{item.yyrxm}}</view>
+                        <view>预约人：{{item.userName}}</view>
 
 
-                        <!--添加预约时段信息-->
+                        <!--添加预约日期和时段信息-->
                         <view class='noidle-item'>
                           <label class='noidle-item-prefix'>（待）签到日期：</label>
                           <label class='noidle-item-content'>第{{item.week}}周
@@ -44,27 +34,16 @@
                           </label>
 
                         </view>
-                        <!--添加预约时段信息，夹上-->
-
-
-
-                        
+                        <!--添加预约人数和状态信息-->
                         <view>使用人数：{{item.rs}}</view>
                         <view>用途说明：{{item.ytsm}}</view>
-                        <view>预约状态：{{item.yyzt}}</view>
+                        <view>预约状态：{{item.statusText}}</view>
                       </view>
-                      <!--取消按钮，cancelBtn函数未写-->
+                      <!--取消按钮-->
                       <button class="btn" disabled="{{!item.cancelable}}" bindtap="cancel" style="font-size:35rpx;margin-top:10px;margin-bottom:10px;"
                         data-id="{{item.id}}">取消预约</button>
                     </view>
-                    <!--yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
                   </view>
                 </view>
               </scroll-view>
-            </view>
-          </swiper-item>
-        </swiper>
-      </view>
-    </swiper-item>
-  </swiper>
 </view>

@@ -3,6 +3,10 @@
   * 
   */
  export class EnhancedDate extends Date{
+  /** 
+   * 第一周前的星期日
+   * TODO: 从服务段读取此字段
+   */
   static weekBegin = Date.parse("2022-02-20");
 
   /**

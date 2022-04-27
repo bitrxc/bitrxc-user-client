@@ -2,16 +2,13 @@
 import { APIResult,Deal ,Schedule} from "../../../libs/data.d.js";
 import { EnhancedDate } from "../../../libs/EnhancedDate.js";
 import { request } from "../../../libs/request.js";
+/** @typedef {import("../../../typings/display").appointmentCard} appointmentCard */
 /** @type {import("../../../app.js").MiniprogramContext} */
 const app = getApp();
 Page({
   data: {
-    dayList: [//yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态
-      { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
-      { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
-      { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
-      { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
-      { "yysj": "第8周 周一 08：00-10：00", "roomName": "党建活动室", "yyrxm": "张三", "rs": "2", "ytsm": "自习讨论", "yyzt": "成功"},
+    /** @type {appointmentCard[]} */
+    dayList: [
     ]
   },
   onLoad:async function (options) {
@@ -55,7 +52,7 @@ Page({
       header: app.globalData.APIHeader,
       method:"GET",
     })
-    /** @type {Array<Deal>} */
+    /** @type {Array<Deal & appointmentCard>} */
     let apList = APIResult.checkAPIResult(res.data).appointments;
     apList = apList.filter(
       (v) => Deal.allowedStatus.has(v.status)
@@ -118,8 +115,8 @@ Page({
     //适配前端属性名
     for(let i of apList){
       i.roomName = roomMap.get(i.roomId);
-      i.yyrxm = userMap.get(i.launcher);
-      i.yyzt = app.globalData.appointmentStatus[i.status];
+      i.userName = userMap.get(i.launcher);
+      i.statusText = app.globalData.appointmentStatus[i.status];
       i.cancelable = i.status == "new"||i.status == "receive";
       let dateO =  new EnhancedDate({date:new Date(i.execDate)})
       i.week = dateO.week;
@@ -130,8 +127,8 @@ Page({
       }else{
         i.schedule = i.begin + "、" + i.end;
       }
-      i.beginTime = schedule.get(i.begin).begin;
-      i.endTime = schedule.get(i.begin).end;
+      i.beginTime = schedule.get(i.begin)?.begin;
+      i.endTime = schedule.get(i.begin)?.end;
       i.yysj = dateO.toLocaleDateString("zh-cn");
       i.rs = i.attendance
       /** @type {String} */

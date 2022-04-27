@@ -10,11 +10,6 @@ import { EnhancedDate } from "../../../libs/EnhancedDate.js";
  * @typedef {{zt:string,color:number}} tagType
  */
 const profile = {
-  /** 
-   * 第一周的星期一 
-   * TODO: 从服务段读取此字段
-   */
-  weekbegin : Date.parse("2021-08-22"),
   /** @enum {tagType} */
   statusMap : {
     past : {
@@ -55,8 +50,8 @@ Page({
   data: {
     /** @type {Promise<void>} *///@ts-ignore
     inited:null,
-    /** @type {dealSegmentItemType} *///@ts-ignore
-    cardView: null,
+    /** @type {dealSegmentItemType} */
+    cardView: {djz:0,xqj:0,yysd:0,yycd:1,execDate:0},
     roomId:NaN,
     inputValue:"",
     roomName: "",
@@ -77,25 +72,15 @@ Page({
       {value: 1, name: '2'},
     ]
   },
-  onPullDownRefresh: async function(e){
-    await this.data.inited;
-    let dateNow = new EnhancedDate({week:this.data.week,weekDay:1})
-    await this.refreshTable(dateNow);
-    await wx.stopPullDownRefresh();
-  },
   radioChange(e) {
     if( e.detail.value == 0){
       this.setData({
         twoblocks:false
       });
-      console.log('twoblocks值为：', this.data.twoblocks);
-
     }else if( e.detail.value == 1){
       this.setData({
         twoblocks:true
       });
-      console.log('twoblocks值为：', this.data.twoblocks);
-
     }
     
   },
@@ -103,11 +88,12 @@ Page({
    * 检查用户填写的内容
    * 提交表单中用户填写的内容
    * 更新视图
-   * @param {WechatMiniprogram.FormSubmit} e
+   * @param {WechatMiniprogram.FormSubmit &
+   *  {detail:{value:
+   *    {duration:string,attendence:string,usefor:string,requires:string[]}}}} e
    */
   formSubmit:async function (e) {
     console.log(e)
-    /** @type {Record<'duration' | 'attendence' | 'usefor',string>&Record<'requires',Array<string>>} */
     let form = e.detail.value;
     if (form.usefor.length == 0) {
       await wx.showToast({
@@ -116,7 +102,7 @@ Page({
         duration: 1500
       })
       await delay(2000);
-      await wx.hideToast();
+      await wx.hideToast({});
     } else if(isNaN(Number(form.attendence) )){
       await wx.showToast({
         title: '人数格式错误!',
@@ -161,6 +147,8 @@ Page({
         })
         return;
       }
+      // 发送预约审批通知
+      // 管理员预约通知由书院拨打电话发送
       wx.requestSubscribeMessage({
         tmplIds: ['F5-LCFCIXt04AY0WPSC0vJAQsjyFXOn2vltNKXs5ABQ']        
       })
@@ -393,8 +381,9 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-  this.onShow()
-  wx.stopPullDownRefresh()
+  onPullDownRefresh:async function () {
+    await this.data.inited;
+    await this.onShow()
+    await wx.stopPullDownRefresh()
   }
 });

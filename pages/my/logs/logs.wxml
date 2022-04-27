@@ -27,7 +27,7 @@
         </view>
         <!--时间-->
         <view class="day_wrap">
-          <view>{{item.dateTime}}</view>
+          <view>{{item.launchTime}}</view>
           <!--小卡片-->
           <view class='day_card'>
             <view class='day_className'>{{item.roomName}}</view>
@@ -54,7 +54,7 @@
 
               <view>使用人数：{{item.rs}}</view>
               <view>用途说明：{{item.ytsm}}</view>
-              <view>预约状态：{{item.result}}</view>
+              <view>预约状态：{{item.statusText}}</view>
             </view>
           </view>
           <!-- yysj表示预约时间，roomName表示房间名字，yyrxm表示预约人姓名，rs表示使用人数，ytsm表示用途说明，yyzt表示预约状态-->
